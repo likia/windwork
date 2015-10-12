@@ -1,0 +1,101 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl dev/builder.navtab}-->
+
+<form id="form" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+      <th width="140" align="right" valign="middle">模块文件夹</th>
+      <td><input name="dir" type="text" class="text-box" id="dir" value="" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th width="140" align="right" valign="middle">模块名称</th>
+      <td><input name="name" type="text" class="text-box" id="name" value="" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">开发者</th>
+      <td><input name="author" type="text" class="text-box" id="author" value="" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">开发者邮箱</th>
+      <td><input name="email" type="text" class="text-box" id="email" value="" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">开发者官网</th>
+      <td><input name="sitename" type="text" class="text-box" id="sitename" value="" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">官网网址</th>
+      <td><input name="siteurl" type="text" class="text-box" id="siteurl" value="" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">版权</th>
+      <td><input name="copyright" type="text" class="text-box" id="copyright" value="" style="text-align:left; width:300px;" /></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">模块分组</th>
+      <td>
+        <label for="level_core"><input name="level" type="radio" id="level_core" value="core" /> 核心模块</label>&nbsp;&nbsp;
+        <label for="level_option"><input name="level" type="radio" id="level_option" value="option" checked="checked" /> 可选模块</label>&nbsp;&nbsp;
+        <label for="level_other"><input name="level" type="radio" id="level_other" value="other" /> 其他模块</label>
+        <b class="red">*</b>
+        <span class="note">核心模块不可卸载，可选模块和其他模块可自由安装卸载</span>
+      </td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">模块介绍</th>
+      <td><textarea name="desc" cols="50" rows="5"></textarea> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">版本</th>
+      <td><input name="version" type="text" class="text-box" id="version" value="1.0" size="8" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle" class="nobd">&nbsp;</th>
+      <td class="nobd">
+        <input class="btn" type="submit" value="创建模块" />
+        <input name="重置" type="reset" class="btn" value="重置" />
+      </td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			name: "required",
+			version: "required",
+			author: "required",
+			siteurl: {
+				required: true,
+				url: true
+			},
+			desc: "required",
+			email: {
+				required: true,
+				email: true
+			}
+		},
+		messages: {
+			name: "请输入模块名称",
+			version: "请输入版本号",
+			author: "请输入开发者名称",
+			siteurl: "请输入正确的官网网址",
+			desc: "请输入模块介绍信息",
+			email: "请输入正确的邮箱号码"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+//]]>
+</script>
+<!--{tpl footer}-->

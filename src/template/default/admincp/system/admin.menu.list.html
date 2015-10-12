@@ -1,0 +1,38 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl system/admin.menu.navtab}-->
+<form action="index.php?system.admin.menu.sort" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <input type="hidden" name="hash" value="{$hash}"  />
+  <div class="mt">
+      <table class="tb" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="50" align="center">排序</th>
+          <th width="40" align="center">ID</th>
+          <th width="160" align="left">名称</th>
+          <th align="left">URL</th>
+          <th width="160" align="center">管理操作</th>
+        </tr>
+        <!-- {loop $menu $item} -->
+        <tr id="list-{$item['id']}" class="bb">
+          <td align="center"><input type="text" name="sort[{$item['id']}]" value="{$item['displayorder']}" size="3" style="text-align:center;"></td>
+          <td align="center">{$item['id']}</td>
+          <td>{$item[icon]}{$item['name']}</td>
+          <td>{$item['url']}</td>
+          <td align="center">
+            <a href="index.php?system.admin.menu.create/upid:{$item['id']}/hash:{$hash}">添加子菜单</a> | 
+            <a href="index.php?system.admin.menu.update/{$item['id']}/hash:{$hash}">编辑</a> | 
+            <a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$item[id]}', $('#list-{$item[id]}'));">删除</a>
+          </td>
+        </tr>  	
+        <!-- {/loop} -->
+      </table>
+      <p style="padding:6px 10px;"><input type="submit" value="排序" class="btn"></p>
+  </div>
+</form>
+
+<script type="text/javascript">
+
+</script>
+<!--{tpl footer}-->

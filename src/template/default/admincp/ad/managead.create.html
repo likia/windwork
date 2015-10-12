@@ -1,0 +1,130 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl ad/manage.navtab}-->
+
+<form id="form" method="post" enctype="multipart/form-data" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th width="140" align="right" valign="middle">广告名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告位</th>
+        <td>
+          <!--{loop $placeList $placeItem}-->
+          <label for="placeid-{$placeItem[id]}"><input name="placeid[]" type="checkbox" value="{$placeItem[id]}" id="placeid-{$placeItem[id]}" /> {$placeItem[name]}</label> &nbsp;&nbsp;
+          <!--{/loop}-->
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告类型</th>
+        <td>
+            <input type="radio" name="type" value="image" checked="checked">图片
+            <input type="radio" name="type" value="flash">Flash
+            <input type="radio" name="type" value="text">文本
+            <input type="radio" name="type" value="html">代码
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告内容</th>
+        <td>
+           <div class="content-box" id="content-image">
+             上传广告图片：<br />
+             <input type="file" name="content-image" /> <span class="note">允许上传图片类型：jpg/gif/png</span><br />
+             广告链接：<br />
+             <input type="text" name="content[image][url]" class="text-box" size="28" value="" />
+           </div>
+           <div class="content-box" id="content-flash" style="display:none;">
+             上传广告Flash：<br />
+             <input type="file" name="content-flash" />
+             <input name="content[flash]" type="hidden" />
+           </div>
+           <div class="content-box" id="content-text" style="display:none;">
+             广告文本：<br />
+             <textarea name="content[text][text]" cols="60" rows="6"></textarea><br />
+             广告链接：<br />
+             <input type="text" name="content[text][url]" class="text-box" size="60" value="" /><br />
+             字体大小：<br />
+             <input type="text" name="content[text][size]" class="text-box" size="5" value="12" /> px<br />
+          </div>
+           <div class="content-box" id="content-html" style="display:none;">
+             广告代码：<br />
+             <textarea name="content[html]" cols="60" rows="6" style=" "></textarea>
+          </div>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">开始时间</th>
+        <td>
+          <input type="text" class="Wdate text-box" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="startdate" value="{date('Y-m-d')}" /> 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">结束时间</th>
+        <td>
+          <input type="text" class="Wdate text-box" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="enddate" value="{date('Y-m-d', strtotime('+2 month'))}" /> 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">启用</th>
+        <td>
+          <input type="radio" name="enabled" value="1" checked="checked" /> 是
+          <input type="radio" name="enabled" value="0" /> 否
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">显示排序</th>
+        <td>
+          <input type="text" name="displayorder" id="displayorder" value="999" size="5" />
+        </td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="提交" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript" src="{$basePath}static/js/datepicker/WdatePicker.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$('input[name="type"]').change(function(){
+		var type = $(this).val();
+		$('.content-box').hide();
+		$('#content-'+type).show();
+		
+	});
+	var validator = $("#form").validate({
+		rules: {
+			name: "required",
+			width: "required",
+			height: "required"
+		},
+		messages: {
+			name: "请输入广告名称",
+			width: "请输入广告宽",
+			height: "请输入广告高"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+function WdatePickerHandler() {
+    $('input[name="year"]').val($dp.cal.getP('y','yyyy'));
+    $('input[name="month"]').val($dp.cal.getP('M','MM'));
+    $('input[name="day"]').val($dp.cal.getP('d','dd'));
+}
+
+//]]>
+</script>
+<!--{tpl footer}-->

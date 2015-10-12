@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>路由（Router）</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>路由（Router）</h1>
+<p>路由是一个把请求URL映射到控制器的action上的工具，确定用户的请求该执行那个功能（或者反过来，某个功能应该用哪个URL来访问到）。
+路由从URL中解释并提取出这次请求的参数: 模块(module，简写mod)控制器(controller，简写ctl), 动作(action，简写act)以及其他参数。</p>
+<h2>约定</h2>
+<ul>
+<li>系统使用单入口模式，所有Web动态请求均通过 index.php 访问；</li>
+<li>模块文件夹放在src/module文件夹中，每个模块为一个文件夹；</li>
+<li>控制器类放在src/module/$mod/controller文件夹中；</li>
+<li>Router根据URL请求参数把请求映射到对应的控制器，执行业务逻辑。</li>
+</ul>
+<h2>请求处理流程</h2>
+<p>第1步、我们在浏览器中打开URL： <a href="http://localhost/windwork/index.php?system.default.index">http://localhost/windwork/index.php?system.default.index</a> </p>
+<p>第2步、路由器解析请求URL中的参数：模块（module）、控制器（controller）、动作（action）和请求中的其他参数。这三个参数结果分别为</p>
+<pre><code>$mod = 'system';
+$ctl = 'default';
+$act = 'index';</code></pre>
+<p>即请求url可表示为： <a href="http://localhost/windwork/index.php?{$mod}.{$ctl}.{$act">http://localhost/windwork/index.php?{$mod}.{$ctl}.{$act</a>}</p>
+<p>第3步、框架执行\module\<strong>{$mod}</strong>\controller\<strong>{$ctl}</strong>Controller::<strong>{$act}</strong>Action()方法，
+即执行了 \module\<strong>system</strong>\controller\<strong>Default</strong>Controller::<strong>index</strong>Action()</p>
+<h2>URL映射到控制器action</h2>
+<h3>1、基本URI</h3>
+<ul>
+<li>请求URI格式为：{$baseUrl}{$mod}.{$ctl}.{$act}</li>
+<li>如我们要访问 \user\controller\AccountController::loginAction()，链接则为：<a href="http://localhost/windwork/index.php?user.account.login">http://localhost/windwork/index.php?user.account.login</a></li>
+<li>当启用URL Rewrite的时候， $baseUrl = ''; 否则$baseUrl = 'index.php?';</li>
+<li>如果启用了url重写，则请求URL为http://localhost/windwork/user.account.login</li>
+<li>我们可以给router设置把user.account.login简写为login，URL就可以是 <a href="http://localhost/windwork/login">http://localhost/windwork/login</a></li>
+</ul>
+<h3>2、往action方法传递函数参数</h3>
+<p>请求URI格式为：{$baseUrl}{$mod}.{$ctl}.{$act}/参数1/参数2/…</p>
+<pre><code>namespace module\user\controller;
+/**
+ * 传action参数
+ */
+class AccountController extends \core\mvc\Controller {
+    /**
+     * 传参案例
+     */
+    public function doAction($p1 = '', $p2 = ''){
+        // index.php?user.account.do/aa
+        // $p1 == 'aa'; $p2 == '';
+
+        // index.php?user.account.do/aa/bb
+        // $p1 == 'aa'; $p2 == 'bb';
+
+        // 我们还可以传更多的参数
+        // index.php?user.account.do/aa/bb/cc/dd....
+    }
+}</code></pre>
+<h3>3、传递URL请求变量($_GET)到控制器</h3>
+<p>请求URI格式为：{$baseUrl}{$mod}.{$ctl}.{$act}/param1/param2/下标1:值1/下标2:值2/…</p>
+<pre><code>namespace user\controller;
+
+/**
+ * 传URL请求变量
+ */
+class AccountController extends \core\mvc\Controller {
+    /**
+     * 传变量演示说明
+     */
+    public function loginAction($param = ''){
+        // index.php?user.account.login/name:demo/password:123456
+        $param == '';
+        $a = $this-&gt;request-&gt;getRequest('name');   // $a == 'demo'
+        $b = $this-&gt;request-&gt;getRequest('password'); // $b == '123456'
+
+        // index.php?user.account.login/vip/name:demo2/password:abc
+        $param == 'vip';
+        $a = $this-&gt;request-&gt;getRequest('name');   // $a == 'demo2'
+        $b = $this-&gt;request-&gt;getRequest('password'); // $b == 'abc'
+    }
+}</code></pre>
+<h2>分析URL获取参数</h2>
+<pre><code>$router = new \core\Router();
+$url = 'index.php?user.account.login/dopost/name:demo/password:123456';
+// 分析URL
+$router-&gt;parseUrl($url);
+// 分析后结果将被保存到params属性，结果为
+$router-&gt;params == array(
+    ['mod'] =&gt; 'user',
+    ['ctl'] =&gt; 'account',
+    ['act'] =&gt; 'login',
+    ['...'] =&gt; array (
+        [0] =&gt; 'dopost',
+    ),
+    ['name'] =&gt; 'demo',
+    ['password'] =&gt; '123456',
+);</code></pre>
+<h2>生成URL</h2>
+<p>用\core\Router::buildUrl()生成url，Router会自动把URl转成简写url，如果启用url重写，它也会自动生成重写的url。   </p>
+<pre><code>/**
+ * 生成URL
+ * @param string|\core\Router $url
+ * @param bool $absolute
+ * @return string
+ */
+public static function buildUrl($url, $absolute = false)</code></pre>
+<p>也可以用url()函数来生成URL。</p>
+<pre><code>/**
+ * 生成URL
+ * 
+ * @param string $uri
+ * @param bool $fullUrl = 1
+ * @return string
+ */
+function url($uri, $fullUrl = 0) {
+    return \core\Router::buildUrl($uri, $fullUrl);
+}</code></pre>
+<h2>URL简化</h2>
+<p>可以设置简化URL让URL更简洁及更方便搜索引擎收录。
+我们通过在系统管理后台进行设置简化URL规则， “登录管理后台 》设置 》链接设置 》 url简写规则” 设置URL简讯规则，每行一个规则，简写词开头，匹配规则在后面，以空格隔开。缩写词不能重复。
+可使用的规则例如：</p>
+<pre><code>规则
+demo1  mod.ctl.act/aboutUs/do:1/go:2
+demo2  mod.ctl.act/aboutUs
+demo3  mod.ctl.act
+
+简化URL对应URL
+index.php?demo1  =&gt;  index.php?mod.ctl.act/aboutUs/do:1/go:2
+index.php?demo2  =&gt;  index.php?mod.ctl.act/aboutUs
+index.php?demo3  =&gt;  index.php?mod.ctl.act
+index.php?demo1/a:b/c:d  =&gt; index.php?mod.ctl.act/aboutUs/do:1/go:2/a:b/c:d
+</code></pre>
+<h2>注意</h2>
+<p>如果是在命令行下使用，请确定正确设置如下选项：</p>
+<pre><code> 'host_info'  =&gt; '', // 网站网址，如：http://www.yoursite.com:8080
+ 'base_path'  =&gt; '', // 网站根目录，如 /ctx/
+ 'base_url'   =&gt; '', // index.php? || empty string</code></pre>
+<h2>URL重写</h2>
+<p>通过URL Rewrite来移除 URL 中的 index.php，使URL看起来更简洁，也便于搜索引擎收录。
+通过web服务器的URL重写，把类似http://yoursite.com/mod.ctl.act的链接重写到http://yoursite.com/index.php?mod.ctl.act，从而达到简化URL的效果。</p>
+<pre><code>#nginx URL重写设置
+if (!-e $request_filename) {
+    rewrite ^/(.+)$ /index.php?$1 last;
+}</code></pre>
+<pre><code># Apache URL重写设置
+&lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    RewriteRule (.*) index.php [L]
+&lt;/IfModule&gt;</code></pre>
+<p>IIS7+安装URL重写模块以后可支持URL重写，IIS7以下的版本需要另外下载安装URL重写控件到IIS。</p>
+<pre><code>#IIS 7+ URL 重写设置
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration&gt;
+    &lt;system.webServer&gt;
+        &lt;defaultDocument&gt;
+            &lt;files&gt;
+                &lt;add value="index.php" /&gt;
+            &lt;/files&gt;
+        &lt;/defaultDocument&gt;
+        &lt;security&gt;
+            &lt;requestFiltering&gt;
+                &lt;requestLimits maxAllowedContentLength="256000000" /&gt;
+            &lt;/requestFiltering&gt;
+        &lt;/security&gt;
+        &lt;urlCompression doStaticCompression="true" /&gt;
+        &lt;rewrite&gt;
+            &lt;rules&gt;
+                &lt;rule name="RewriteUserFriendlyURL1" stopProcessing="true"&gt;
+                    &lt;match url="^(.*?)$" /&gt;
+                    &lt;conditions&gt;
+                        &lt;add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" /&gt;
+                        &lt;add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" /&gt;
+                    &lt;/conditions&gt;
+                    &lt;action type="Rewrite" url="index.php?{R:1}" /&gt;
+                &lt;/rule&gt;
+            &lt;/rules&gt;
+        &lt;/rewrite&gt;
+    &lt;/system.webServer&gt;
+&lt;/configuration&gt;</code></pre>
+<h2>约定：</h2>
+<ul>
+<li>默认的URLRewrite仅对index.php入口有效  </li>
+</ul>
+</body>
+</html>

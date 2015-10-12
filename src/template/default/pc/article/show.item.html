@@ -1,0 +1,126 @@
+{tpl header}
+{tpl prompt}
+ <div class="section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+    <div class="main">
+      <div class="crumb">
+        <span class="mod">{$cat[name]}</span>
+        <span>当前位置：</span>
+        <a href="{$basePath}" class="to-home">首页</a> <span class="arrow">&gt;</span> 
+        <!-- {if $item[cid] && isset($articleCats[$item[cid]])} -->
+        <!-- {loop $articleCats[$item[cid]][ancestorIdArr] $crumbCid} -->
+        <a href='{#print url("article.show.list/{$articleCats[$crumbCid][slug]}")#}'>{$articleCats[$crumbCid]['name']}</a> <span class="arrow">&gt;</span> 
+        <!-- {/loop} -->
+        <!-- {/if} -->
+      </div>
+      <h2 class="item-name">{$item[title]}</h2>
+      <div class="item-attr-list-w">
+        <div>作者：{$item[author]}&nbsp;&nbsp;&nbsp;来源：<a href="{$item[fromurl]}" target="_blank">{$item[from]}</a> &nbsp;&nbsp;&nbsp;时间：{date('Y-m-d', $item[dateline])}</div>
+      </div>
+      <!-- {if $album} -->
+      <div class="item-album">
+        <!-- {if count($album) == 1} -->
+        <!-- 单张图片如需显示，插入内容中即可
+        <center><img alt="" src="{$cover[url]}" id="item-cover-img" style="max-width:100%; height:auto;" /></center>
+        -->
+        <!-- {elseif count($album) > 1} -->        
+       	<div class="item-cover">
+          <img alt="" src="{thumb($cover[id], 600, 400)}" id="item-cover-img"/>
+        </div>
+        <div class="item-album-list">
+          <ul>
+          <!-- {loop $album $k $albumItem} -->
+            <li {if $k == 0} class="current"{/if} data-img="{thumb($albumItem[id], 600, 400)}"><img src="{$albumItem[thumb]}"/></li>
+          <!-- {/loop} -->
+          </ul>
+          <div class="album-btn-l album-btn"></div>
+          <div class="album-btn-r album-btn"></div>
+          <div style="clear:both;"></div>
+        </div>
+        <script type="text/javascript">
+        $(function(){
+          $(".item-album-list li").click(function(){
+             $("#item-cover-img").attr('src', $(this).attr('data-img'));
+              $(".item-album-list li").removeClass('current');
+              $(this).addClass("current");
+            });
+            var doing = false;
+            var fOffsetLeft = $(".item-album-list ul li:first").offset().left;
+            $(".album-btn").click(function(){
+              if(doing){
+                return false;
+              }
+              var isLeft = $(this).hasClass("album-btn-l") ? true : false;
+              var ulLeft = $(".item-album-list ul").position().left;
+              if(isLeft){
+                if(ulLeft >= 15){
+                  //Wind.message.show("已经到最前一张了");
+                  return false;
+                }
+                doing = true;
+                $(".item-album-list ul").animate({ 
+                  "left" : ulLeft + 82.5
+                }, 'fast', function(){doing = false;});
+              }else{
+                var liObj = $(".item-album-list ul li");
+                var liNum = liObj.length;
+                if(liNum < 7 || liObj.eq(liNum - 7).offset().left <= fOffsetLeft){
+                  //Wind.message.show("已经到最后一张了");
+                  return false;
+                }
+                doing = true;
+                $(".item-album-list ul").animate({ 
+                  "left" : ulLeft - 82.5
+                }, 'fast', function(){doing = false;});
+              }
+            });
+          });
+        </script>
+        <!-- {else} -->
+        <div style="clear:both;"></div>
+        <!-- {/if} -->
+      </div>
+      <!-- {/if} -->
+      <div class="item-content">        
+        {$item[content]}
+      </div>
+      <div class="item-relate">
+        <span>相关内容</span>
+        <a class="more" href="{$articleCats[$cid][url]}">更多&gt;&gt;</a>
+      </div>
+      <ul class="relate-list">
+      <!-- {if $relateArticleList} -->
+      <!-- {loop $relateArticleList $rItem} -->
+        <li><a href="{url article.show.item/$rItem[slug]}">{$rItem[title]}</a><span class="pubtime">{date('Y-m-d', $rItem[dateline])}</span></li>
+      <!-- {/loop} -->
+      <!-- {else} -->
+        <li><b class="red">暂无相关内容</b></li>
+      <!-- {/if} -->
+      </ul>
+    </div>
+    <div class="side">
+      <div class="side">        
+        <div class="side-block subnav">
+          <dl>
+            <!-- {if @$cat[chileArr]} -->
+            <dt><a href="{$cat[url]}">{$cat[name]}</a></dt>
+            <!-- {loop $cat[chileArr] $subId} -->
+            <dd class="{if $cid == $subId}current{/if}"><a href="{$articleCats[$subId]['url']}" target="{if $articleCats[$subId]['selectable']}_self{else}_blank{/if}">{$articleCats[$subId]['name']}<span>»</span></a></dd>
+            <!-- {/loop} -->
+            <!-- {else} -->      
+            <dt><a href="{$articleCats[$cat[parentid]][url]}">{$articleCats[$cat[parentid]][name]}</a></dt>
+            <!-- {loop $articleCats[$cat['parentid']][chileArr] $subId} -->
+            <dd class="{if $cid == $subId}current{/if}"><a href="{$articleCats[$subId]['url']}" target="{if $articleCats[$subId]['selectable']}_self{else}_blank{/if}">{$articleCats[$subId]['name']}<span>»</span></a></dd>
+            <!-- {/loop} -->
+            <!-- {/if} -->
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1354804141325845" charset="utf-8"></script>
+
+{tpl footer}

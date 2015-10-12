@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--{if !empty($_refresh_url)}-->
+<meta http-equiv="refresh" content="{$_refresh_time};URL={$_refresh_url}" />
+<!--{/if}-->
+<title>{if !empty($title)}{$title}{else}Windwork管理后台{/if}</title>
+<link rel="stylesheet" rev="stylesheet" type="text/css" href="{$stylePath}style.css" media="all" />
+<script type="text/javascript" src="{$basePath}static/js/jquery.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/wind.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/wind.cp.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/wind.uploader.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/wind.album.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+var editorObj = null;
+
+// TODO
+var editorCfg = {
+	filterMode: false,
+	allowFileManager : true,		
+	fileManagerJson: '{url("system.uploader.list/from:editor/rid:$uuid/ajax:1", 1)}',
+	uploadJson: '{url("system.uploader.create/from:editor/rid:$uuid/ajax:1/".session_name().":".session_id(), 1)}'
+}
+
+$(function(){
+
+	var cfg = {
+		domain:      '{$domain}',
+		basePath:    '{$basePath}',
+		baseUrl:     '{$baseUrl}',
+		hash:        '{$hash}',
+		uid:         parseInt("{$_SESSION['uid']}"),
+		sid:         '{session_id()}',
+		sname:       '{session_name()}',
+		storagePath: '{ltrim(Config::get("storage_site_url")."/storage/", "/")}',
+	}
+	Wind.init(cfg);
+	
+	$('#ui-loading', parent.document).remove();
+	
+	$('body').ajaxStart(function(){
+		$('body', parent.document).append('<div id="ui-loading">&nbsp;</div>');
+		$('#ui-loading', parent.document).show();
+	});
+	
+	$('body').ajaxComplete(function(){
+		$('#ui-loading', parent.document).remove();
+	});
+
+	$('body').ajaxError(function(){
+		$('#ui-loading', parent.document).remove();
+	});
+	
+	$('#tips-switch').click(function(){
+		if($('#tips').hasClass('tips-open')) {
+			$('#tips').removeClass('tips-open');
+			$('#tips').addClass('tips-close')
+		} else {
+			$('#tips').removeClass('tips-close');
+			$('#tips').addClass('tips-open')
+		}
+	});
+});
+//]]>
+</script>
+<base href="{$appUrl}" />
+</head>
+<body id="{$mod}_{$ctl}_{$act}">
+<!-- {if !empty($tips)} -->
+<div id="tips" class="tips-open">
+  <div id="tips-main" class="mt bd pd bg">
+    <h3>提示技巧</h3>
+    <ul>
+        <!-- {loop $tips $tip}-->
+        <li> &#8250; {$tip}</li>
+        <!-- {/loop}-->
+    </ul>
+  </div>
+  <div id="tips-switch" title="提示技巧"><span></span></div>
+</div>
+<!-- {/if} -->
+<!-- {if !empty($message)} -->
+<div id="msgs" class="mt dialog-msg">
+    <div class="msg warn">
+        {$message}
+    </div>
+</div>
+<!-- {/if} -->
+<!-- {if Message::hasMessage()} -->
+<div id="msgs" class="mt dialog-msg">
+  <!-- {if Message::hasErr()} -->
+  <ul class="msg err">
+    <!-- {loop Message::getErrs() $e} -->
+    <li>{$e}</li>
+    <!-- {/loop} -->
+  </ul>
+  <!-- {/if} -->
+  <!-- {if Message::hasOK()} -->
+  <ul class="msg ok">
+    <!-- {loop Message::getOKs() $ok}-->
+    <li>{$ok}</li>
+    <!-- {/loop}-->
+  </ul>
+  <!-- {/if} -->
+  <!-- {if Message::hasWarn()} -->
+  <ul class="msg warn">
+    <!-- {loop Message::getWarns() $warn} -->
+    <li>{$warn}</li>
+    <!-- {/loop} -->
+  </ul>
+  <!-- {/if} -->
+</div>
+{/if}

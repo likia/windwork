@@ -1,0 +1,124 @@
+{tpl header}
+ <div class="section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+    <div class="main">
+      <!--{if $cat['catshowslider']}-->      
+      <!--焦点图片-->
+      <!--{#$focusList = recDataList(9, 'article', $cat['descendantIdArr'], 8, 1);#} -->
+        <div class="cat-focus-pics">
+          <ul class="slider">
+            {loop $focusList $recItem}
+            <li>
+              <a href="{$recItem[url]}" target="_blank" title="{htmlspecialchars($recItem[title])}"><img src="{thumb($recItem[picid], 730, 365)}" alt="{htmlspecialchars($recItem[title])}" /></a>
+            </li>
+            {/loop}
+          </ul>
+        </div>
+        
+        <script type="text/javascript" src="{$basePath}static/js/jquery.smallslider.min.js"></script>
+        <script type="text/javascript">
+        //<![CDATA[
+        // 图片轮播
+        $(function() {
+         $('.cat-focus-pics').smallslider({
+            //switchEffect: 'ease',
+            switchMode: 'hover',
+            time: 5000,
+            buttonOffsetX: 10,
+            buttonOffsetY: 6,
+            buttonSpace: 2,
+            showText: true
+          });
+        });
+        </script>
+    
+      <!--/焦点图片-->
+      <!--{/if}-->
+      
+      <div class="crumb">
+        <span class="mod">{if $cat}{$cat[name]}{else}文章搜索{/if}</span>
+        <a href="{$basePath}" class="to-home">首页</a>
+        {if $cat && isset($articleCats[$cat[cid]])}
+        {loop $articleCats[$cat[cid]][ancestorIdArr] $crumbCid}
+        <span class="arrow">&gt;</span> <a href="{#print url("article.show.list/{$articleCats[$crumbCid]['slug']}")#}">{$articleCats[$crumbCid]['name']}</a>
+        {/loop}
+        {/if}
+      </div>
+      <div>
+        {if $keyword}
+        <div class="search-filter">
+          <div class="filter-row">
+            <form class="page-search-form" enctype="application/x-www-form-urlencoded" method="get" action="{url article.show.list/$cid}">
+              <select class="search-type">
+                  <option value="{url article.show.list}" {if $mod == 'article' && empty($cid)}selected="selected"{/if}>文章</option>
+                  <option value="{url sight.show.list}" {if $mod == 'sight'}selected="selected"{/if}>景点</option>
+                  <option value="{url journey.show.list}" {if $mod == 'journey'}selected="selected"{/if}>游程</option>
+                  <option value="{url hotel.show.list}" {if $mod == 'hotel'}selected="selected"{/if}>酒店</option>
+                  <option value="{url restaurant.show.list}" {if $mod == 'restaurant'}selected="selected"{/if}>餐厅</option>
+                  <option value="{url favorable.show.list}" {if $mod == 'favorable'}selected="selected"{/if}>优惠</option>
+                  <option value="{url article.show.list/12}" {if $mod == 'article' && !empty($cid) && $cid == 12}selected="selected"{/if}>美食</option>
+                  <option value="{url article.show.list/13}" {if $mod == 'article' && !empty($cid) && $cid == 13}selected="selected"{/if}>旅游伴手礼</option>
+              </select>
+              <input type="text" class="keyword" name="keyword" value="{$keyword}" size="20" style='width:330px;'  />
+              <input type="submit" value="搜索" class="search-smt" style='left: 293px;right:auto;'/>
+            </form>
+            
+              <script type="text/javascript">
+			  $('.page-search-form .search-type').change(function() {
+				  $('.page-search-form').attr('action', $(this).val());
+			  });
+			  </script>
+          </div>
+        </div>
+        {/if}
+        
+        {loop $list $listItem}
+          <div class="list-item">
+            {if $listItem[picid]}
+            <a href="{if $listItem[gotourl]}{$listItem[gotourl]}{else}{url article.show.item/$listItem[slug]}{/if}" title="{$listItem[title]}" target="{if $listItem[gotourl]}_self{else}_blank{/if}"><img src="{thumb($listItem['picid'], 170, 110)}" class="list-cover" title="{$listItem[title]}" /></a>
+            {/if}
+            <h2>
+              <a href="{if $listItem[gotourl]}{$listItem[gotourl]}{else}{url article.show.item/$listItem[slug]}{/if}" title="{$listItem[title]}" target="_blank">{$listItem[title]}</a>
+            </h2>
+            <p class="desc">{Common::stripDesc($listItem['description'])}</p>
+            <p class="attr">
+              <span class="fl">
+                {if $listItem['cid']}<a class="type" href="{$articleCats[$listItem['cid']][url]}">{$articleCats[$listItem['cid']][name]}</a>{/if}
+                
+              </span>
+              <span class="fr">
+                作者：{$listItem[author]} &nbsp;
+                {date('Y-m-d', $listItem[dateline])}
+              </span>
+            </p>
+          </div>
+        {/loop}
+        {if !$list}
+        <div class="no-item">该分类暂无内容！</div>
+        {/if}
+      </div>
+      <div>{$pager}</div>
+    </div>
+    <div class="side">
+        <div class="side-block subnav">
+          <dl>
+            {if $cat[chileArr]}
+            <dt><a href="{$cat[url]}">{$cat[name]}</a></dt>
+            <!-- {loop $cat[chileArr] $subId} -->
+            <dd class="{if $cid == $subId}current{/if}"><a href="{$articleCats[$subId]['url']}" target="{if $articleCats[$subId]['selectable']}_self{else}_blank{/if}">{$articleCats[$subId]['name']}<span>»</span></a></dd>
+            <!-- {/loop} -->
+            {else}            
+            <dt><a href="{$articleCats[$cat[parentid]][url]}">{$articleCats[$cat[parentid]][name]}</a></dt>
+            <!-- {loop $articleCats[$cat['parentid']][chileArr] $subId} -->
+            <dd class="{if $cid == $subId}current{/if}"><a href="{$articleCats[$subId]['url']}" target="{if $articleCats[$subId]['selectable']}_self{else}_blank{/if}">{$articleCats[$subId]['name']}<span>»</span></a></dd>
+            <!-- {/loop} -->
+            {/if}
+          </dl>
+        </div>
+    </div>
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</div>
+
+{tpl footer}

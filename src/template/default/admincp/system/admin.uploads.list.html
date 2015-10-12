@@ -1,0 +1,63 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+
+{tpl system/admin.uploads.navtab}
+
+<form action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <input type="hidden" name="hash" value="{$hash}"  />
+  <div class="mt">
+      <table class="tb" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="30" align="center"><input type="checkbox" name="checkall" /></th>
+          <th width="50" align="center">ID</th>
+          <th width="60" align="center">type</th>
+          <th width="180" align="center">rid</th>
+          <th align="left">path</th>
+          <th width="100" align="left">上传时间</th>
+          <th width="60" align="center">大小</th>
+          <th width="160" align="center">管理操作</th>
+        </tr>
+        <!-- {loop $list $item} -->
+        <tr id="list-{$item['id']}" class="bb">
+          <td align="center"><input type="checkbox" class="batchecked" name="batchecked[]" value="{$item['id']}" /></td>
+          <td align="center">{$item['id']}</td>
+          <td align="center">{$item['type']}</td>
+          <td align="center">{if $item['rid']}{$item['rid']}{else} - {/if}</td>
+          <td><a href="{url system.uploader.load/$item[id]}" target="_blank">{$item['path']}</a></td>
+          <td>{date('Y-m-d', $item['dateline'])}</td>
+          <td align="right">{round($item['size']/1024, 2)}K</td>
+          <td align="center">
+            <a href="javascript:Wind.uploader.edit({$item[id]}, '{$item[rid]}', 'Wind.message.showResponse', '{$item[type]}');">编辑</a> | 
+            <a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$item[id]}', $('#list-{$item[id]}'));">删除</a>
+          </td>
+        </tr>  	
+        <!-- {/loop} -->
+      </table>
+      <div class="tfooter mt">
+        <div class="bathandle">
+          <select name="handle">
+            <option value="sort" selected="selected">删除</option>
+          </select>
+          <input type="submit" value="确定" class="btn">
+        </div>
+        {$pager}
+      </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+Wind.form.checkAll($("input[name='checkall']"), $('.batchecked'));
+$('form').submit(function() {
+	if(!confirm('您确定要执行该操作吗？')) {
+		return false;
+	}
+	if($('input.batchecked:checked').length <= 0) {
+		alert('请选择要删除的附件！');
+		return false;
+	}
+});
+</script>
+
+<!--{tpl footer}-->

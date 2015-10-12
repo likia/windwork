@@ -1,0 +1,22 @@
+/* 幻灯片版微官网首页 */
+.slider-main {  }
+.home-slider, .home-slider .wp {  width:100%; height:100%; margin: 0; padding: 0; position: absolute; z-index: 1;  background:#FFF; }
+.home-slider .wp li { width:100%; min-height:100%; height:auto; float: left; margin: 0; padding: 0; position: absolute; display:block; display:none; }
+.home-slider .wp li .pic { width:100%; height:auto; float:left; }
+
+.catelog { display:none; }
+.icon-menu {background: url("images/slide/icon-menu.png") no-repeat; background-size: 20px auto; bottom: 150px; height: 40px; position: fixed; width: 30px; z-index: 999;}
+
+.plug-div { display:none; }
+
+.slide-right { width:36px; height:36px; position:fixed; right:0; top: 30%; z-index:990; }
+.slide-right .bg { height:36px; display:block; background:#000 ; border-radius:36px 0 0 36px; opacity:0.3; z-index:991; }
+.slide-right .icon {background: url(images/slide/icon-cycle-1.png) left 50% no-repeat;background-size:36px; position:absolute; left:0; top:0; width:36px; height:36px; z-index:992; opacity:0.4; }
+.slide-right .hand { position:absolute; top:8px; left:10px; background:url(images/slide/icon-hand.png) left top no-repeat; height:90px; width:72px; background-size:60px auto; z-index:993; }
+
+.slide-up { width:36px; height:36px; position:fixed; right:45%; bottom: 0; z-index:990; display:none; }
+.slide-up .bg { height:100px; width:36px; display:block; background:#000 ; border-radius:36px 36px 0 0; opacity:0.4; z-index:991; }
+.slide-up .icon {background: url(images/slide/icon-cycle-1.png) left 50% no-repeat;background-size:36px; position:absolute; left:0; top:0; width:36px; height:36px; z-index:992; opacity:0.4; transform: rotate(90deg);-webkit-transform:rotate(90deg); }
+.slide-up .hand { position:absolute; top:8px; left:20px; background:url(images/slide/icon-hand.png) left top no-repeat; height:90px; width:72px; background-size:60px auto; z-index:993; }
+body { overflow-x:hidden; }
+.smallimg { display:none; position:absolute; left:-300px; top:-100px; z-index:99; max-width:250px; height:auto; }

@@ -1,0 +1,22 @@
+{tpl header}
+<div class="err-403 section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+    <h1 class="title">403错误！</h1>
+    {tpl prompt}
+    {if @$message}
+    <div class="message">
+          {if is_array($message)}
+            {loop $message $messageItem}
+            {$messageItem}
+            {/loop}
+          {else}
+            {$message}
+          {/if}
+    </div>
+    {/if}
+    <br />
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</div>
+{tpl footer}

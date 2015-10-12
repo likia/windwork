@@ -1,0 +1,7 @@
+<div class="navtab">
+   <span class="pagetitle">附件管理</span>
+   <ul>
+     <li class="{if $act == 'list'}current{/if}"><a href="{url system.admin.uploads.list/hash:$hash}"><span>附件列表</span></a></li>
+     <li class="{if $act == 'create'}current{/if}"><a href="javascript:;" onclick="Wind.uploader.upload('', 'Wind.message.showResponse', 'attach')"><span>上传附件</span></a></li>
+   </ul>
+</div>

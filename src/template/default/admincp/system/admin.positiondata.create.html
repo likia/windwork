@@ -1,0 +1,81 @@
+{tpl header}
+{tpl system/admin.position.navtab}
+
+<form id="form" action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<input type="hidden" name="hash" value="{$hash}" />
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="title">标题</label></th>
+        <td><input name="title" type="text" class="text-box" id="title" size="40" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="url">Url</label></th>
+        <td><input name="url" type="text" class="text-box" id="url" size="40" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="desc">描述</label></th>
+        <td><textarea name="desc" id="desc" cols="40" rows="4"></textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="posid">推荐位</label></th>
+        <td>
+          <select name="posid" id="posid">
+            <option value="">请选择推荐位</option>
+            {loop $positions $positionItem}
+            <option value="{$positionItem[id]}">{$positionItem[name]}</option>
+            {/loop}
+          </select>
+          <b class="red">*</b>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="picid">图片id</label></th>
+        <td><input name="picid" type="text" class="text-box" id="picid" value="0" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="picw">图片宽度</label></th>
+        <td><input name="picw" type="text" class="text-box" id="picw" value="0" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="pich">图片高度</label></th>
+        <td><input name="pich" type="text" class="text-box" id="pich" value="0" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="displayorder">显示排序</label></th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="50" size="4" /></td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="添加" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			title: "required",
+			posid: "required",
+			url: "required"
+		},
+		messages: {
+			tab: "请输入标题",
+			posid: "请选择推荐位",
+			url: "请输入Url"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

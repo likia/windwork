@@ -1,0 +1,69 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl system/admin.nav.navtab}-->
+
+<form id="form" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="right" valign="middle">上级导航</th>
+        <td>
+          <select name="upid">
+              <option value="">请选择上级导航</option>
+			  <!--{loop $navs $node}-->
+              <option value="{$node['id']}" {if $nav['upid'] == $node['id']}selected="selected"{/if} {if $node[id] == $nav[id] || in_array($node[id], $navs[$nav[id]][chileArr])}disabled="disabled"{/if}>{$node['icon']}{$node['name']}</option>
+              <!--{/loop}-->
+          </select>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">导航名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" value="{$nav[name]}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">URL</th>
+        <td><input name="url" type="text" class="text-box" id="url" size="50" value="{$nav[url]}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">目标</th>
+        <td>
+          <input name="target" type="radio" id="target_self" value="_self" {if $nav[target] == '_self'}checked="checked"{/if} />当前窗口
+          <input name="target" type="radio" id="target_blank" value="_blank" {if $nav[target] == '_blank'}checked="checked"{/if} />新窗口          
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">排序</th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="{$nav[displayorder]}" size="4" /></td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="保存" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			name: "required",
+			url: "required"
+		},
+		messages: {
+			name: "请输入导航名称",
+			url: "请输入导航URL"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+//]]>
+</script>
+<!--{tpl footer}-->

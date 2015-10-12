@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Object基础类</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>Object基础类</h1>
+<p>框架基础类，支持动态增删读属性，错误信息管理（setErr/getLastErr/getErrs）。</p>
+<ol>
+<li>实现了__set,__get,__isset,__unset,__call魔术方法。</li>
+<li>错误信息管理（setErr/getLastErr/getErrs）让对象业务逻辑封装及对象消息传递变得很简单。</li>
+</ol>
+<p>Example #1 使用Object类</p>
+<pre><code>class MyClass extends \core\Object {
+    /**
+     * 对象错误消息传递实例
+     * 业务逻辑中设置错误消息后返回false，外部调用时可通getErrs()/getLastErr()获取错误信息。
+     */
+    public function demo() {
+        $this-&gt;setErr('error 1');
+        $this-&gt;setErr('error 2');
+
+        return false;
+    }
+}
+
+$my = new MyClass();
+
+// 1、自动创建属性并保存
+$my-&gt;a1 = 123; // $my-&gt;attrs['a1'] = 123;
+
+// 2、判断属性是否存在
+true === isset($my-&gt;a1); // 通过isset($my-&gt;attrs['a1'])实现
+
+// 3、属性位创建则返回null
+null === $my-&gt;a2; 
+
+// 4、智能set/get
+$my-&gt;setA2(456); // 等价于 $my-&gt;a2 = 456;
+$my-&gt;getA2(); // 等价于 $my-&gt;a2;
+
+// 5、错误信息set/get/gets
+if(false === $my-&gt;demo()) {
+    $err = $my-&gt;getLastErr();  // 获取最后一条错误信息
+    $errs = $my-&gt;getErrs(); // 获取全部错误信息
+}
+</code></pre>
+</body>
+</html>

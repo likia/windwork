@@ -1,0 +1,106 @@
+{tpl header}
+    <!--header-->
+    <header id="header">
+      <strong class="page-name">注册成为会员</strong>
+      <a href="javascript:history.back(-1);" class="back"><i class="icon"></i>返回</a> 
+    </header>
+    <!--/header-->
+    <div class="header-place"></div>
+<section class="u-form">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+      <div class="main">
+      
+        {tpl prompt}
+        <form action="{url user.account.register}" method="post" target="_self" id="regform" class="regform">
+          <input type="hidden" class="text" name="accounttype" id="accounttype" value="member" autocomplete="off" />
+          <dl class="inputs">
+          <dd>
+            <input type="text" class="text" name="email" id="email" value="" autocomplete="off" placeholder="邮箱" />
+          </dd>
+          <dd>
+            <input type="password" class="text" name="password" id="password" value="" autocomplete="off" placeholder="密码" />
+          </dd>
+          <dd>
+            <input type="password" class="text" name="password2" id="password2" value="" autocomplete="off" placeholder="确认密码" />
+          </dd>
+          <dd class="secode-row">
+            <input placeholder="验证码" type="text" class="text" name="secode" id="secode" size="6" autocomplete="off" onkeyup="this.value=this.value.toUpperCase()" /> <b class="red">*</b>
+            <a class="secode-img" onclick="$(this).find('img').attr('src', '{url system.misc.captcha/entry:reg}/rand:'+Math.random());$('#secode').focus();" href="javascript:;"><img src="{url system.misc.captcha/entry:reg}">换一张</a>
+          </dd>
+          </dl>
+          <p>
+            <label class=" agreement-label" for="agreement">&nbsp;</label>
+            <label for="agreement">
+            <input type="checkbox" tabindex="5" name="agreement" id="agreement" checked="checked">
+            <b class="red">*</b>
+            我已经认真阅读并同意{$siteName}的《<a href="{url article.show.item/agreement}" target="_blank">使用协议</a>》。
+            </label>
+          </p>
+          <div class="error errormsg"></div>
+          <div class="submit-box"> 
+            <a href="javascript:;" class="btn" onclick="$('#regform').submit()">注 册</a>
+          </div>
+          
+        </form>
+      </div>
+      <dl class="guide">
+        <dd>&gt; 已经有{$siteName}的账号？<a href="{url user.account.login}">登录</a></dd>
+        <dd>&gt; 忘记密码了？<a href="{url user.account.forgetpassword}">取回密码</a></dd>
+      </dl>
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</section>
+<script type="text/javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$('#password').val('');
+	var validator = $("#regform").validate({
+		rules: {
+			email: {
+				required: true,
+				email:true
+			},
+			nickname: "required",
+			secode: "required",
+			agreement: "required",
+		    password: {
+				required: true,
+				minlength: 6
+			},
+			password2: {
+				equalTo:"#password" 
+			}
+		},
+		messages: {
+			email: {
+				required: "请输入邮箱",
+				email: "请输入正确的邮箱号码"
+			},
+			nickname: "请输入您的名号",
+			secode: "请输入验证码",
+			agreement: "请确认您已同意我们的协议",
+			password: {
+				required: '请输入密码',
+				minlength: jQuery.format("密码不能小于{0}个字符") 
+			},
+			password2: {
+				equalTo:"两次输入密码不一致" 
+			}
+		},
+		errorPlacement: function(error, element) {
+			//$('.errormsg').html(error.text());
+			error.appendTo($('.errormsg'));				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+//]]>
+</script>
+
+{tpl footer}

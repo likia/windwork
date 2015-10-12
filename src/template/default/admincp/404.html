@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--{if !empty($_refresh_url)}-->
+<meta http-equiv="refresh" content="{$_refresh_time};URL={$_refresh_url}" />
+<!--{/if}-->
+<title>{if !empty($title)}{$title}{else}Windwork管理后台{/if}</title>
+<link rel="stylesheet" rev="stylesheet" type="text/css" href="{$stylePath}style.css" media="all" />
+<base href="{$domain}{$basePath}" />
+</head>
+<body id="{$mod}_{$ctl}_{$actl}" class="404">
+
+<!-- {if !empty($message)} -->
+<div id="msgs" class="mt dialog-msg">
+    <h1 class="title">404错误：</h1>
+    <div class="msg warn">
+        {$message}
+    </div>
+</div>
+<!-- {/if} -->
+<!-- {if Message::hasMessage()} -->
+<div id="msgs" class="mt dialog-msg">
+  <!-- {if Message::hasErr()} -->
+  <h1 class="title">404错误：</h1>
+  <ul class="msg err">
+    <!-- {loop Message::getErrs() $e} -->
+    <li>{$e}</li>
+    <!-- {/loop} -->
+  </ul>
+  <!-- {/if} -->
+  <!-- {if Message::hasOK()} -->
+  <ul class="msg ok">
+    <!-- {loop Message::getOKs() $ok}-->
+    <li>{$ok}</li>
+    <!-- {/loop}-->
+  </ul>
+  <!-- {/if} -->
+  <!-- {if Message::hasWarn()} -->
+  <ul class="msg warn">
+    <!-- {loop Message::getWarns() $warn} -->
+    <li>{$warn}</li>
+    <!-- {/loop} -->
+  </ul>
+  <!-- {/if} -->
+</div>
+{/if}
+
+<div id="copyright" class="pd mt">Copyright &copy; 2010-{date('Y')} <a target="_blank" href="http://www.windwork.org"><b><span style="color:#F00;">Windwork</span> Team.</b></a> 版权所有, 并保留所有权利。</div>
+
+<div id="ajax-loading">&nbsp;</div>
+</body>
+</html>

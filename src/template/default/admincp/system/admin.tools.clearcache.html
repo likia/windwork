@@ -1,0 +1,28 @@
+<!--{tpl header}-->
+
+  <div class="mt">
+    <table class="tb" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td align="center" class="th">
+            <br />
+            <label><input type="checkbox" name="type[data]" value="db" checked="checked" autocomplete="off" />数据缓存</label> &nbsp;
+            <label><input type="checkbox" name="type[tpl]" value="tpl" checked="checked" autocomplete="off" />模板缓存</label> &nbsp;
+            <label><input type="checkbox" name="type[thumb]" value="thumb" autocomplete="off" />缩略图缓存</label>
+            <br />
+
+            <button type="button" class="btn" onclick="clear_cache_post()">确定</button>
+            <br />
+            <br />
+        </td>
+      </tr>
+      
+    </table>
+  </div>
+<script type="text/javascript">
+function clear_cache_post() {
+	$.post("{url $mod.$ctl.$act/r:}?"+Math.random(), $('.tb input:checked'), function(r) {
+		Wind.message.showResponse(r);
+	}, 'json');
+}
+</script>
+<!--{tpl footer}-->

@@ -1,0 +1,36 @@
+{tpl header}
+  <div class="subnav">
+      <dl>
+        {if $cat[chileArr]}
+        <dd class="{if $cid == $cat['cid']}current{/if}"><a href="{$cat[url]}">{$cat[name]}</a></dd>
+        <!-- {loop $cat[chileArr] $subId} -->
+        <dd class="{if $cid == $subId}current{/if}"><a href="{$articleCats[$subId]['url']}">{$articleCats[$subId]['name']} </a></dd>
+        <!-- {/loop} -->
+        {else} 
+        <dd class="{if $cid == $articleCats[$cat['parentid']]['cid']}current{/if}"><a href="{$articleCats[$cat[parentid]][url]}">{$articleCats[$cat[parentid]][name]}</a></dd>          
+        <!-- {loop $articleCats[$cat['parentid']][chileArr] $subId} -->
+        <dd class="{if $cid == $subId}current{/if}"><a href="{$articleCats[$subId]['url']}">{$articleCats[$subId]['name']}</a></dd>
+        <!-- {/loop} -->
+        {/if}
+      </dl>
+  </div>
+  <div class="clearfix"></div>
+  <div class="main">
+    <!-- {if $list} -->
+    <ul>
+      <!-- {loop $list $listItem} -->
+      <li class="list-item-text">
+        <a class="title" href="{if $listItem[gotourl]}{$listItem[gotourl]}{else}{url article.show.item/$listItem[id]}{/if}">{$listItem[title]}</a>
+        <span class="date">{date('m-d', $listItem['dateline'])}</span>
+      </li>
+      <!-- {/loop} -->
+    </ul>
+    <!-- {else} -->
+    <div class="no-item">该分类暂无内容！</div>
+    <!-- {/if} -->
+  </div>
+  <!-- {if $list} -->
+  <div>{$pager}</div>
+  <!-- {/if} -->
+
+{tpl footer}

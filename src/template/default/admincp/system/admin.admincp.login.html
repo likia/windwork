@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>管理后台 - {$siteName}</title>
+<meta name="generator" content="Windwork {$version}" />
+<meta name="author" content="Windwork Team" />
+<meta name="copyright" content="2008-{date('Y')} Windwork Team." />
+<link rel="shortcut icon" href="{$basePath}static/favicon.ico"  />
+<link rel="stylesheet" type="text/css" href="{$stylePath}index.css" />
+<base href="{$basePath}" />
+</head>
+<body id="admincp-login">
+  <div class="login">
+    <h1><a href="{url system.admin.admincp.index}" title="Windwork 后台管理中心"><img src="{$stylePath}/images/login-logo.png" /></a></h1>
+    <form action="{url system.admin.admincp.login/hash:$hash}" method="post">
+      <div class="inputs">
+		<ul>
+			<li>
+				<input type="text" title="帐号" placeholder="帐号" name="account" id="admincp_account" class="input">
+			</li>
+			<li>
+				<input type="password" title="密码" placeholder="密码" name="password" id="admincp_password" class="input">
+			</li>
+        </ul>
+		<button class="btn" name="submit" type="submit">登 录</button>
+	  </div>
+    </form>
+  </div>
+</body>
+</html>

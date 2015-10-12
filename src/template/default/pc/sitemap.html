@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!--{loop $urls $url}-->
+  
+  <url> 
+    <loc>{$url[loc]}</loc>
+    <!--{if $url[lastmod]}--><lastmod>{$url[lastmod]}</lastmod><!--{/if}-->
+    <!--{if $url[changefreq]}--><changefreq>{$url[changefreq]}</changefreq><!--{/if}-->
+    <!--{if $url[priority]}--><priority>{$url[priority]}</priority><!--{/if}-->
+    <!--{if $url[images]}-->
+    <!--{loop $url[images] $image}-->
+    
+    <image:image>
+      <image:loc>{$image[loc]}</image:loc>
+      <!--{if $image[title]}--><image:title>{$image[title]}</image:title><!--{/if}-->
+      <!--{if $image[caption]}--><image:caption>{$image[caption]}</image:caption><!--{/if}-->
+      <!--{if $image[geo_location]}--><image:geo_location>{$image[geo_location]}</image:geo_location><!--{/if}-->
+      <!--{if $image[license]}--><image:license>{$image[license]}</image:license><!--{/if}-->
+      
+    </image:image>
+    <!--{/loop}-->
+    <!--{/if}-->
+    
+  </url>
+  <!--{/loop}-->
+</urlset>

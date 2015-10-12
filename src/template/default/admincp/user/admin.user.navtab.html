@@ -1,0 +1,7 @@
+<div class="navtab">
+   <span class="pagetitle">管理{$userTypeList[$type]}</span>
+   <ul>
+     <li class="{if $act == 'list'}current{/if}"><a href="index.php?user.admin.user.list/type:{$type}/hash:{$hash}"><span>{$userTypeList[$type]}列表</span></a></li>
+     <li class="{if $act == 'create'}current{/if}"><a href="index.php?user.admin.user.create/type:{$type}/hash:{$hash}"><span>添加{$userTypeList[$type]}</span></a></li>
+   </ul>
+</div>

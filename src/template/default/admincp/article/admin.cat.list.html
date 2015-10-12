@@ -1,0 +1,56 @@
+{tpl header}
+{tpl article/navtab}
+
+<form action="{url('article.admin.cat.list')}" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <div>
+      <table class="tb mt" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="40" align="center">排序</th>
+          <th width="40" align="center">ID</th>
+          <th width="200" align="left">栏目名称</th>
+          <th width="" align="left">栏目别名</th>
+          <th width="60" align="left">是否启用</th>
+          <th width="100" align="left">管理操作</th>
+        </tr>
+        <!--{if empty($cats)}-->
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td><a href="index.php?article.admin.cat.create/hash:{$hash}">添加文章栏目</a></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <!--{else}-->
+        <!--{loop $cats $item}-->
+        <tr id="list-{$item['cid']}" class="bb">
+          <td><input class="displayorder" type="text" size="3" name="displayorder[{$item[cid]}]" value="{$item[displayorder]}" /></td>
+          <td align="center">{$item['cid']}</td>
+          <td><a href="{url $mod.show.list/$item[cid]}" target="_blank">{$item['icon']} {$item['name']}</a></td>
+          <td>{$item['slug']}</td>
+          <td>{if $item['enabled']}<span class="green">√</span>{else}<span class="red">×</span>{/if}</td>
+          <td align="left">
+            [<a href="index.php?article.admin.cat.update/{$item['cid']}/hash:{$hash}">编辑</a>]
+            [<a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$item[cid]}', $('#list-{$item[cid]}'));">删除</a>]
+          </td>
+        </tr>  	
+        <!--{/loop}-->
+        <!--{/if}-->
+        <tr>
+          <td><input type="submit" name="" value="排序" id="sort-btn" class="btn" /></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    <br />
+  </div>
+</form>
+
+<script type="text/javascript">
+
+</script>
+
+{tpl footer}

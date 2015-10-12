@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Windwork</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>Windwork</h1>
+<p>Windwork是一个开源的轻量级Web框架。
+基于PHP5+MYSQL做为技术架构，以组件工厂为核心，MVC OOP模式开发，采用模块化开发方式。
+我们的目的是提供一个简洁易用、易维护、易扩展、松耦合、适应于云应用的PHP开发框架。</p>
+<h2>环境要求</h2>
+<ul>
+<li>PHP5.3+ (需启用模块：mysql或pdo_mysql、gd2，打开allow_url_fopen，建议启用mbstring或iconv)</li>
+<li>MySQL 5.0+</li>
+<li>建议启用URLRewrite</li>
+</ul>
+<h2>设计目标</h2>
+<ul>
+<li>简单易用（易上手、易维护、易扩展）</li>
+<li>性能出色</li>
+<li>适合高并发平台开发</li>
+<li>组件工厂架构模式</li>
+<li>松耦合</li>
+<li>组件职责单一</li>
+<li>OOP</li>
+<li>MVC</li>
+<li>模块化</li>
+<li>文档简洁易懂</li>
+</ul>
+<h2>文档目录</h2>
+<ul>
+<li><a href="general.coding-standard.html">编码规范</a>  </li>
+<li><a href="general.folder-structure.html">目录结构</a>   </li>
+<li><a href="core.router.html">路由（router）</a>   </li>
+<li><a href="core.mvc.html">MVC</a>
+<ul>
+<li><a href="core.mvc.controller.html">控制器</a>   </li>
+<li><a href="core.mvc.model.html">模型</a>   </li>
+<li><a href="core.mvc.template.html">视图</a>   </li>
+<li><a href="core.mvc.message.html">消息传递</a></li>
+<li><a href="core.mvc.restful.html">Restful</a></li>
+</ul></li>
+<li><a href="general.acl.html">权限控制</a></li>
+<li><a href="core.app.html">应用容器</a> 
+<ul>
+<li><a href="core.app.html#autoload">自动加载类</a> </li>
+</ul></li>
+<li><a href="core.common.html" class="red" onclick="return false;">Common</a>   </li>
+<li><a href="core.config.html">配置信息</a>     </li>
+<li><a href="core.file.html" class="red" onclick="return false;">文件处理</a>   </li>
+<li><a href="core.hook.html">钩子（Hook）</a>  </li>
+<li><a href="core.lang.html">多语言</a>   </li>
+<li><a href="core.object.html">Object基础类</a>    </li>
+<li><a href="core.request.html">客户端请求</a>    </li>
+<li><a href="core.response.html">服务器端响应</a>    </li>
+<li><a href="core.storage.html" class="red" onclick="return false;">附件存贮</a>  </li>
+<li><a href="core.factory.html" class="red" onclick="return false;">组件工厂</a>   
+<ul>
+<li><a href="core.factory.adapter.cache.html" class="red" onclick="return false;">缓存</a>   </li>
+<li><a href="core.factory.adapter.captcha.html" class="red" onclick="return false;">验证码</a>   </li>
+<li><a href="core.factory.adapter.crypt.html" class="red" onclick="return false;">加密解密</a>   </li>
+<li><a href="core.factory.adapter.db.html" class="red" onclick="return false;">数据库</a>   </li>
+<li><a href="core.factory.adapter.image.html" class="red" onclick="return false;">图像处理</a>   </li>
+<li><a href="core.factory.adapter.logger.html" class="red" onclick="return false;">日志</a>   </li>
+<li><a href="core.factory.adapter.mailer.html" class="red" onclick="return false;">邮件发送</a> </li>
+<li><a href="core.factory.adapter.mq.html" class="red" onclick="return false;">消息队列</a>   </li>
+<li><a href="core.factory.adapter.session.html" class="red" onclick="return false;">Session</a>   </li>
+<li><a href="core.factory.adapter.sms.html" class="red" onclick="return false;">短信发送</a>        </li>
+</ul></li>
+<li>
+<p><a href="core.util.html" class="red" onclick="return false;">工具类</a>   </p>
+<ul>
+<li><a href="core.util.client.html" class="red" onclick="return false;">请求客户端</a>     </li>
+<li><a href="core.util.encoder.html" class="red" onclick="return false;">编码解码器</a>     </li>
+<li><a href="core.util.form.html" class="red" onclick="return false;">表单生成</a>   </li>
+<li><a href="core.util.pagination.html" class="red" onclick="return false;">分页类</a>     </li>
+<li><a href="core.util.tree.html" class="red" onclick="return false;">树</a>     </li>
+<li><a href="core.util.zip.html" class="red" onclick="return false;">zip压缩</a>    </li>
+<li><a href="core.util.unzip.html" class="red" onclick="return false;">zip解压</a>       </li>
+<li><a href="core.util.validator.html" class="red" onclick="return false;">数据验证</a>     </li>
+<li><a href="core.util.xml.html" class="red" onclick="return false;">XML处理</a>     </li>
+<li><a href="core.util.xss.html" class="red" onclick="return false;">XSS</a>    </li>
+</ul>
+</li>
+<li><a href="guide.html">开发指南</a>  </li>
+</ul>
+<h2>Windwork框架开发基础</h2>
+<p>使用Windwork框架必须有PHP基础以及一些面向对象、MVC等知识。<br />
+<a href="php-basic.html">PHP开发基础学习指南</a></p>
+</body>
+</html>

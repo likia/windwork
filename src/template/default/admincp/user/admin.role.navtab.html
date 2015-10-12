@@ -1,0 +1,9 @@
+<div class="navtab">
+   <span class="pagetitle">管理角色</span>
+   <ul>
+     {loop $roleTypes $typeKey $typeValue}
+     <li class="{if $type == $typeKey}current{/if}"><a href="index.php?user.admin.role.list/type:{$typeKey}/hash:{$hash}"><span>{$typeValue}角色</span></a></li>
+     {/loop}
+     <li class="{if $act == 'create'}current{/if}"><a href="index.php?user.admin.role.create/type:{$type}/hash:{$hash}"><span>添加角色</span></a></li>
+   </ul>
+</div>

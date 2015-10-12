@@ -1,0 +1,151 @@
+{tpl header}
+{tpl article/navtab}
+
+<form id="form" action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<input type="hidden" name="hash" value="{$hash}" />
+<input type="hidden" name="uuid" value="{$uuid}" />
+<input type="hidden" name="picid" value="0" />
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="right" valign="middle"><label for="cid">分类</label></th>
+        <td>
+          <select name="cid" id="cid">
+            <option value="0">未分类</option>
+		    <!--{loop $cats $cid $cat}-->
+            <option value="{$cid}" {if @$_REQUEST['cid'] == $cid}selected="selected"{/if}>{$cat[icon]}{$cat[name]}</option>
+           <!--{/loop}-->
+          </select>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="title">标题</label></th>
+        <td><input name="title" type="text" class="text-box" id="title" value="{$_POST['title']}" size="42" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="title">别名</label></th>
+        <td><input name="slug" type="text" class="text-box" id="slug" value="{urldecode(@$_POST['slug'])}" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">推荐</th>
+        <td>
+		  <!--{loop $positions $position}-->
+		  <label for="pos-{$position[id]}"><input id="pos-{$position[id]}" name="position[]" type="checkbox" class="text-box" id="author" value="{$position[id]}" /> {$position[name]}</label> &nbsp;&nbsp; 
+		  <!--{/loop}-->
+		</td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">消息推送</th>
+        <td>
+		  <label for="msg-0">
+		  	<input id="msg-0" name="msg" type="radio" class="text-box" value="0" checked="checked"/>不推送
+		  </label> &nbsp;&nbsp; 
+		  <label for="msg-1">
+		  	<input id="msg-1" name="msg" type="radio" class="text-box" value="1" />推送
+		  </label> &nbsp;&nbsp;
+		  （如设为推送，则发布文章时，同时以消息的形式发布给所有人）
+		</td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="name">关键词</label></th>
+        <td><input name="keyword" type="text" class="text-box" id="keyword" value="{$_POST['keyword']}" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="description">描述</label></th>
+        <td><textarea name="description" cols="50" rows="3">{$_POST['description']}</textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">
+          文章相册<br />
+          <button onclick="Wind.album.upload($('input[name=\'uuid\']').val())" type="button" class="btn">上传</button>
+        </th>
+        <td>
+          <div id="album">
+            <img src="{$nopic}" width="120" height="120" class="album-nopic" />
+          </div>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="top"><label for="content">详细内容</label></th>
+        <td><textarea name="content" id="content" cols="120" rows="8" style="width:{\core\Config::get('editor_width')}; height:{\core\Config::get('editor_height')};" >{$_POST['content']}</textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">状态</th>
+        <td>
+          <!--{loop $articleStatusList $key $val}-->
+          <input name="status" type="radio" value="{$key}" {if (!isset($_POST['status']) && $key == 1) || (isset($_POST['status']) && $_POST['status'] == $key)}checked="checked"{/if} />{Lang::get($val)}
+          <!--{/loop}-->
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">作者</th>
+        <td><input name="author" type="text" class="text-box" id="author" value="{if empty($_POST['author'])}{$siteName}{else}{$_POST['author']}{/if}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">来源网站</th>
+        <td><input name="from" type="text" class="text-box" id="from" value="{if empty($_POST['from'])}{$siteName}{else}{$_POST['from']}{/if}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">来源网址</th>
+        <td><input name="fromurl" type="text" class="text-box" id="fromurl" value="{if empty($_POST['fromurl'])}#{else}{$_POST['fromurl']}{/if}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">责任编辑</th>
+        <td><input name="editor" type="text" class="text-box" id="editor" value="{if empty($_POST['editor'])}{$_SESSION['uname']}{else}{$_POST['editor']}{/if}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">跳转网址</th>
+        <td><input name="gotourl" type="text" class="text-box" id="gotourl" value="{if !empty($_POST['gotourl'])}{$_POST['gotourl']}{/if}" /> <span class="note">如果不为空，打开该文章时将跳到改网址。</span></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">模板</th>
+        <td><input name="tpl" type="text" class="text-box" id="tpl" value="" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">排序</th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="0" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">是否是原创</th>
+        <td>
+          <label for="isoriginal_1"><input name="isoriginal" type="radio" id="isoriginal_1" value="1" checked="checked" />是</label>
+          <label for="isoriginal_0"><input name="isoriginal" type="radio" id="isoriginal_0" value="0" />否</label>
+        </td>
+    </tr>    
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="提交" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript" src="{$basePath}static/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="content"]', editorCfg);
+	});
+	var validator = $("#form").validate({
+		rules: {
+			title: "required",
+			content: "required"
+		},
+		messages: {
+			title: "请输入文章标题",
+			content: "请输入文章内容"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

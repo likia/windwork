@@ -1,0 +1,88 @@
+{tpl header}
+{tpl article/navtab}
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="tb mt">
+  <tr>
+    <td>
+      <form id="display-filter" action="{url $mod.$ctl.$act/hash:$hash}" method="get" enctype="application/x-www-form-urlencoded" target="_self">
+        <strong>搜索关键词</strong> <input type="text" class="text" name="keyword" value="{$keyword}" style="padding:2px 4px;" />
+        <select name="cid" onchange="$('#display-filter').submit();">
+          <option value="" {if !$cid}selected="selected"{/if}>选择显示分类</option>
+          {loop $cats  $catItem}
+          <option value="{$catItem[cid]}" {if $cid == $catItem[cid]}selected="selected"{/if}>{$catItem[icon]}{$catItem[name]}</option>
+          {/loop}
+        </select>
+        <input type="submit" value="搜索" class="btn" />
+      </form>
+    </td>
+  </tr>
+</table>
+  
+<form action="" method="post" enctype="application/x-www-form-urlencoded" target="_self" onsubmit="return confirm('确定要执行该操作吗？')">
+  <div>
+      <table class="tb mt" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="24" align="center"><input type="checkbox" name="checkall" /></th>
+          <th width="36" align="center">排序</th>
+          <th width="36" align="center">ID</th>
+          <th width="" align="left">标题</th>
+          <th width="120" align="center">分类</th>
+          <th width="40" align="center">点击数</th>
+          <th width="150" align="center">发布时间</th>
+          <th width="50" align="center">状态</th>
+          <th width="80" align="center">管理操作</th>
+        </tr>
+        <!--{if empty($list)}-->
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>暂无符合条件的内容</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <!--{else}-->
+        <!--{loop $list $item}-->
+        <tr id="list-{$item['id']}" class="bb">
+          <td align="center"><input name="batchecked[{$item['id']}]" size="3" type="checkbox" value="{$item['id']}" class="batchecked" /></td>
+          <td align="center"><input name="displayorder[{$item['id']}]" size="3" type="text" value="{$item['displayorder']}" style="text-align:center;" /></td>
+          <td align="center">{$item['id']}</td>
+          <td><a href="{url article.show.item/$item[id]}" target="_blank">{$item['title']}</a></td>
+          <td align="center">{if $item['cid']}{$cats[$item['cid']]['name']}{else}未分类{/if}</td>
+          <td align="center">{$item['views']}</td>
+          <td align="center">{$item['label_date']}</td>
+          <td align="center">{$item['label_status']}</td>
+          <td align="center">
+            <a href="index.php?article.admin.content.update/{$item['id']}/hash:{$hash}">编辑</a> |
+            <a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$item[id]}', $('#list-{$item[id]}'));">删除</a>
+          </td>
+        </tr>  	
+        <!--{/loop}-->
+        <!--{/if}-->
+      </table>
+    <br />
+    <div class="tfooter">
+      <div class="bathandle">
+        <select name="handle">
+          <option value="sort">排序</option>
+          <option value="del">删除</option>
+          <option value="mov">移动</option>
+          <option value="trash">垃圾</option>
+          <option value="draft">草稿</option>
+          <option value="published">发布</option>
+        </select>
+        <input type="submit" value="确定" class="btn" />
+      </div>
+      {$paging}
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+Wind.form.checkAll($("input[name='checkall']"), $('.batchecked'));
+</script>
+
+{tpl footer}

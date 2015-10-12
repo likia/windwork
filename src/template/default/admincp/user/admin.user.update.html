@@ -1,0 +1,110 @@
+{tpl header}
+{tpl user/admin.user.navtab}
+
+<form id="form" action="" method="post" enctype="multipart/form-data" target="_self">
+<input type="hidden" name="hash" value="{$hash}" />
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th width="140" align="right" valign="middle">角色</th>
+        <td>
+          <!-- {if \module\user\model\UserModel::isSuper($user['uid'])} -->
+                          超级管理员
+          <!-- {else} -->
+          <!--{if $type == 'admin'}-->
+            <!--{loop $roles $role}-->
+            <label for="role_{$role['roid']}"><input id="role_{$role['roid']}" type="checkbox" name="role[]" value="{$role['roid']}" {if in_array($role['roid'], $user['role'])}checked="checked"{/if} require />{$role['name']}</label>
+            <!--{/loop}-->
+          <!--{else}-->
+          <select name="role[]" require>
+            <option value="" {if empty($role['roid'])}selected="selected"{/if}>请选择角色</option>
+            <!--{loop $roles $rk $role}-->
+            <option value="{$role['roid']}" {if in_array($role['roid'], $user['role'])}selected="selected"{/if}>{$role['name']}</option>
+           <!--{/loop}-->
+          </select>
+          <!--{/if}-->
+          <b class="red">*</b>          
+          <label class="red error" for="role[]" style="display: none;">请选择角色。</label>
+          <!-- {/if} -->
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">名号</th>
+        <td><input name="nickname" type="text" class="text-box" id="nickname" value="{$user['nickname']}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">用户名</th>
+        <td><input name="uname" type="text" class="text-box" id="uname" value="{$user['uname']}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">手机</th>
+        <td><input name="mobile" type="text" class="text-box" id="mobile" value="{$user['mobile']}" /> </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">邮箱</th>
+        <td><input name="email" type="text" class="text-box" id="email" value="{$user['email']}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">密码</th>
+        <td><input name="password" type="text" class="text-box" id="password" value="" /> <span class="tips">如果不修改请留空</span></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">头像</th>
+        <td>
+        <img src="{avatar($user[uid], 'small', 1)}" width="80" height="80" style="border:1px solid #DDD; margin:0 0 5px 0" />
+        <br />
+        <input type="file" name="avatar" />
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">描述</th>
+        <td><textarea name="description" cols="40" rows="4">{$user['description']}</textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">状态</th>
+        <td>
+          {loop $userStatusList $k $v}
+          <label for="status_{$v}"><input name="status" id="status_{$v}" type="radio" {if $k == $user['status']}checked="checked"{/if} value="{$k}" />{$v}</label>
+          {/loop}
+        </td>
+    </tr>
+    {if $user['isext']}
+    <tr>
+        <th width="140" align="right" valign="middle">商家状态</th>
+        <td>
+          <label><input type="radio" name="isextvalid" value="1" {if $user['isextvalid']}checked="checked"{/if} />已审核</label>
+          <label><input type="radio" name="isextvalid" value="0" {if !$user['isextvalid']}checked="checked"{/if} />未审核</label>
+        </td>
+    </tr>
+    {/if}
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="保存" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			nickname: "required",
+			email: "required"
+		},
+		messages: {
+			nickname: "请输入名号",
+			email: "请输入邮箱"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

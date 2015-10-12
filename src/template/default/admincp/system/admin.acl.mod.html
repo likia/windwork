@@ -1,0 +1,47 @@
+{tpl header}
+
+<div class="navtab">
+   <span class="pagetitle">模块角色权限设置</span>
+</div>
+<div>
+<form method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <table class="mt tb mt mb" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <th width="200" align="left"><b>{$mods[$_mod]['name']}模块</b> 权限设置</th>
+      {loop $roles $role}
+      <th align="center">{$role['name']}</th>
+      {/loop}
+    </tr>
+    {loop $modActs $_ctl $_acts}
+    {loop $_acts $_act $_name}
+    <tr>
+      <td align="left"><input type="checkbox" class="check-act-all-role" {if count($roles) == count(@$modAcls[$_ctl][$_act])}checked="checked"{/if} /> {$_name}</td>
+      {loop $roles $role}
+      <td align="center"><input type="checkbox" name="acl_item[{$_mod}][{$_ctl}][{$_act}][{$role['roid']}]" value="1" {if !empty($modAcls[$_ctl][$_act][$role['roid']])} checked="checked"{/if} /></td>
+      {/loop}
+    </tr>
+     {/loop}
+     {/loop}
+  </table>
+<p>
+  <input class="btn" type="submit" value="保存" />
+  <input class="btn" type="reset" value="重置" />
+</p>
+</form>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function(){
+	$('.check-act-all-role').click(function(){
+		if($(this).attr('checked')) {
+			$(this).parent().parent().find('input').attr('checked', 'checked');
+		} else {
+			$(this).parent().parent().find('input').removeAttr('checked');
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

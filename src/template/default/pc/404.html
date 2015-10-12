@@ -1,0 +1,30 @@
+{tpl header}
+<div class="err-404 section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+    <h1 class="title" style="font-size:35px;">404</h1>
+    {if Config::get('debug')}
+      {tpl prompt}
+    {else}
+        <h2 class="red" style='padding-left:80px;'>你访问的页面不存在！</h2>
+      {/if}
+    {if @$message}
+    <div class="message">
+      {if Config::get('debug')}        
+          {if is_array($message)}
+            {loop $message $messageItem}
+            {$messageItem}
+            {/loop}
+          {else}
+            {$message}
+          {/if}
+      {else}
+        你访问的页面不存在！
+      {/if}
+    </div>
+    {/if}
+    <br />
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</div>
+{tpl footer}

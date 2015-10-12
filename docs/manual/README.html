@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Windwork</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>Windwork</h1>
+<p>Windwork是一个开源的轻量级Web框架。
+基于PHP5+MYSQL做为技术架构，以组件工厂为核心，MVC OOP模式开发，采用模块化开发方式。
+我们的目的是提供一个简洁易用、易维护、易扩展、松耦合、适应于云应用的PHP开发框架。</p>
+<h2>环境要求</h2>
+<ul>
+<li>PHP5.3+ (需启用模块：mbstring、mysql或pdo_mysql、gd2，打开allow_url_fopen)</li>
+<li>MySQL 5.0+</li>
+</ul>
+<h2>设计目标</h2>
+<ul>
+<li>简单易用（易上手、易维护、易扩展）</li>
+<li>性能出色</li>
+<li>适合高并发平台开发</li>
+<li>组件工厂架构模式</li>
+<li>松耦合</li>
+<li>组件职责单一</li>
+<li>OOP</li>
+<li>MVC</li>
+<li>模块化</li>
+<li>文档简洁易懂</li>
+</ul>
+<h2>目录结构说明</h2>
+<pre><code>{SRC_PATH}
+  |- core
+  |    |- adapter
+  |    |    |- cache
+  |    |    |- captcha
+  |    |    |- crypt
+  |    |    |- db
+  |    |    |- image
+  |    |    |- logger
+  |    |    |- mailer
+  |    |    |- mq
+  |    |    |- session
+  |    |    |- session
+  |    |- mvc
+  |    |    |- Controller.php
+  |    |    |- Exception.php
+  |    |    |- Message.php
+  |    |    |- Model.php
+  |    |    |- Restful.php
+  |    |    |- Template.php
+  |    |- sms
+  |    |- util
+  |    |- wrapper
+  |    |- wx
+  |    |- App.php
+  |    |- Common.php
+  |    |- Config.php
+  |    |- Exception.php
+  |    |- Factory.php
+  |    |- File.php
+  |    |- Hook.php
+  |    |- IHook.php
+  |    |- Lang.php
+  |    |- Object.php
+  |    |- Request.php
+  |    |- Router.php
+  |    |- Storage.php
+  |    |- Version.php
+  |    |- Wrapper.php
+  |- compat.php
+</code></pre>
+</body>
+</html>

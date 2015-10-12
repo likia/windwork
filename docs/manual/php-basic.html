@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>开发基础</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>开发基础</h1>
+<p>开发人员在使用开发框架前需要了解一些必备基础知识才能更有效的进行开发。</p>
+<h1>PHP开发者不得不掌握的PHP入门知识</h1>
+<h2>开发工具</h2>
+<ul>
+<li>IDE：Zend Studio</li>
+<li>数据库管理： Navicat for MySQL，也可以用phpmyadmin</li>
+<li>
+<p>前端开发： Dreamweaver CS</p>
+<h2>安装与配置</h2>
+<p>不建议使用集成安装环境包，自己配置能更好了解php的体系结构。  </p>
+<ul>
+<li><strong>内置Web Server：</strong> PHP 5.4.0起提供了一个内置的Web服务器，无需另外安装web服务器，主要用于本地开发使用，不建议线上产品使用。<a href="http://php.net/manual/zh/features.commandline.webserver.php">详情</a>     </li>
+<li><strong>推荐产品环境：</strong> Nginx / PHP(FPM) / MySQL5+  </li>
+<li><strong>官方安装文档：</strong> <a href="http://php.net/manual/zh/install.php"><a href="http://php.net/manual/zh/install.php">http://php.net/manual/zh/install.php</a></a>  </li>
+<li><strong>安装配置注意：</strong> VC9 版本需要用户系统中安装有 » <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF">Microsoft 2008 C++ Runtime (x86)</a> 或者 » <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=BD2A6171-E2D6-4230-B809-9A8D7548C1B6">Microsoft 2008 C++ Runtime (x64)</a>。 </li>
+</ul>
+<h2>运行模型</h2>
+</li>
+<li>运行模型，每个请求都是一个独立的PHP进程，两个请求之间会完全隔离，每个请求结束后就释放内容进程运行时占的内存。</li>
+<li><a href="http://php.net/manual/zh/features.gc.php">PHP垃圾回收机制</a>  </li>
+<li>线程安全与非线程安全</li>
+</ul>
+<h2>必须掌握的语言基础（更多详见官方<a href="http://php.net/manual/zh/langref.php">语言参考</a>） </h2>
+<ul>
+<li><a href="http://php.net/manual/zh/language.basic-syntax.php">基本语法</a></li>
+<li><a href="http://php.net/manual/zh/language.types.php">类型</a></li>
+<li><a href="http://php.net/manual/zh/language.variables.php">变量</a></li>
+<li><a href="http://php.net/manual/zh/language.constants.php">常量</a></li>
+<li><a href="http://php.net/manual/zh/language.expressions.php">表达式</a></li>
+<li><a href="http://php.net/manual/zh/language.operators.php">运算符</a></li>
+<li><a href="http://php.net/manual/zh/language.control-structures.php">流程控制</a></li>
+<li><a href="http://php.net/manual/zh/language.functions.php">函数</a></li>
+<li><a href="http://php.net/manual/zh/language.oop5.php">类与对象</a></li>
+<li><a href="http://php.net/manual/zh/language.namespaces.php">命名空间</a></li>
+<li><a href="http://php.net/manual/zh/language.exceptions.php">异常处理</a></li>
+<li><a href="http://php.net/manual/zh/language.references.php">引用的解释</a></li>
+<li><a href="http://php.net/manual/zh/reserved.variables.php">预定义变量</a></li>
+<li>熟悉常用函数库（表单获取、字符串处理、数字、时间日期、Cookie/Session、目录和文件操作、MySQL数据库操作、）</li>
+<li>PHP单步调试（Zend Debugger + Zend Studio）</li>
+</ul>
+<h2>安全相关</h2>
+<ul>
+<li><a href="http://php.net/manual/zh/security.php">PHP安全</a></li>
+<li>跨域脚本漏洞 XSS</li>
+</ul>
+<h2>PHP进阶</h2>
+<p>除了了解php的基本语法外，还需要先熟悉如下内容</p>
+<ul>
+<li>PHP编码规范，遵循规范让每个人维护你写的代码都像他们自己写一样，提高协作效率及可维护性。</li>
+<li>了解php.ini配置，熟悉php各模块的作用</li>
+<li>了解正则表达式</li>
+<li>面向对象设计(OOP)、分析(OOD)</li>
+<li>MVC</li>
+<li><a href="http://www.phpdoc.org/docs/latest/index.html">文档注释</a></li>
+<li><a href="https://phpunit.de/manual/current/zh_cn/index.html">PHPUnit单元测试</a>  </li>
+<li>版本管理（git、svn、vss） <a href="http://www.bootcss.com/p/git-guide/">git简易指南</a>、git官方手册 <a href="http://www.git-scm.com/book/en/v2">英文v2</a> / <a href="http://www.git-scm.com/book/zh/v1">中文v1</a>。git客户端集成到</li>
+<li>了解模板引擎</li>
+<li>了解PHP性能优化相关知识，如缓存、opcode、分布式、使用性能分析工具做代码（一开始用xdebug+WinCacheGrind，现在用Zend Debugger + Zend Studio）等</li>
+<li>熟悉JSON、XML数据交换格式</li>
+</ul>
+<h2>PHP提升</h2>
+<ul>
+<li>阅读一些设计模式与架构模式的书。</li>
+<li>学习一些敏捷开发方法（Scrum、XP等）。</li>
+<li>阅读关于项目管理的书</li>
+<li>如果有兴趣可以阅读一些产品设计的书，推荐《启示录：打造用户喜爱的产品》</li>
+<li>了解开发框架。PHP有很多用户量比较多的框架，纯php的CI、CakePHP、Yii、symfony、zf、laravel等、C扩展的有Phalcon、Yaf等。推荐</li>
+<li>学习MySQL数据库优化，推荐《[[高性能MySQL（第3版）].Baron.Scbwartz等》</li>
+<li>建议学习前端技术（DIV+CSS、JS、Ajax、jQuery）</li>
+</ul>
+<blockquote>
+<p>要成为一名专业的php开发工程师，需要学习的东西真不少，如果你只是想混口饭吃，建议换个行业。下定决心了以后坚定的把每块骨头看下来，这些东西看起来很多，沉下心来学了以后发现，一步步就过来了。</p>
+</blockquote>
+</body>
+</html>

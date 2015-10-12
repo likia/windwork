@@ -1,0 +1,66 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{loop $mods $package $rs}-->
+  <table class="tb mt mb modlist" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr class="th">
+      <th width="180" align="center">{if $package=='core'}核心{elseif $package=='option'}可选{else}其他{/if}模块</th>
+      <th align="left">简介</th>
+      <th width="80" align="center">作者</th>
+      <th width="60" align="center">版本</th>
+      <th width="160" align="center">管理操作</th>
+    </tr>
+    <!--{loop $rs $mod $r}-->
+    <tr class="install-<?=(int)$r['installed']?>">
+      <td align="left">{$r['name']} ({$r['id']})</td>
+      <td align="left">{$r['desc']}
+        {if !empty($r[usesetting])}<a href="{url system.admin.option.list/$r[id]/hash:$hash}">设置</a>{/if}
+        <a href="{$r[siteurl]}" target="_blank" style="color:#888; ">官网</a>
+      <td align="center"><a href="{if $r[email]}mailto:{$r[email]}{else}{$r[siteurl]}{/if}">{$r[author]}</a></td>
+      </td>
+      <td align="center">{$r['version']}</td>
+      <td align="center">
+	    <!--{if $r['installed']}-->
+        [<a href="index.php?system.admin.acl.mod/{$r['id']}/hash:<?=$hash?>">权限设置</a>]
+        <!--{/if}-->
+        
+	    <!--{if $package == 'core'}-->
+          <!--{if $r['installed']}-->
+          <span class="gray">[禁用] [卸载]</span>
+          <!--{else}-->
+          [<a href="index.php?system.admin.module.install/{$r['id']}/hash:<?=$hash?>">安装</a>]
+          <!--<span class="gray">[删除]</span>-->
+          <!--{/if}-->
+        <!--{else}-->
+	    <!--{if empty($r['err'])}-->
+	    <!--{if $r['installed']}-->
+        <!--{if $r['activated']}-->
+        [<a href="index.php?system.admin.module.deactivate/{$r['id']}/hash:{$hash}">禁用</a>]
+        <!--{else}-->
+        [<a href="index.php?system.admin.module.activate/{$r['id']}/hash:{$hash}" class="red">启用</a>]
+        <!--{/if}-->
+        [<a href="index.php?system.admin.module.uninstall/{$r['id']}/hash:{$hash}" onclick="return confirm('确定要卸载该模块吗？一旦卸载，该模块的所有数据将被清空。')">卸载</a>]
+		<!--{else}-->
+        [<a href="index.php?system.admin.module.install/{$r['id']}/hash:{$hash}">安装</a>] 
+        <!--
+        [<a href="index.php?system.admin.module.delete/{$r['id']}/hash:{$hash}" onclick="return confirm('确定要删除该模块吗？\n一旦删除，该模块的所有文件将被删除。')">删除</a>]
+        -->
+		<!--{/if}-->
+        <!--{else}-->
+        <!--
+        [<a href="index.php?system.admin.module.delete/{$r['id']}/hash:{$hash}" onclick="return confirm('确定要删除该模块吗？\n一旦删除，该模块的所有文件将被删除。')">删除</a>]
+        -->
+        <!--{/if}-->
+        <!--{/if}-->
+      </td>
+    </tr>
+    <!--{/loop}-->
+  </table>
+<!--{/loop}-->
+<!--{if !empty($mods[other][dev][activated])}-->
+<div class="mt">
+  <a href="{url dev.builder.modlist/hash:$hash}" class="btn">模块开发</a>
+</div>
+<!--{/if}-->
+<!--{tpl footer}-->

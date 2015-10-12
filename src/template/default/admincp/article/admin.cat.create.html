@@ -1,0 +1,96 @@
+{tpl header}
+{tpl article/navtab}
+
+<form id="form" action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<input type="hidden" name="hash" value="{$hash}" />
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="right" valign="middle">上级栏目</th>
+        <td>
+          <select name="parentid">
+            <option value="0" {if empty($_POST['parentid'])}selected="selected"{/if}>顶级分类</option>
+		    <!--{loop $cats $catItem}-->
+            <option value="{$catItem['cid']}" {if !empty($_POST['parentid']) && $_POST['parentid'] == $catItem['cid']}selected="selected"{/if}>{$catItem['icon']}{$catItem['name']}</option>
+            <!--{/loop}-->
+          </select>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">栏目名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">栏目别名</th>
+        <td><input name="slug" type="text" class="text-box" id="slug" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">关键词</th>
+        <td><input name="keyword" type="text" class="text-box" id="keyword" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">描述</th>
+        <td><textarea name="description" id="description" cols="40" rows="4"></textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">列表页模板</th>
+        <td><input name="listtpl" type="text" class="text-box" id="listtpl" value="article/show.list.html" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">详细页模板</th>
+        <td><input name="itemtpl" type="text" class="text-box" id="itemtpl" value="article/show.item.html" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">是否启用</th>
+        <td>
+          <input name="enabled" type="radio" value="1" checked="checked" />是 
+          <input name="enabled" type="radio" value="0" />否 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">导航显示</th>
+        <td>
+          <input name="navshow" type="radio" value="1" checked="checked" />是 
+          <input name="navshow" type="radio" value="0" />否 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">允许删除</th>
+        <td>
+          <input name="allowdel" type="radio" value="1" checked="checked" />是 
+          <input name="allowdel" type="radio" value="0" />否 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">排序</th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="50" size="4" /></td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="添加" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			name: "required"
+		},
+		messages: {
+			name: "请输入栏目名称"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

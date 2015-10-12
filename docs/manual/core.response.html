@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Response</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>Response</h1>
+<p>Response对象用于动态响应客户端请示，控制发送给用户的信息，并将动态生成响应。</p>
+<p>Response类定义了常用的响应状态码常量。</p>
+<h2>常用响应对象的方法</h2>
+<h3>1、响应跳转方法</h3>
+<p>使用header('Location: url')方式跳转，特点是对url进行检查，如果使用简写的url，可自动补全。</p>
+<pre><code>// 使用方法
+$url = 'http://www.qq.com';
+$rsp-&gt;sendRedirect($url);
+
+// 站内跳转简写链接
+$rsp-&gt;sendRedirect('user.account.login'); // 跳转到 index.php?user.account.login</code></pre>
+<h3>2、设置响应状态码</h3>
+<pre><code>$rsp-&gt;setStatus($code);</code></pre>
+<h3>3、设置响应头</h3>
+<p>对响应头进行封装，设置响应头后，执行发送响应头后才会发送。</p>
+<pre><code>$rsp-&gt;setHeader('content-type', 'text/html;charset=utf-8');
+// 等同于 header('content-type:text/html;charset=utf-8');
+// 框架中执行 $rsp-&gt;sendHeaders()后发送响应头。</code></pre>
+<h3>4、获取响应头</h3>
+<p>获取响应对象中设置的响应头</p>
+<pre><code>$rsp-&gt;getHeaders();</code></pre>
+</body>
+</html>

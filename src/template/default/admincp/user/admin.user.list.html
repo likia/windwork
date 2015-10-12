@@ -1,0 +1,77 @@
+{tpl header}
+{tpl user/admin.user.navtab}
+
+<form action="index.php?user.admin.user.sort" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <div>
+      <table class="tb mt" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="20" align="center"><input type="checkbox" /></th>
+          <th width="40" align="center">ID</th>
+          <th width="80" align="center">用户名</th>
+          <th width="100" align="center">昵称</th>
+          <th width="80" align="center">邮箱</th>
+          <th width="" align="center">角色</th>
+          <th width="100" align="center">注册时间</th>
+          <th width="100" align="center">上次登录时间</th>
+          {if $type == 'ext' || $type == 'admin'}
+          <th width="80" align="center">修车厂状态</th>
+          {/if}
+          <th width="80" align="center">用户状态</th>
+          <th width="100" align="center">管理操作</th>
+        </tr>
+        <!--{if empty($users)}-->
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td><a href="index.php?user.admin.user.create/type:{$type}/hash:{$hash}">添加{$userTypeList[$type]}</a></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <!-- {else} -->
+        <!-- {loop $users $item} -->
+        <tr id="list-{$item['uid']}" class="bb">
+          <td align="center"><input type="checkbox" name="uid[]" value="{$item['uid']}" /></td>
+          <td align="center">{$item['uid']}</td>
+          <td align="center">{$item['uname']}</td>
+          <td align="center">{$item['nickname']}</td>
+          <td align="center">{$item['email']}</td>
+          <td align="center">
+          {if $item['uid'] == Config::get('super_uid')}
+          超级管理员
+          {/if}
+		    <!-- {loop $item['role'] $roid} -->
+			  {$roles[$roid]['name']},
+            <!-- {/loop} -->
+            &nbsp;
+          </td>
+          <td align="center">{date('Y-m-d', $item['regdateline'])}</td>
+          <td align="center">{if $item['lastlogtime']}{date('Y-m-d', $item['lastlogtime'])}{else} - {/if}</td>
+          {if $type == 'ext' || $type == 'admin'}
+          <td align="center">{if $item['isextvalid']}<span class="ok">已审核</span>{else}<span class="red">未审核</span>{/if}</td>
+          {/if}
+          <td align="center">{$userStatusList[$item['status']]}</td>
+          <td align="center">
+            [<a href="{url user.admin.user.update/$item[uid]/hash:$hash}">编辑</a>]
+            {if $item['uid'] == Config::get('super_uid')}
+            [<a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$item[uid]}', $('#list-{$item[uid]}'));">删除</a>]
+            {/if}
+          </td>
+        </tr>
+        <!-- {/loop} -->
+        <!-- {/if} -->
+      </table>
+      {$pager}
+    <br />
+  </div>
+</form>
+
+<script type="text/javascript">
+
+</script>
+
+{tpl footer}

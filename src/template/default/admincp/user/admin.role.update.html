@@ -1,0 +1,66 @@
+{tpl header}
+{tpl user/admin.role.navtab}
+
+<form method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <input type="hidden" name="hash" value="{$hash}" />
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="right" valign="middle">角色类型</th>
+        <td>
+		   <!--{loop $roleTypes $typeKey $typeValue}-->
+           <label for="type_{$typeKey}"><input id="type_{$typeKey}" type="radio" name="type" value="{$typeKey}" {if $role['type'] == $typeKey} checked="checked"{/if} disabled="disabled" /><span>{$typeValue}</span></label>
+           <!--{/loop}-->
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">角色名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" size="24" dataType="Require" msg="请填写菜单名称" value="{$role['name']}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">描述</th>
+        <td><textarea name="description" cols="40" rows="4">{$role['description']}</textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">是否禁用</th>
+        <td><input name="disabled" type="radio" value="1" {if $role['disabled']}checked="checked"{/if} />是 <input name="disabled" type="radio" value="0" {if !$role['disabled']}checked="checked"{/if} />否 </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">允许删除</th>
+        <td><input name="allowdel" type="radio" value="1" {if $role['allowdel']}checked="checked"{/if} />是 <input name="allowdel" type="radio" value="0"  {if !$role['allowdel']}checked="checked"{/if} />否 </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">排序</th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="{$role['displayorder']}" size="4" /></td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="保存" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+  </table>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			name: "required"
+		},
+		messages: {
+			name: "请输入角色名称"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+//]]>
+</script>
+
+
+{tpl footer}

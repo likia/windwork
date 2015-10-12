@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{if @$title}{strip_tags($title)}{else}{$siteName}{/if}_{$seo_title}</title>
+<meta name="keywords" content="{$keyword}" />
+<meta name="description" content="{$description}" />
+<meta name="generator" content="Windwork {$version}" />
+<meta name="author" content="Windwork Team" />
+<meta name="copyright" content="2010-{date('Y')} Windwork Team." />
+<link rel="shortcut icon" href="{$basePath}static/images/favicon.png"  />
+<link rel="stylesheet" type="text/css" href="{$stylePath}pc/style.css?v20120723" />
+<script type="text/javascript" src="{$basePath}static/js/head.core.min.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/jquery.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/wind.js"></script>
+<script type="text/javascript">
+Wind.init({
+	domain:      '{$domain}',
+	basePath:    '{$basePath}',
+	baseUrl:     '{$baseUrl}',
+	hash:        '{$hash}',
+	uid:         {$_SESSION[uid]},
+	nopicUrl:    '{$nopic}',
+	storagePath: '{Config::get("storage_site_url")}'
+});
+</script>
+<base href="{$appUrl}" />
+</head>
+<body id="{$mod}-{str_replace('.', '-',$ctl)}-{$act}" class="mod-{$mod} ctl-{$ctl} act-{$act}">
+  <!--page-->
+  <div id="page">
+    <!--header-->
+    <div id="header">
+      <div class="wrap">
+          <div class="header-inner">  
+            <div class="top">
+              <div id="top-nav" class="top-nav">
+              	<!-- <ol class="myclearfix">
+              		{if !$_SESSION[uid]}
+	              		<li class="current"><a href="{url user.account.register}">免费注册</a></li>
+	              		<li><a href="{url user.account.login}">登录</a></li>
+              		{else}
+	              		{if $_SESSION[isadmin]}
+	              			<li><a target="_blank" href="{url system.admin.admincp.index}">系统管理</a></li>
+	              		{/if}
+	              		<li><a href="{url user.account.profile}">个人设置</a></li>
+	              		<li><a href="{url user.account.logout}">登出</a></li>
+              		{/if}
+              	</ol> -->
+              	<ol>
+					<!--{if !$_SESSION[uid]}-->
+					<li><a href="{url user.account.register}" class="current login-style">免费注册</a></li>
+					<li><a href="{url user.account.login}" class="login-style">登录</a></li>
+					<!--{else}-->
+                        <!--{if $_SESSION['isadmin']}-->
+						<li><a class="a_0" target="_blank" href="{url system.admin.admincp.index}"><span class="s_1"></span><span class="txt">系统管理</span></a></li>
+                        <!--{/if}-->
+					<li><a class="a_0" href="{url user.account.profile}"><span class="s_2"></span><span class="txt">个人中心</span></a></li>
+					<li><a class="a_0" href="{url user.account.logout}"><span class="s_3"></span><span class="txt">退出</span></a></li>
+					<!--{/if}-->
+				</ol>
+                <ul class="myclearfix">
+                  <li><a href="{$basePath}" class="current"><span>首页</span></a></li>
+                  <li><a href="#fun" class="nav-fun"><span>功能大全</span></a></li>
+                  <li><a href="#user" class="nav-user"><span>用户体验</span></a></li>
+                  <li><a href="#hand" class="nav-hand"><span>掌上优势</span></a></li>
+                  <li><a href="#price" class="nav-price"><span>资费方案</span></a></li>
+                  <li><a href="#use" class="nav-use"><span>使用指南</span></a></li>
+                 <li><a href="#about" class="nav-about"><span>关于我们</span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>    
+    <!--/header-->
+    <!--content-->
+    <div id="content">
+        <div class="section banner" style="margin-top:0;">
+          <div class="banner-slider slider">
+            <div class="banner-bg"></div>
+          </div>
+        </div>
+      <!--wrap-->
+      <div class="wrap">

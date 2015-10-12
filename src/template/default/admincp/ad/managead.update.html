@@ -1,0 +1,135 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl ad/manage.navtab}-->
+<form id="form" method="post" enctype="multipart/form-data" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th width="140" align="right" valign="middle">广告名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" value="{$ad[name]}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告位</th>
+        <td>
+          <!--{loop $placeList $placeItem}-->
+          <label for="placeid-{$placeItem[id]}"><input name="placeid[]" type="checkbox" value="{$placeItem[id]}" id="placeid-{$placeItem[id]}" {if in_array($placeItem[id], $ad[placeids])}checked="checked"{/if} /> {$placeItem[name]}</label> &nbsp;&nbsp;
+          <!--{/loop}-->
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告类型</th>
+        <td>
+            <input type="radio" name="type" value="image" {if $ad[type] == 'image'}checked="checked"{/if}>图片
+            <input type="radio" name="type" value="flash" {if $ad[type] == 'flash'}checked="checked"{/if}>Flash
+            <input type="radio" name="type" value="text" {if $ad[type] == 'text'}checked="checked"{/if}>文本
+            <input type="radio" name="type" value="html" {if $ad[type] == 'html'}checked="checked"{/if}>代码
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告内容</th>
+        <td>
+           <div class="content-box" id="content-image" style="display:{if $ad[type] == 'image'}block{else}none{/if};">
+             <img src="{if empty($ad[content][src])}{$nopic}{else}{$ad[content][src]}{/if}" height="90" /><br />
+             上传广告图片：<br />
+             <input type="hidden" name="content[image][src]" value="{$ad[content][src]}" />
+             <input type="file" name="content-image" /> <span class="note">允许上传图片类型：jpg/gif/png，如不修改图片请留空</span><br />
+             广告链接：<br />
+             <input type="text" name="content[image][url]" class="text-box" size="28" value="{$ad[content][url]}" />
+           </div>
+           <div class="content-box" id="content-flash" style="display:{if $ad[type] == 'flash'}block{else}none{/if};">
+             {if !empty($ad[content][flash])}
+             <embed height="160" width="400" wmode="transparent" type="application/x-shockwave-flash" quality="high" src="{$ad[content][flash]}" />
+             <br />
+             {/if}
+             上传广告Flash：<br />
+             <input type="file" name="content-flash" />
+             <input type="hidden" name="content[flash][flash]" value="{$ad[content][flash]}" />
+           </div>
+           <div class="content-box" id="content-text" style="display:{if $ad[type] == 'text'}block{else}none{/if};">
+             广告文本：<br />
+             <textarea name="content[text][text]" cols="60" rows="6">{$ad[content][text]}</textarea><br />
+             广告链接：<br />
+             <input type="text" name="content[text][url]" class="text-box" size="60" value="{$ad[content][url]}" /><br />
+             字体大小：<br />
+             <input type="text" name="content[text][size]" class="text-box" size="5" value="{if empty($ad[content][size])}12{else}{$ad[content][size]}{/if}" /> px<br />
+          </div>
+           <div class="content-box" id="content-html" style="display:{if $ad[type] == 'html'}block{else}none{/if};">
+             广告代码：<br />
+             <textarea name="content[html][code]" cols="60" rows="6" style=" ">{$ad[content][code]}</textarea>
+          </div>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">开始时间</th>
+        <td>
+          <input type="text" class="Wdate text-box" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="startdate" value="{date('Y-m-d', $ad[starttime])}" /> 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">结束时间</th>
+        <td>
+          <input type="text" class="Wdate text-box" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="enddate" value="{date('Y-m-d', $ad[endtime])}" /> 
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">启用</th>
+        <td>
+          <input type="radio" name="enabled" value="1" {if $ad[enabled]}checked="checked"{/if} /> 是
+          <input type="radio" name="enabled" value="0" {if !$ad[enabled]}checked="checked"{/if} /> 否
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">显示排序</th>
+        <td>
+          <input type="text" name="displayorder" id="displayorder" value="{$ad[displayorder]}" size="5" />
+        </td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="提交" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript" src="{$basePath}static/js/datepicker/WdatePicker.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$('input[name="type"]').change(function(){
+		var type = $(this).val();
+		$('.content-box').hide();
+		$('#content-'+type).show();
+		
+	});
+	var validator = $("#form").validate({
+		rules: {
+			name: "required",
+			width: "required",
+			height: "required"
+		},
+		messages: {
+			name: "请输入广告名称",
+			width: "请输入广告宽",
+			height: "请输入广告高"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+function WdatePickerHandler() {
+    $('input[name="year"]').val($dp.cal.getP('y','yyyy'));
+    $('input[name="month"]').val($dp.cal.getP('M','MM'));
+    $('input[name="day"]').val($dp.cal.getP('d','dd'));
+}
+
+//]]>
+</script>
+<!--{tpl footer}-->

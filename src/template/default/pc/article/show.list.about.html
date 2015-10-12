@@ -1,0 +1,46 @@
+{tpl header}
+ <div class="section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+    <div class="main">
+      <div class="crumb">
+        <span class="mod">{$cat[name]}</span>
+        <a href="{$basePath}" class="to-home">首页</a>
+        {if $cat && isset($articleCats[$cat[cid]])}
+        {loop $articleCats[$cat[cid]][ancestorIdArr] $crumbCid}
+        <span class="arrow">&gt;</span> <a href="{#print url("article.show.list/{$articleCats[$crumbCid]['slug']}")#}">{$articleCats[$crumbCid]['name']}</a>
+        {/loop}
+        {/if}
+      </div>
+      <div>
+        {loop $list $listItem}
+          <div class="list-item">
+            {if $listItem[picid]}
+            <a href="{if $listItem[gotourl]}{$listItem[gotourl]}{else}{url article.show.item/$listItem[slug]}{/if}" title="{$listItem[title]}" target="_blank"><img src="{thumb($listItem['picid'], 170, 110)}" class="list-cover" title="{$listItem[title]}" /></a>
+            {/if}
+            <h2><a href="{if $listItem[gotourl]}{$listItem[gotourl]}{else}{url article.show.item/$listItem[slug]}{/if}" title="{$listItem[title]}" target="_blank">{$listItem[title]}</a></h2>
+            <p class="desc">{$listItem[description]}</p>
+            <p class="attr"><a href="{$listItem[fromurl]}" target="_blank">{$listItem[from]}</a>&nbsp; {date('Y-m-d', $listItem[dateline])}</p>
+          </div>
+        {/loop}
+      </div>
+      <div>{$pager}</div>
+    </div>
+    <div class="side">
+      <div class="section-bd" style="">
+        <div class="side-block subnav">
+          <dl>
+            <!--{#$subNavs = siteNavs($cat);#}-->
+            <dt><a href="{$subNavs[url]}">{$subNavs[name]}</a></dt>
+            {loop $subNavs[subnav] $subNav}
+            <dd class="{if ($subNavs[cid] == 1 && $subNav[id] == $item[id]) || ($subNavs[cid] != 1 && $cat[cid] == $subNav[cid])}current{/if}"><a href="{$subNav[url]}">{$subNav[name]}<span>»</span></a></dd>
+            {/loop}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</div>
+
+{tpl footer}

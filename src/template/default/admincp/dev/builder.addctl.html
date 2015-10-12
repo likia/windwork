@@ -1,0 +1,95 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl dev/builder.navtab}-->
+
+<form id="form" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+      <th width="140" align="right" valign="middle">模块</th>
+      <td>
+        <select name="themod">
+          <option value="" {if !$request->getRequest('themod')}selected="selected"{/if}>请选择模块</option>
+          <!--{loop $mods $ml}-->
+          <!--{loop $ml $mi}-->
+          <option value="{$mi[id]}" {if $request->getRequest('themod') == $mi[id]}selected="selected"{/if}>{$mi[name]}</option>
+          <!--{/loop}-->
+          <!--{/loop}-->
+        </select>
+        <b class="red">*</b>
+        <span class="note">控制器类名最终被保存为: src/module/模块/controller/子文件夹/控制器类名Controller.php</span>
+      </td>
+    </tr>
+    <tr>
+      <th width="140" align="right" valign="middle">子文件夹</th>
+      <td>
+        <input name="subdir" type="text" class="text-box" id="subdir" value="" />
+        <span class="note">多级文件夹用“.”或“\”隔开</span>
+      </td>
+    </tr>
+    <tr>
+      <th width="140" align="right" valign="middle">控制器类名</th>
+      <td>
+        <input name="thectl" type="text" class="text-box" id="thectl" value="" style="text-align:right;" />Controller <b class="red">*</b>
+        <span class="note">区分大小写，后面不用加Controller。</span>
+      </td>
+    </tr>
+    <tr>
+      <th width="140" align="right" valign="middle">控制器名称</th>
+      <td><input name="name" type="text" class="text-box" id="name" value="" /></td>
+    </tr>
+    <tr>
+      <th width="140" align="right" valign="middle">控制器类型</th>
+      <td>
+        <select name="parent">
+          <option value="\core\mvc\Controller" selected="selected">默认</option>
+          <option value="\module\system\controller\admin\AdminBase">系统管理后台</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle">控制器说明</th>
+      <td><textarea name="desc" cols="50" rows="5"></textarea></td>
+    </tr>
+    <tr>
+      <th align="right" valign="middle" class="nobd">&nbsp;</th>
+      <td class="nobd">
+        <input class="btn" type="submit" value="添加控制器" />
+        <input  class="btn" type="reset" name="reset" value="重置" />
+      </td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			themod: "required",
+			thectl: "required"
+		},
+		messages: {
+			themod: "请选择模块",
+			thectl: "请输入控制器类名"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		},
+		submitHandler: function(form) {		
+		    var data = $('#form :input');
+			$.post('{url $mod.$ctl.$act/hash:$hash}', data, function(r) {
+				Wind.message.showResponse(r, function() {
+					$('#form input[name="reset"]').click();
+				});
+			}, 'json');
+		}
+	});
+});
+
+//]]>
+</script>
+<!--{tpl footer}-->

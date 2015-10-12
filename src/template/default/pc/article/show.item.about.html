@@ -1,0 +1,51 @@
+{tpl header}
+{tpl prompt}
+ <div class="section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+    <div class="main page-about-item">
+      <div class="crumb">
+        <span class="mod">{$cat[name]}</span>
+        <a href="{$basePath}" class="to-home">首页</a> <span class="arrow">&gt;</span> 
+        {if $item[cid] && isset($articleCats[$item[cid]])}
+        {loop $articleCats[$item[cid]][ancestorIdArr] $crumbCid}
+        <a href="{#print url("article.show.list/{$articleCats[$crumbCid]['slug']}")#}">{$articleCats[$crumbCid]['name']}</a> <span class="arrow">&gt;</span> 
+        {/loop}
+        {/if}
+        <a name="crumb">{$item[title]}</a>
+      </div>
+      <h2 class="item-name"><strong>{$item[title]}</strong></h2>      
+      <div class="item-content">
+        <!-- JiaThis Button BEGIN -->
+        <span class="jiathis_style" id="share-top">
+            <a href="javascript:;" class="jiathis jiathis_txt jialike" style="float:none;"><img src="http://v3.jiathis.com/code/images/btn/v1/jialike1.gif" border="0" /></a>
+        </span>            
+        <!-- JiaThis Button END -->    
+        {$item[content]}
+      </div>
+    </div>
+    <div class="side">
+      <div class="side">
+      <div class="section-bd" style="">
+        <div class="side-block subnav">
+          <dl>
+            <!--{#$subNavs = siteNavs($cat);#}-->
+            <dt>{$subNavs[name]}</dt>
+            {loop $subNavs[subnav] $subNav}
+            <dd class="{if ($subNavs[cid] == 1 && $subNav[id] == $item[id]) || ($subNavs[cid] != 1 && $cat[cid] == $subNav[cid])}current{/if}"><a href="{$subNav[url]}">{$subNav[name]}<span>»</span></a></dd>
+            {/loop}
+          </dl>
+        </div>
+        <div class="side-block">
+          
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</div>
+
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1354804141325845" charset="utf-8"></script>
+<script>$(function() {Wind.util.stats('{$mod}.{$ctl}.{$act}/{$item[id]}')})</script>
+{tpl footer}

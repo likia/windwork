@@ -1,0 +1,51 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl ad/manage.navtab}-->
+<form action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <input type="hidden" name="hash" value="{$hash}"  />
+  <div class="mt">
+      <table class="tb" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="40" align="center">ID</th>
+          <th width="160" align="left">名称</th>
+          <th width="40" align="center">宽</th>
+          <th width="40" align="center">高</th>
+          <th width="60" align="center">显示</th>
+          <th align="left">说明</th>
+          <th width="160" align="center">管理操作</th>
+        </tr>
+        <!-- {loop $list $listItem} -->
+        <tr id="list-{$listItem['id']}" class="bb">
+          <td align="center">{$listItem['id']}</td>
+          <td>{$listItem['name']}</td>
+          <td align="center">{$listItem['width']}</td>
+          <td align="center">{$listItem['height']}</td>
+          <td align="center">{if $listItem['mode'] == 'all'}全部{else}随机一个{/if}</td>
+          <td>{$listItem['desc']}&nbsp;</td>
+          <td align="center">
+            <a href="{url ad.api.get/$listItem[id]}" target="_blank">查看</a> |             
+            <a href="javascript:;" onclick="showCode('{url ad.api.get/$listItem[id]}')">获取代码</a> | 
+            <a href="{url $mod.$ctl.update/$listItem[id]/hash:$hash}">编辑</a> | 
+            <a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$listItem[id]}', $('#list-{$listItem[id]}'));">删除</a>
+          </td>
+        </tr>  	
+        <!-- {/loop} -->
+      </table>
+  </div>
+</form>
+
+<script type="text/javascript">
+function showCode(src) {
+	var script = '<center><br />&lt;script type="text/javascript" src="' + src + '"&gt;&lt;/script&gt;<br /></center>';
+	Wind.dialog.open({
+		title:'获取广告代码', 
+		width: 400,
+		height:160,
+		content: script
+	});
+}
+
+</script>
+<!--{tpl footer}-->

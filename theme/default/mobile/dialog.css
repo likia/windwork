@@ -1,0 +1,26 @@
+
+/* Dialog */
+#dialog-box-out { z-index:998; width:100%; height:100%; position:fixed;left:0; top:0;  _position: absolute; _top: expression(documentElement.scrollTop + "px"); background:#333; filter:alpha(opacity=60); -moz-opacity:0.6; opacity: 0.6;}
+#dialog-box { z-index:999; width: 560px; width:auto; border:3px solid rgba(0, 0, 0, 0);box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); position: absolute; border-radius:4px; }
+#dialog-box .dialog-box-in { height:100%; margin-left:-1px; margin-top:-1px; width:auto; background:#FFF; border:1px solid #E5E5E5; overflow-y: auto; border-radius:3px;overflow:hidden; }
+#dialog-box .dialog-main, #dialog-box .dialog-title { display:block; overflow-y:auto; }
+#dialog-box .dialog-title {background:#F7F7F7; border-bottom:1px solid #E5E5E5; border-radius:3px 3px 0 0; color:#666; font-size:14px; font-weight:bold; font-weight:bold; line-height:30px; height:30px; padding: 0 12px; }
+#dialog-box a.close { z-index:10001; position:absolute; right:2px; top:0; height:16px; width:33px; cursor:pointer; background: url(images/btn-close-pop.png) 0 0 no-repeat;}
+#dialog-box a.close:hover { background-position: -33px 0;}
+#dialog-box a.close:active { background-position: -66px 0;}
+#dialog-box .dialog-footer { padding: 8px; text-align: right; }
+#dialog-box .dialog-footer .btn { margin-right:4px; }
+#dialog-main #ajax-loading { height: 99px; background:url(images/loading.gif) 50% 50% no-repeat; position:relative; width:auto; }
+#dialog-box .msg, #dialog-box .show-message {  padding:10px; }
+.dialog-msg { background:#FFFCED; border:1px solid #FFBF7A; }
+.dialog-msg .msg {  padding:10px; }
+.dialog-msg .close { position:absolute; right:4px; top:0; padding:4px; cursor:pointer; }
+#dialog-box #ajax-login { margin:5px;}
+#dialog-box #ajax-login p { margin: 2px; position:relative;}
+/* END Dialog */
+
+.section.message { border-top:1px solid #DDD; }
+.section.message .message-hd {background: #F5F5F5; border-bottom: 1px solid #e8e8e8; border-radius: 4px 4px 0 0; font-size: 16px; line-height: 35px; padding: 0; text-indent: 12px}
+.section.message .section-bd { padding:20px; }
+
+.section.message .message-link a { background: #5d9507; border-radius: 0 0 3px 3px; color: #FFF; display: block; font-size: 16px; font-weight: bold; line-height: 36px; text-align: center; }

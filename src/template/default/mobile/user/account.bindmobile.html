@@ -1,0 +1,105 @@
+{tpl header}
+    <!--header-->
+    <header id="header">
+      <strong class="page-name">绑定手机号码</strong>
+      <a href="{url user.account.center}" class="back"><i class="icon"></i>返回</a> 
+    </header>
+    <!--/header-->
+    <div class="header-place"></div>
+
+{tpl prompt}
+<section class="u-form">
+  <!-- {if isset($_GET['showtips']) && $_SESSION['isext']} -->
+  <p style="padding:5px;">修理厂绑定手机号码即可通过验证！</p>
+  <!-- {/if} -->
+  <form class="form" action="{url user.account.verifycode/verify}" method="post" target="_self" id="u-form">
+    <dl class="inputs">
+      <dd>
+        <input class="text required" type="text" name="number" id="number" value="" placeholder="请输入手机号码" /> 
+        <b class="red">*</b>
+      </dd>
+      <dd class="secode-row">
+        <input placeholder="请输入验证码" type="number" class="text" name="secode" id="secode" size="6" autocomplete="off" onkeyup="this.value=this.value.toUpperCase()" /> <b class="red">*</b>
+        <a class="secode-img" onclick="sendCode();$('#secode').focus();" href="javascript:;">点击获取验证码</a>
+      </dd>
+    </dl>
+    
+    <p class="submit-box">
+      <input class="btn" type="submit" value="立即绑定" />
+    </p>
+
+  </form>
+</section>
+<script type="text/javascript">
+<!--
+var time = 0;
+var flag = true;
+function sendCode(){
+  if(time > 0 ){
+	  return false;
+  }
+  var url = "{url user.account.verifycode}";
+  var num = $("#number").val();
+  if(!/^1[358]{1}[0-9]{9}$/.test(num)){
+	  alert('手机格式不正确');
+	  return false;
+  }
+  time = 1;
+  $.post(url, {'number':num}, function(r){
+	  Wind.message.showResponse(r);
+	  if(r.ok.length < 1){
+		  return false;
+	  }
+	  time = 180;
+	  var tid = setInterval(function(){
+		  $(".secode-img").text(time + "秒后重新获取");
+		  time--;
+		  if(time <= 0){
+			  $(".secode-img").text("点击获取验证码");
+			  clearInterval(tid);
+			  return true;
+		  }
+	  }, 1000);
+  }, 'json');
+  return false;
+}
+//-->
+</script>
+<script type="text/javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/jquery.validate.cfg.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$("#u-form").submit(function(){
+		var url = "{url user.account.verifycode/verify}";
+		var num = $("#number").val();
+		var code = $("#secode").val();
+		if(!/^1[358]{1}[0-9]{9}$/.test(num)){
+			alert('手机格式不正确');
+			return false;
+		}
+		if(!/^[0-9]{6}$/.test(code)){
+			alert('验证码格式不正确');
+			return false;
+		}
+		$.post(url, {'number':num, 'code':code}, function(r){
+			if(r.ok.length < 1){
+				Wind.message.showResponse(r);
+				return false;
+			}
+			Wind.message.show("验证成功");
+			setTimeout(function(){
+				window.location.href="{url user.account.center}";
+			}, 2000);
+		}, 'json');
+		return false;
+	});
+});
+
+//]]>
+</script>
+
+
+{tpl nav}
+{tpl footer}

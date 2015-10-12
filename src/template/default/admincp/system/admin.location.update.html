@@ -1,0 +1,65 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl system/admin.location.navtab}-->
+
+<form id="form" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="right" valign="middle">父位置</th>
+        <td>
+          <select name="upid">
+              <option value="">请选择父位置</option>
+			  {loop $list $mnode}
+              <option value="{$mnode['id']}" {if !empty($item['upid']) && $item['upid'] == $mnode['id']}selected="selected"{/if}>{$mnode['icon']}{$mnode['name']}</option>
+              {/loop}
+              
+          </select>
+          <span class=" note">不选择则为顶级位置</span>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">位置名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" size="50" value="{htmlspecialchars($item[name])}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">经纬度坐标</th>
+        <td><input type="text" class="text-box" name="lnglat" id="lnglat" size="30" value="{if $item[lng] > 0 && $item[lat] > 0}{$item[lng]},{$item[lat]}{/if}" /> <a href="http://api.map.baidu.com/lbsapi/getpoint/" target="_blank">获取经纬度坐标</a> <span class="note">输入"桂林市阳朔县XX景区"查找坐标。</span></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">排序</th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="{$item['displayorder']}" size="4" /></td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd">
+            <input class="btn" type="submit" value="添加" />
+            <input name="重置" type="reset" class="btn" value="重置" />
+        </td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			name: "required"
+		},
+		messages: {
+			name: "请输入推荐位名称"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});	
+});
+//]]>
+</script>
+
+<!--{tpl footer}-->

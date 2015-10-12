@@ -1,0 +1,58 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="../style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl ad/manage.navtab}-->
+<form action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <input type="hidden" name="placeid" value="{$_REQUEST[placeid]}" />
+  <input type="hidden" name="hash" value="{$hash}"  />
+  <div class="mt">
+      <table class="tb" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="40" align="center">排序</th>
+          <th width="40" align="center">ID</th>
+          <th width="160" align="left">名称</th>
+          <th width="40" align="center">类型</th>
+          <th width="40" align="center">启用</th>
+          <th width="80" align="center">添加时间</th>
+          <th width="80" align="center">开始时间</th>
+          <th width="80" align="center">结束时间</th>
+          <th align="center">广告位</th>
+          <th width="160" align="center">管理操作</th>
+        </tr>
+        <!-- {loop $list $listItem} -->
+        <tr id="list-{$listItem['id']}" class="bb">
+          <td align="center"><input type="text" class="text-box" style="text-align:center;" size="3" name="displayorder[{$listItem['id']}]" value="{$listItem['displayorder']}" /></td>
+          <td align="center">{$listItem['id']}</td>
+          <td>{$listItem['name']}</td>
+          <td align="center">
+            {if $listItem['type'] == 'image'}图片
+            {elseif $listItem['type'] == 'flash'}Flash
+            {elseif $listItem['type'] == 'text'}文本
+            {else}代码
+            {/if}
+          </td>
+          <td align="center">{if $listItem['enabled']}<span class="green">√</span>{else}<span class="red">×</span>{/if}</td>
+          <td align="center">{date('Y-m-d', $listItem['dateline'])}</td>
+          <td align="center">{date('Y-m-d', $listItem['starttime'])}</td>
+          <td align="center">{date('Y-m-d', $listItem['endtime'])}</td>
+          <td align="">
+            {loop $listItem[placeid] $placeId}
+            {$placeList[$placeId][name]},
+            {/loop}
+          </td>
+          <td align="center">
+            <a href="{url $mod.$ctl.update/$listItem[id]/hash:$hash}">编辑</a> | 
+            <a href="javascript:Wind.list.drop('{url $mod.$ctl.delete/$listItem[id]}', $('#list-{$listItem[id]}'));">删除</a>
+          </td>
+        </tr>  	
+        <!-- {/loop} -->
+      </table>
+    <p style="padding:6px 10px;"><input type="submit" value="排序" class="btn"></p>
+  </div>
+</form>
+
+<script type="text/javascript">
+
+</script>
+<!--{tpl footer}-->

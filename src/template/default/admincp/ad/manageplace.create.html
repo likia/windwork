@@ -1,0 +1,64 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl ad/manage.navtab}-->
+
+<form id="form" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th width="140" align="right" valign="middle">广告位名称</th>
+        <td><input name="name" type="text" class="text-box" id="name" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告宽</th>
+        <td><input name="width" type="text" class="text-box" id="width" size="6" value="1000" /> px <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告高</th>
+        <td><input name="height" type="text" class="text-box" id="height" size="6" value="160" /> px <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">广告位说明</th>
+        <td><textarea name="desc" id="desc" size="50" rows="5" cols="50"></textarea> </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">显示模式</th>
+        <td>
+          <input type="radio" name="mode" value="all" checked="checked" /> 显示全部
+          <input type="radio" name="mode" value="rand" /> 随机显示一个
+        </td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="添加" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			name: "required",
+			width: "required",
+			height: "required"
+		},
+		messages: {
+			name: "请输入广告位名称",
+			width: "请输入广告位宽",
+			height: "请输入广告位高"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+
+//]]>
+</script>
+<!--{tpl footer}-->

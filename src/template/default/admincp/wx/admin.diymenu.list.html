@@ -1,0 +1,76 @@
+{tpl header}
+{tpl wx/admin.diymenu.navtab}
+<div class="tb pd mt" style="line-height:21px">
+  <div class="tips">配置信息在“设置 》 系统设置 》 微信设置” 进行设置</div>
+  <div>微信公众号绑定参数：</div>
+  <div><strong>原始ID：</strong> {Config::get('wx_source_id')}</div>
+  <div><strong>APPID：</strong> {Config::get('wx_app_id')}</div>
+  <div><strong>Secret：</strong> {Config::get('wx_app_secret')}</div>
+  <div><strong>　URL：</strong> {url('WXConnect.php', 1)}</div>
+  <div><strong>Token：</strong> {Config::get('wx_token')}</div>
+</div>
+
+<button class="btn" onclick="Wind.util.ajaxGet('{url wx.admin.diymenu.build}');return false;">生成微信菜单</button>
+
+{tpl prompt}
+<form method="post" enctype="application/x-www-form-urlencoded" target="_self">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="mt tb">
+    <thead>
+      <tr>
+        <th width="50">排序</th>
+        <th align="left">名称</th>
+        <th width="80">关键词</th>
+        <th width="60">按钮类型</th>
+        <th width="180">管理</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- {loop $menuList $item} -->
+      <tr id="cid-{$item[id]}">
+        <td align="center"><input size="3" name="sort[{$item[id]}]" value="{$item[displayorder]}" class="displayorder" /></td>
+        <td>
+          <span>|{for $i = 1; $i < $item[level]; $i++}&nbsp;&nbsp;|-{/for}</span>
+          <a href="{$item[url]}" onclick="{if $item[url]}Wind.util.mobilePreview(this.href);{/if}return false;">{$item[name]}</a>
+        </td>
+        <td align="center">{$item[keyword]}</td>
+        <td align="center" title="{$item[url]}">{if $item[url]}链接{else}事件{/if}</td>
+        <td align="center">
+          <a href="javascript:;" onclick="Wind.ajaxForm('{url wx.admin.diymenu.create/parentid:$item[id]/ajax:1}', '添加自定义菜单', 640, 360);">添加子菜单</a> | 
+          <a href="javascript:;" onclick="Wind.ajaxForm('{url wx.admin.diymenu.update/$item[id]/ajax:1}', '编辑自定义菜单', 640, 360);">修改</a> | 
+          <a href="{url $mod.$ctl.delete/$item[id]}" onclick="return deleteMenu(this.href, '#cid-{$item[id]}')">删除</a>
+        </td>
+      </tr>
+      <!-- {/loop} -->
+      <tr>
+        <td colspan="6"><input class="btn" type="submit" value="排序" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</form>
+<script type="text/javascript">
+//<![CDATA[
+
+
+function deleteMenu(url, tag) {
+	if(!confirm('你确定要删除该菜单吗？一旦删除将不可恢复！')) {
+		return false;
+	}
+	
+	url += '/ajax:1';
+	Wind.message.show('正在删除菜单', '删除菜单', 260, 60);
+	$.getJSON(url, function(r) {
+		Wind.message.showResponse(r);
+		if(r.err.length == 0) {
+			$(tag).remove();
+		}
+	});
+	return false;
+}
+$(function(){	
+  
+});
+//]]>
+</script>
+{tpl footer}

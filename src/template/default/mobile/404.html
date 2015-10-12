@@ -1,0 +1,36 @@
+{tpl header}
+
+<!--header-->
+<header id="header">
+  <div class="page-name">出错了</div>
+  <a href="javascript:history.back(-1);" class="back"><i></i><span>返回</span></a> 
+</header>
+<!--/header-->
+
+<!--content-->
+<div class="content">
+    <div class="header-place"></div>
+    <div class="err-404 section">
+      <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+      <div class="section-bd">
+        <h1 class="title" style="padding:10px; margin:10px; text-align:center;">404：页面不存在！</h1>
+        {tpl prompt}
+        {if @$message}
+        <div class="message">
+          {if is_array($message)}
+            {loop $message $messageItem}
+            {$messageItem}
+            {/loop}
+          {else}
+            {$message}
+          {/if}
+        </div>
+        {/if}
+        <br />
+      </div>
+      <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+    </div>
+</div>
+
+{tpl nav}
+{tpl footer}

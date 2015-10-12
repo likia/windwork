@@ -1,0 +1,120 @@
+{tpl header} 
+{if !$isAjax}
+  {tpl wx/admin.diymenu.navtab}
+{/if}
+{tpl prompt}
+<form action="{url $mod.$ctl.$act}{if $isAjax}/iframe_callback:showResponse{/if}" method="post" enctype="multipart/form-data" target="ajax-frame" class="form" id="form">
+  <input type="hidden" name="hash" value="{$hash}" />
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+      <td width="100px;"><label class="form-row-l" for="parentid">上级菜单：</label></td>
+      <td>
+        <select name="parentid">
+          <option value="0" selected="selected">顶级菜单</option>
+          <!--{loop $menuList $menuItem}-->
+          <option value="{$menuItem[id]}" {if in_array($menuItem[id], $menuList[$menu[id]][descendantIdArr])}disabled="disabled"{/if}>{$menuItem[icon]}{$menuItem[name]}</option>
+          <!--{/loop}-->
+        </select>
+      </td>
+    </tr>
+  <tr>
+    <td><label class="form-row-l" for="name">菜单名称：</label></td>
+    <td>
+      <input type="text" class="text" name="name" id="name" value="" size="20" /> <b class="red">*</b>
+    </td>
+  </tr>
+
+  <tr>
+    <td><label class="form-row-l" for="keyword">关键词：</label></td>
+    <td>
+      <input type="text" class="text" name="keyword" id="keyword" value="" size="20" /> <b class="red"></b>
+      <span class="note">在公众号中点击按钮名称后将发送该关键词给公众号。</span>
+    </td>
+  </tr>
+
+  <tr>
+    <td><label class="form-row-l" for="url">链接：</label></td>
+    <td>
+      <input type="text" class="text" name="url" value=""
+        size="60" /> <br /> <span class="note">点击菜单按钮后将打开该链接，要使用关键词这里请留空。</span>
+    </td>
+  </tr>
+
+  <tr>
+    <td><label class="form-row-l" for="displayorder">显示排序：</label></td>
+    <td>
+      <input type="text" class="displayorder" name="displayorder"
+        value="99" size="4" /> <span class="note">0-99整数，从小到大排序</span>
+    </td>
+  </tr>
+
+  <tr>
+    <td><label class="form-row-l">是否启用：</label></td>
+    <td>
+      <label for="isenabled_1"><input type="radio"
+        name="isenabled" id="isenabled_1" value="1" />是 &nbsp;</label> <label
+        for="isenabled_0"><input type="radio" name="isenabled"
+        id="isenabled_0" value="0" />否 &nbsp;</label> <span
+        class="note">启用以后才能在菜单中显示。</span>
+    </td>
+  </tr>
+  <tr>
+    <td><label class="form-row-l" for="">&nbsp;</label></td>
+    <td><input type="submit" value="保存" class="btn" /></td>
+  </tr>
+  </table>
+</form>
+<iframe name="ajax-frame" class="ajax-frame" style="display:none;"></iframe>
+
+<script type="text/javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+	//<![CDATA[
+	function showResponse(r) {
+		if (r.err.length > 0) {
+			alert(r.err[0]);
+		} else {
+			alert(r.ok);
+			window.location.href = '{url wx.admin.diymenu.list}';
+		}
+	}
+
+	$(function() {
+		var validator = $("#form").validate({
+			rules : {
+				name : "required"/*,
+				url:{  
+					required: {  
+						depends:function(){
+				        	return ($('input[name=keyword]').val().length <= 0);  
+						}  
+					}  
+				},  
+				keyword:{  
+					required: {  
+						depends:function(){ 
+							return ($('input[name=url]').val().length <= 0);  
+						}  
+					}  
+				}  	*/
+			},
+			messages : {
+				name : "请输入菜单名称"/*,
+				url:"关键词和链接必须输入一个",
+				keyword:"关键词和链接必须输入一个"  */
+			},
+			errorPlacement : function(error, element) {
+				error.appendTo(element.next());
+			},
+			success : function(label) {
+				label.html("&nbsp;").addClass("checked");
+			}
+		});
+
+	});
+
+	//]]>
+</script>
+{if !$isAjax}
+  {tpl footer}
+{/if}

@@ -1,0 +1,154 @@
+{tpl header}
+{tpl article/navtab}
+
+<form id="form" action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<input type="hidden" name="hash" value="{$hash}" />
+<input type="hidden" name="uuid" value="{$article[uuid]}" />
+<input type="hidden" name="picid" value="{$article[picid]}" />
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="right" valign="middle"><label for="cid">分类</label></th>
+        <td>
+          <select name="cid" id="cid">
+            <option value="0" {if !$article['cid']}selected="selected"{/if}>未分类</option>
+		    <!--{loop $cats $cid $cat}-->
+            <option value="{$cid}" {if $article['cid'] == $cid}selected="selected"{/if}>{$cat[icon]}{$cat[name]}</option>
+           <!--{/loop}-->
+          </select>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="title">标题</label></th>
+        <td><input name="title" type="text" class="text-box" id="title" value="{$article['title']}" size="42" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="title">别名</label></th>
+        <td><input name="slug" type="text" class="text-box" id="slug" value="{urldecode(@$article['slug'])}" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">推荐</th>
+        <td>
+		  <!--{loop $positions $position}-->
+		  <label for="pos-{$position[id]}"><input id="pos-{$position[id]}" name="position[]" type="checkbox" class="text-box" id="author" value="{$position[id]}" {if in_array($position['id'], $positionIds)}checked="checked"{/if}  /> {$position[name]}</label> &nbsp;&nbsp; 
+		  <!--{/loop}-->
+		</td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="name">关键词</label></th>
+        <td><input name="keyword" type="text" class="text-box" id="keyword" value="{$article['keyword']}" size="42" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="description">描述</label></th>
+        <td><textarea name="description" cols="50" rows="3">{$article['description']}</textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">
+          文章相册<br />
+          <button onclick="Wind.album.upload('{$article[uuid]}')" type="button" class="btn">上传</button>
+        </th>
+        <td>
+          <div id="album">
+            {if $album}
+              {loop $album $imgItem}
+              <div href="javascript:;" id="album-item-{$imgItem['id']}" class="album-item {if $imgItem['id'] == $article['picid']}current{/if}">
+                <img src="{thumb($imgItem['id'], 120, 120)}" title="点击设为封面图片" />
+                <div class="handle">
+                  <label for="cover-radio-{$imgItem['id']}">封面<input id="cover-radio-{$imgItem['id']}" type="radio" title="点击设为封面图片" onclick="Wind.album.setCover({$imgItem['id']})" value="{$imgItem['id']}" name="picid" {if $imgItem['id'] == $article['picid']} checked="checked"{/if} />&nbsp;&nbsp;</label>
+                  <a onclick="Wind.album.edit({$imgItem['id']}, '{$article['uuid']}')" href="javascript:;">编辑</a> |
+                  <a onclick="Wind.album.deletePic({$imgItem['id']})" href="javascript:;">删除</a>
+                </div>
+              </div>
+              {/loop}
+            {else}
+            <img src="{$nopic}" width="120" height="120" class="album-nopic" />
+            {/if}            
+          </div>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="top"><label for="content">详细内容</label></th>
+        <td><textarea name="content" id="content" cols="120" rows="8" style="width:{\core\Config::get('editor_width')}; height:{\core\Config::get('editor_height')};">{$article['content']}</textarea></td>
+    </tr>         
+   <tr>
+        <th width="140" align="right" valign="middle">状态</th>
+        <td>
+          <!--{loop $articleStatusList $key $val}-->
+          <input name="status" type="radio" value="{$key}" {if $article['status'] == $key}checked="checked"{/if} />{Lang::get($val)}
+          <!--{/loop}-->
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">作者</th>
+        <td><input name="author" type="text" class="text-box" id="author" value="{if empty($article['author'])}{$siteName}{else}{$article['author']}{/if}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">来源网站</th>
+        <td><input name="from" type="text" class="text-box" id="from" value="{if empty($article['from'])}{$siteName}{else}{$article['from']}{/if}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">来源网址</th>
+        <td><input name="fromurl" type="text" class="text-box" id="fromurl" value="{$article['fromurl']}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">责任编辑</th>
+        <td><input name="editor" type="text" class="text-box" id="editor" value="{$article['editor']}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">跳转网址</th>
+        <td><input name="gotourl" type="text" class="text-box" id="gotourl" value="{$article['gotourl']}" /> <span class="note">如果不为空，打开该文章时将跳到改网址。</span></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">模板</th>
+        <td><input name="tpl" type="text" class="text-box" id="tpl" value="{$article[tpl]}" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">排序</th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="{$article[displayorder]}" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle">是否是原创</th>
+        <td>
+          <label for="isoriginal_1"><input name="isoriginal" type="radio" id="isoriginal_1" value="1" {if $article[isoriginal]}checked="checked"{/if} />是</label>
+          <label for="isoriginal_0"><input name="isoriginal" type="radio" id="isoriginal_0" value="0" {if !$article[isoriginal]}checked="checked"{/if} />否</label>
+        </td>
+    </tr>    
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd">
+          <input class="btn" type="submit" value="提交" />
+          <input name="重置" type="reset" class="btn" value="重置" />
+        </td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript" src="{$basePath}static/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="{$basePath}static/editor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="content"]', editorCfg);
+	});
+	var validator = $("#form").validate({
+		rules: {
+			title: "required",
+			content: "required"
+		},
+		messages: {
+			title: "请输入文章标题",
+			content: "请输入文章内容"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

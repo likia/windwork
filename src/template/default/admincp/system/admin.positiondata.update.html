@@ -1,0 +1,83 @@
+{tpl header}
+{tpl system/admin.position.navtab}
+
+<div class="mt note">在这里修改标题、描述信息、栏目、链接、图片id，在商品管理中修改商品信息后将被覆盖。</div>
+
+<form id="form" action="" method="post" enctype="application/x-www-form-urlencoded" target="_self">
+<input type="hidden" name="hash" value="{$hash}" />
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="title">标题</label></th>
+        <td><input name="title" type="text" class="text-box" id="title" size="40" value="{$item[title]}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="url">Url</label></th>
+        <td><input name="url" type="text" class="text-box" id="url" size="40" value="{$item[url]}" /> <b class="red">*</b></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="desc">描述</label></th>
+        <td><textarea name="desc" id="desc" cols="40" rows="4">{$item[desc]}</textarea></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="posid">推荐位</label></th>
+        <td>
+          <select name="posid" id="posid">
+            <option value="">请选择推荐位</option>
+            <!--{loop $positions $positionItem}-->
+            <option value="{$positionItem[id]}" {if $positionItem['id'] == $item['posid']}selected="selected"{/if}>{$positionItem[name]}</option>
+            <!--{/loop}-->
+          </select>
+          <b class="red">*</b>
+        </td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="picid">图片id</label></th>
+        <td><input name="picid" type="text" class="text-box" id="picid" value="{$item[picid]}" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="picw">图片宽度</label></th>
+        <td><input name="picw" type="text" class="text-box" id="picw" value="{$item[picw]}" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="pich">图片高度</label></th>
+        <td><input name="pich" type="text" class="text-box" id="pich" value="{$item[pich]}" size="4" /></td>
+    </tr>
+    <tr>
+        <th width="140" align="right" valign="middle"><label for="displayorder">显示排序</label></th>
+        <td><input name="displayorder" type="text" class="text-box" id="displayorder" value="{$item[displayorder]}" size="4" /></td>
+    </tr>
+    <tr>
+        <th align="right" valign="middle" class="nobd">&nbsp;</th>
+        <td class="nobd"><input class="btn" type="submit" value="提交" />
+            <input name="重置" type="reset" class="btn" value="重置" /></td>
+    </tr>
+</table>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var validator = $("#form").validate({
+		rules: {
+			title: "required",
+			posid: "required",
+			url: "required"
+		},
+		messages: {
+			tab: "请输入标题",
+			posid: "请选择推荐位",
+			url: "请输入Url"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+});
+//]]>
+</script>
+
+{tpl footer}

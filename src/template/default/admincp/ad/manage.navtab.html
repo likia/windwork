@@ -1,0 +1,9 @@
+<div class="navtab">
+   <span class="pagetitle">广告管理</span>
+   <ul>
+     <li class="{if strtolower($ctl) == 'managead' && ($act == 'list' || $act == 'update')}current{/if}"><a href="{url ad.managead.list/hash:$hash}"><span>广告列表</span></a></li>
+     <li class="{if strtolower($ctl) == 'managead' && $act == 'create'}current{/if}"><a href="{url ad.managead.create/hash:$hash}"><span>添加广告</span></a></li>
+     <li class="{if strtolower($ctl) == 'manageplace' && ($act == 'list' || $act == 'update')}current{/if}"><a href="{url ad.manageplace.list/hash:$hash}"><span>广告位列表</span></a></li>
+     <li class="{if strtolower($ctl) == 'manageplace' && $act == 'create'}current{/if}"><a href="{url ad.manageplace.create/hash:$hash}"><span>添加位广告</span></a></li>
+   </ul>
+</div>

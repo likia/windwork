@@ -1,0 +1,48 @@
+{tpl header}
+<style>
+.checkin-record-list th { background:#E8E8E8; }
+.checkin-record-list th, .checkin-record-list td { padding:4px; }
+</style>
+<!--header-->
+	<header id="header">
+	  <strong class="page-name">我的签到记录</strong>
+      <a href="javascript:history.back(-1);" class="back"><i class="icon"></i><span>返回</span></a> 
+	</header>
+	<div class="header-place"></div>
+	<!--/header-->
+    
+  <section>
+    <dl class="member-info">
+      <dt><img src="{if $account[avatarid]}{thumb($account[avatarid], 'small')}{elseif $account[avatar]}{$account[avatar]}{else}{$nopic}{/if}" /></dt>
+      <dd class="member-name">{$account[uname]}{if $account[nickname]}({$account[nickname]}){/if}</dd>
+      <dd class="member-phone">{if $account[mobile]}{$account[mobile]}{else}<a href="{url user.account.profile}">设置手机号</a>{/if}</dd>
+      <dd class="member-credit">积分：{$account[credit]}{if $shop}&nbsp;&nbsp;体力：{$shop[power]}{/if}</dd>
+      <dd class="member-edit"><a href="{url user.account.profile}"><i class="icon"></i>编辑个人信息</a></dd>
+    </dl>
+  </section>
+  
+  {if $res['list']}  
+  <section class="checkin-record-list">
+	 <table width="100%">
+		<tr>
+			<th>签到时间</th>
+			<th width="50">积分</th>
+			{if $shop}<th width="50">体力</th>{/if}
+		</tr>
+	 	<!-- {loop $res['list'] $item} -->
+		<tr>
+			<td align="center">{date('Y-m-d H:i:s', $item['dateline'])}</td>
+			<td align="center">{$item['credit']}</td>
+			{if $shop}<td align="center">{$item['power']}</td>{/if}
+		</tr>
+		<!-- {/loop} -->
+	 </table>
+  </section>
+  {$res[pager]}
+  
+  {else}
+  <section class="warn pd">您还没有签到，请在掌上车宝微信菜单上点击“签到”菜单进行签到！</section>
+  {/if}
+  
+{tpl nav}
+{tpl footer}

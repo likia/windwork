@@ -1,0 +1,23 @@
+
+<nav>
+  <a class="home {if strtolower("$mod.$ctl.$act") == 'system.default.index'}current{/if}" href="./"><i></i><span>首页</span></a>
+  <a class="issue {if strtolower("$mod.$ctl") == 'repair.issue'}current{/if}" href="{url repair.issue.list}"><i></i><span>修车</span></a>
+  <a class="shop {if strtolower("$mod.$ctl") == 'shop.shop'}current{/if}" href="{url shop.shop.list}"><i></i><span>修车厂</span></a>
+  <a class="user {if strtolower("$mod") == 'user'}current{/if}" href="{url user.account.center}"><i></i><span>我的</span></a>
+</nav>
+
+<script>
+$(function(){
+	// 解决ios输入文字时点击到导航的问题
+	if(head.browser.ios) {
+		var windowheight = $(window).height();
+		$(window).resize(function() {
+			if(windowheight - $(window).height() > 100) {
+				$('nav').hide();
+			} else {
+				$('nav').show();
+			}
+		});
+	}
+});
+</script>

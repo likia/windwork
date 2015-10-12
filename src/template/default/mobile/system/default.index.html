@@ -1,0 +1,75 @@
+{tpl header}
+<!--header-->
+<header id="header">
+  <div class="page-name">首页</div>
+  <a href="./" class="logo"></a>
+  <a href="{url repair.issue.create}" class="post_new"><i class="icon"></i><span>报修</span></a>
+</header>
+<div class="header-place"></div>
+
+<!--/header-->
+<!--content-->
+<div class="content">
+  <section class="slider-section">
+    <div class="slider-wp">
+      <div class="slider">
+        <ul>
+          <li><a href="javascript:;" style="background-image:url({$staticPath}images/banner.jpg)">&nbsp;</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <section class="hot-shop">
+    <div class="wp">
+      <h2>热门修理厂</h2>
+      <ul>
+        {loop $hotShopList $hotShop}
+        <li><a href="{url shop.shop.item/$hotShop[uid]}" style="background-image:url({avatar($hotShop['uid'], 'medium')})">&nbsp;</a></li>
+        {/loop}
+      </ul>
+    </div>
+  </section>
+  
+  <div class="clearfix"></div>
+  
+
+  <section class="issue-list">    
+    <div class="wp">
+      <h2>
+        最新修车单
+        <a href="javascript:;" onclick="window.location.reload()" class="refresh"></a>
+      </h2>  
+      {if $issueList}
+      {loop $issueList $listItem}
+      <div class="issue-item">
+        <div class="avatar"><img src="{avatar($listItem['uid'], 'small')}" /></div>
+        <div class="issue-attrs">
+          <div class="nickname">{$listItem[uname]}</div>
+          <div class="date">{smartDateTime($listItem[dateline])}</div>
+          <div class="message"><a href="{url repair.issue.item/$listItem[id]}">{$listItem[content]}<span class="to-item">[详情]</span></a></div>
+          <div class="address"><i></i>{$listItem[address]}</div>
+          
+          {if $listItem['pics']}
+          <div class="pics">
+            {loop $listItem['pics'] $pic}
+            <img src="{thumb($pic, 160, 160)}" />
+            {/loop}
+            <div class="clearfix"></div>
+          </div>
+          {/if}
+          
+          <div class="apply"><a href="{url repair.issue.apply/$listItem[id]}" onclick="Wind.util.ajaxGetAndLoad(this.href, '{url repair.issue.item/$listItem[id]}');return false;" class="btn"><i></i>我要抢修</a></div>      
+        </div> 
+      </div>
+      {/loop}
+      {else}
+      <div class="pd2 red">没要找到相关的修理单</div>
+      {/if}
+    </div>
+  </section>
+
+</div>
+<!--/content-->
+{tpl nav}
+{tpl footer}

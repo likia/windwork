@@ -1,0 +1,9 @@
+<div class="navtab">
+   <span class="pagetitle">模块开发工具</span>
+   <ul>
+     <li class="{if strtolower($act) == 'modlist'}current{/if}"><a href="{url dev.builder.modlist/hash:$hash}"><span>模块列表</span></a></li>
+     <li class="{if strtolower($act) == 'createmod'}current{/if}"><a href="{url dev.builder.createmod/hash:$hash}"><span>新建模块</span></a></li>
+     <li class="{if strtolower($act) == 'addctl'}current{/if}"><a href="{url dev.builder.addctl/hash:$hash}"><span>添加控制器</span></a></li>
+     <li class="{if strtolower($act) == 'addmodel'}current{/if}"><a href="{url dev.builder.addmodel/hash:$hash}"><span>添加模型</span></a></li>
+   </ul>
+</div>

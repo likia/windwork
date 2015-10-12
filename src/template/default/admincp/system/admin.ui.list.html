@@ -1,0 +1,19 @@
+{tpl header}
+
+<ul class="stylelist mt mb">
+    <!-- {loop $styleList $style} -->
+    <li class="{if $styleId == $style['id']}current{/if}">
+      <!-- {if $style['screenshot']} -->
+      <a href="{$style['screenshot']}" target="_blank"><img src="{$style['preview']}" /></a>
+      <!-- {else} -->
+      <img src="{$style['preview']}" />
+      <!-- {/if} -->
+      <span class="name">{$style['name']}</span>
+      <span class="version">{$style['version']}</span>
+      <span class="author">作者：{$style['author']}</span>
+      <a href="index.php?system.admin.ui.setstyle/{$style['tpl']}/{$style['id']}/hash:{$hash}" class="btn">选择</a>
+    </li>
+    <!-- {/loop} -->
+</ul>
+
+{tpl footer}

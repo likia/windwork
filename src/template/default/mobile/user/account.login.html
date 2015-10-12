@@ -1,0 +1,68 @@
+{tpl header}
+    <!--header-->
+    <header id="header">
+      <strong class="page-name">登录</strong>
+      <a href="javascript:history.back(-1);" class="back"><i class="icon"></i>返回</a> 
+    </header>
+    <!--/header-->
+    <div class="header-place"></div>
+
+    {tpl prompt}
+    
+  <section class="u-form">
+
+    <div class="login-tips"></div>
+  <form class="form" action="{url user.account.login}" method="post" target="_self" id="u-form">
+    <input type="hidden" name="forward" id="forward" value="{$forward}" /> 
+    <dl class="inputs">
+      <dd><input class="text" type="text" name="account" id="account" value="" placeholder="账号" /> </dd>
+      <dd><input class="text" type="password" name="password" id="password" value="" placeholder="密码" /></dd>
+      <!--{if $captchaOpt[login]}-->
+      <dd><input class="text secode" type="text" name="secode" id="secode" value="" size="6" onkeyup="this.value=this.value.toUpperCase()" autocomplete="off" placeholder="验证码" />
+       <a href="javascript:;" onclick="$(this).find('img').attr('src', '{url system.misc.captcha/entry:sec/font_size:15}/'+Math.random());$('#secode').focus();" class="secode-img"><img src="{url system.misc.captcha/entry:sec/font_size:15}" />换一张</a>
+      </dd>  
+      <!--{/if}-->   
+    </dl>
+    <div class="submit-box"> 
+      <a href="javascript:;" class="btn" onclick="$('#u-form').submit()">登 录</a>
+    </div>
+    
+    <dl class="guide">
+      <dd>&gt; 还没有掌上车宝账号？<a href="{url user.account.register}">注册</a></dd>
+      <dd>&gt; 忘记密码了？<a href="{url user.account.forgetpassword}">取回密码</a></dd>
+    </dl>
+  
+  </form>
+  </section>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/jquery.validate.cfg.js"></script>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	var cfg = {
+		rules: {
+			account: "required",
+			secode: "required",
+			password: "required"
+		},
+		messages: {
+			account: "",
+			secode: "",
+			password: ""
+		},
+		errorPlacement: function(error, element) {
+			//error.appendTo($('.login-tips').eq(0));	
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	};
+	$("#u-form").validate(cfg);
+});
+
+//]]>
+</script>
+
+
+{tpl footer}

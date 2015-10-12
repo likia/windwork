@@ -1,0 +1,15 @@
+{tpl header}
+
+<div class="navtab">
+   <span class="pagetitle">系统设置</span>
+   <ul>
+     <!-- {loop $optionGroups $item} -->
+     <li class="{if $group == $item['id']}current{/if}"><a href="index.php?system.admin.option.list/{$item['id']}/hash:{$hash}"><span>{$item['name']}</span></a></li>
+     <!-- {/loop} -->
+   </ul>
+</div>
+<div class="mt">
+{$form}
+</div>
+
+<!--{tpl footer}-->

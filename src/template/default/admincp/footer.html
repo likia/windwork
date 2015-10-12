@@ -1,0 +1,40 @@
+<div id="copyright" class="pd mt">Copyright &copy; 2010-<?=date('Y')?> <a target="_blank" href="http://www.windwork.org"><b><span style="color:#F00;">Henghui</span> Inc.</b></a> 版权所有, 并保留所有权利。</div>
+
+<div id="ajax-loading">&nbsp;</div>
+<iframe id="ajax-frame" name="ajax-frame" style="width:0; height:0; position:absolute; border:none;"></iframe>
+<!--{static}-->
+<script type="text/javascript">
+// <![CDATA[
+$(function() {
+	$(".note, .tips, .msg-list tr").hover(
+		function () { $(this).addClass("note-hover"); },
+		function () { $(this).removeClass("note-hover"); }
+	);
+	
+	$('table.tb tr').hover(
+	    function(){$(this).addClass('hover')}, 
+	    function(){$(this).removeClass('hover')}
+	);
+	
+	if($('#msgs').length > 0) {
+		Wind.message.show($('#msgs').html());
+	}
+	
+	$("body").ajaxStart(function(){
+		Wind.ui.hideLoading()
+	});
+	
+	$("body").ajaxComplete(function(event, request, settings){
+		Wind.ui.hideLoading()
+	});
+	
+});
+// ]]>
+</script>
+<!--{/static}-->
+
+<!--{#$bm = benchmark('pc_tpl_footer', 1);#}-->
+<!--[ Processed in {$bm[elapsed]}(s),{#print Factory::db()->execTimes#} querys,{$bm[mem]}(M mem)]-->
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+<div class="navtab">
+   <span class="pagetitle">微信菜单</span>
+   <ul>
+    <li class="{if strtolower($act) == 'list'}current{/if}"><a href="{url wx.admin.diymenu.list}"><span>菜单列表</span></a></li>
+    <li class="{if strtolower($act) == 'create'}current{/if}"><a class="{if strtolower($act) == 'create'}current{/if}" href="{url wx.admin.diymenu.create/ajax:1}" onclick="Wind.ajaxForm(this.href, '添加自定义菜单', 640, 360);return false;"><span>添加菜单</span></a></li>
+   </ul>
+</div>

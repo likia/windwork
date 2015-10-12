@@ -1,0 +1,27 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl dev/builder.navtab}-->
+
+<!--{loop $mods $level $rs}-->
+  <table class="tb mt mb modlist" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr class="th">
+      <th width="180" align="left">{if $level=='core'}核心{elseif $level=='option'}可选{else}其他{/if}模块</th>
+      <th align="left">简介</th>
+      <th width="220" align="center">操作</th>
+    </tr>
+    <!--{loop $rs $kMod $r}-->
+    <tr class="install-{intval($r['installed'])}">
+      <td align="left">{$r['name']} ({$r['id']})</td>
+      <td align="left">{$r['desc']}</td>
+      <td align="center">
+	    <a href="{url $mod.$ctl.addctl/themod:$r[id]/hash:$hash}">新增控制器</a> |
+        <a href="{url $mod.$ctl.addmodel/themod:$r[id]/hash:$hash}">新增模型</a>
+      </td>
+    </tr>
+    <!--{/loop}-->
+  </table>
+<!--{/loop}-->
+
+<!--{tpl footer}-->

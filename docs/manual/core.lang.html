@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>多语言支持</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="res/style.css" />
+<body>
+<h1>多语言支持</h1>
+<p>Windwork 通过\core\Lang类实现多语言的支持。</p>
+<h2>1、语言包文件</h2>
+<p>语言包文件根据不同语言保存在 src/language文件夹，以数组形式保存。
+例如这里有一个中文语言包</p>
+<pre><code>&lt;?php
+// src/language/zh_CN/system.php
+return array(
+    'system_manage' =&gt; '系统管理',
+    'trash' =&gt; '垃圾',
+    'draft' =&gt; '草稿',
+    'published' =&gt; '已发布',
+);</code></pre>
+<h2>2、添加语言包</h2>
+<p>使用\core\Lang::add('语言包文件名，不带.php');静态方法添加语言包，系统会根据当前选择的语言加载不同语言的语言包。如：</p>
+<pre><code>\core\Lang::add('system'); // 系统将加载 "src/language/zh_CN/system.php" 语言包</code></pre>
+<h2>3、使用多语言</h2>
+<h3>3.1、在php代码中使用</h3>
+<p>通过\core\Lang::add($langKey)方法获取语言包中的语言选项字符串；
+例如：</p>
+<pre><code>\core\Lang::add('system_manage'); // 返回 “系统管理” 字符串
+</code></pre>
+<h3>3.2、在视图中使用</h3>
+<p>视同中使用 lang 标签显示语言包中的语言选项字符串。
+例如：</p>
+<pre><code>{lang system_manage}</code></pre>
+<p>模板解析后变成</p>
+<pre><code>&lt;?php echo \core\Lang::add('system_manage');?&gt;
+</code></pre>
+<p>最终显示“系统管理”</p>
+</body>
+</html>

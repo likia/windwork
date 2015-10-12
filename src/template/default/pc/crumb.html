@@ -1,0 +1,6 @@
+<div class="crumb">
+  <a class="home" href="{$basePath}"><span>{$siteName}</span></a>
+  {loop $crumb $crumbItem}
+  》 <a href="{$crumbItem['url']}"><span>{$crumbItem['name']}</span></a>
+  {/loop}
+</div>

@@ -1,0 +1,36 @@
+
+.album { position:relative; overflow:hidden; width:100%; height:180px; display:block; }
+.slider, .slider ul, .slider li, .slider a, .slider i { display:block; width:100%; height:180px; }
+.slider ul{list-style-type:none;padding:0;margin:0;position: absolute;z-index:1;}
+.slider li{ margin:0;padding:0;float:left; position: relative; }
+.slider li a,.slider li i { margin:0;padding:0; background-repeat:no-repeat; }
+.slider li a:active, .slider li a:focus { outline:none;}
+.slider h3 { position:absolute;font-weight:bold;font-size:12px;margin:0;padding:0;text-indent:2%;line-height:36px;z-index:102; width:100%;}
+.slider h3 a{padding:0;margin:0;text-indent:0;color:#EE6C03 !important;  }
+.slider h3 a:link,.slider  h3 a:visited{text-decoration:none;color:#EE6C03;}
+.slider h3 a:hover{text-decoration:underline;color:#FF6600;}
+.slider li.current-li{}
+.smallslider-btns { position:absolute;z-index:103; left:0; bottom:5px; width:100%; text-align:center; }
+.smallslider-btns span {background-color:#FFFFFF; border-radius:10px; border:1px solid #EEE; width:8px;height:8px;filter:alpha(opacity=80); -moz-opacity:0.8; opacity: 0.8; margin-right:3px; display:inline-block; }
+.smallslider-btns span.on{ background-color:#FF7300; color:#FFF; font-weight:bold;}
+.smallslider-lay{position:absolute;height:36px;width:100%; z-index:101; background:#FFF; }
+
+.myclear:after { /*/*/ content: "."; /* IE8 hack */ display: block; height: 0; clear: both; visibility: hidden; }
+.myclear { display: inline-block; }
+* html .myclear { height: 1%; }
+.myclear { display: block; }
+.album-img { background:none; border:none; }
+.album-img li { list-style:none; }
+.album-img ul li { position:relative; text-align:center; border:1px solid #dedede; margin-bottom:20px; background:#FFF; }
+.album-img ul li img { }
+.album-img ul li span { position:absolute; display:block; top:100px; right:10px; color:#fff; }
+.album-img ul li h3 { padding:12px 0; color:#666666; font-weight:normal; }
+.album-img ul, .album-img ol { padding-left:0px; }
+.album-img .nobd div { width:280px; }
+.album-img .btns { width:120px; margin:0 10px; float:left; }
+.album-img table tr { height:50px; }
+.album-img table td, .album-img table th { border:0px; }
+label.error { display:inline; }
+.album-item { float:left; margin:10px 10px; border:1px solid #EEE; }
+#album img { width:100%; }
+.del { color:#fff; }

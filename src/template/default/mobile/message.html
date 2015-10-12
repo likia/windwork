@@ -1,0 +1,31 @@
+{tpl header}
+<section class="section">
+  <h2 class="message-hd">提示信息</h2>
+  <div class="section-bd">
+    {tpl prompt}
+    
+    {if @$message}
+    <div class="section message">
+      <div class="section-bd">
+        <div class="box box-message">            
+          {if is_array($message)}
+            {loop $message $messageItem}
+            {$messageItem}
+            {/loop}
+          {else}
+            {$message}
+          {/if}
+        </div>
+      </div>
+      <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+    </div>
+    {/if}
+    
+    <div class="message-link">
+      <a href="javascript:;" onclick="history.back(-1)" class="btn">返回</a>
+    </div>
+    
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</section>
+{tpl footer}

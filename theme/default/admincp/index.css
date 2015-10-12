@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+html, body { height:100%; background:#F4FBF4;}
+body { color:#333; font: 12px/150% Verdana,arial,tahoma,"Arial Narrow",\5b8b\4f53; }
+html, body, div, p, h1, h2, h3, h4, h5, h6, ul, li, span {
+	margin: 0;
+	padding: 0;
+}
+a { text-decoration: none;}
+html, body { height:100%; overflow:hidden;}
+ul { list-style: none;}
+#header { position: relative; z-index:9; height:100%; overflow: hidden; background: #FBFDFF url("images/head_bg.gif") repeat-x;}
+  #logo { width:145px; background:url(images/logo.png) 5px 0 no-repeat; height:80px; text-indent:-600px;}
+  #nav { position: absolute; left:160px; top:16px !important; top:11px;  width:100%;}
+    #top_nav { position:relative; border-bottom: 4px solid #047D13; height:30px;}
+	  #top_nav a { display:block; float:left; line-height:30px; zoom: 1; width:72px; text-align:center; font-weight:bold; font-size:14px; color:#060; }
+	  #top_nav a.current span { display:block; margin-top:-2px; height:32px; line-height:32px; background:url(images/bg.png) bottom; color:#FFF; border-radius:4px 4px 0 0;}
+	  #top_nav a:hover {color:#090;}
+    #current_local { height: 30px;line-height: 32px; padding: 0 8px; background:#F0F7FF; border-left: 1px solid #B0D3EE;}
+  #home-link { position: absolute; right:15px; top:15px; line-height:20px; z-index:9; color:#2366A8; }
+  
+#tools { position:absolute; right: 0; top:51px; line-height:30px; height:30px; width:100%; text-align:right; z-index:10;}
+  #tools p { padding: 0 30px;}
+
+#left_menu { border-top:1px solid #B0D3EE; padding:12px 0;}
+#left_menu li { position: relative; margin: 0; border: 1px solid #F4FBF4; border-right: none; }
+#left_menu li.current { background: #FFF;  margin: 0 -1px 0 1px; border: 1px solid #EAF2FA; border-right: none; font-weight:bold;}
+#left_menu li a { line-height:24px; padding-left:32px; color: #264D84; display:block; }
+#left_menu li .ui-icon { position:absolute; left:12px; top:4px; }
+
+#main {overflow-y: auto; overflow-x:hidden; border-left: 1px solid #B0D3EE; border-bottom: 1px solid #B0D3EE; border-top:1px solid #B0D3EE; background:#FFF;}
+
+#copyright { margin-top: -22px; width: 160px; text-align:center; font-size:11px; color:#666; }
+
+/* Login */
+#admincp-login { background:#F4F4F4; }
+.login { width: 250px; overflow:hidden; margin: 180px auto 0;animation: bounceIn 600ms linear;}
+.login h1 { text-align:center; }
+.login .input { background:#FFF; border:none;font-family: Arial,"Microsoft Yahei"; font-size: 18px; padding: 5px; vertical-align: middle; width: 225px; }
+.login ul { background:#FFF; border: 1px solid #D8D8D8; border-radius: 5px; box-shadow: 3px 3px 3px #EEE inset; margin-bottom: 15px; overflow: hidden; width: 248px; }
+.login ul li { padding:5px; border-top:1px solid #DEDEDE; }
+.login .input:focus { outline:0 none; }
+.login .btn { width: 250px; height: 38px; padding: 0; margin: 0; vertical-align: middle;
+	background:#1B9429; overflow:visible; color:#fff; font-size:20px; cursor:pointer; font-family:Arial, "Microsoft Yahei";
+	border:1px solid #2D6B56; border-radius:5px;
+}
+.login .btn:hover {background:#006600;}
+#ui-loading { background:url(images/loading-big.gif) 50% 50% no-repeat; height:100px; width:100px; position:absolute; display:none; left:50%; top:50%; z-index:9999;}

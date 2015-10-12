@@ -1,0 +1,9 @@
+<div class="navtab">
+   <span class="pagetitle">管理推荐信息</span>
+   <ul>
+     <li class="{if "$ctl/$act" == 'admin.positiondata/list'}current{/if}"><a href="{url system.admin.positiondata.list/hash:$hash}"><span>管理推荐信息</span></a></li>
+     <li class="{if "$ctl/$act" == 'admin.positiondata/create'}current{/if}"><a href="{url system.admin.positiondata.create/hash:$hash}"><span>添加推荐信息</span></a>     
+     <li class="{if "$ctl/$act" == 'manageposition/list'}current{/if}"><a href="{url system.admin.position.list/hash:$hash}"><span>管理推荐位</span></a></li>
+     <li class="{if "$ctl/$act" == 'manageposition/create'}current{/if}"><a href="{url system.admin.position.create/hash:$hash}"><span>添加推荐位</span></a></li>
+   </ul>
+</div>

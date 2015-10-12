@@ -1,0 +1,68 @@
+<!--{tpl header}-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="left" width="100">系统信息</th>
+        <th>&nbsp;</th>
+    </tr>
+    <tr>
+        <td>软件版本</td>
+        <td>Windwork {$version} (Release {$release})</td>
+    </tr>
+    <tr>
+        <td>PHP版本</td>
+        <td>{PHP_VERSION}</td>
+    </tr>
+    <tr>
+        <td>MySQL版本</td>
+        <td>{Factory::db()->getOne("SELECT VERSION()")}</td>
+    </tr>
+    <tr>
+        <td>服务器端信息</td>
+        <td>{$_SERVER["SERVER_SOFTWARE"]}</td>
+    </tr>
+    <tr>
+        <td>最大上传限制</td>
+        <td>{Common::getUploadMaxSize()}</td>
+    </tr>
+    <tr>
+        <td>最大执行时间</td>
+        <td>{ini_get('max_execution_time')}s</td>
+    </tr>
+    <tr>
+        <td>邮件发送模式</td>
+        <td>{if Config::get('mail_type') == 1}本地Mail服务器{elseif Config::get('mail_type') == 2}SMTP(Server: {Config::get('mail_host')}){else}{/if}</td>
+    </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb mt">
+    <tr>
+        <th align="left" width="100">开发团队</th>
+        <th>&nbsp;</th>
+    </tr>
+    <tr>
+        <td>官方网站</td>
+        <td><a href="http://www.windwork.org" target="_blank">www.windwork.org</a></td>
+    </tr>
+    <tr>
+        <td>负责人</td>
+        <td>孟春(cmm)</td>
+    </tr>
+    <tr>
+        <td>产品研发</td>
+        <td>小瞿、Susu、Benny、狐狸、Polly、QuanChen</td>
+    </tr>
+    <tr>
+        <td>UI/UED</td>
+        <td>泡~~、二章、静东</td>
+    </tr>
+    <tr>
+        <td>文档整理</td>
+        <td>水问、豆腐花</td>
+    </tr>
+    <tr>
+        <td>特别感谢贡献者</td>
+        <td>一楼、叨叨雨、Eleven、掉線的風箏、卡带、图图、鬼见愁、BetterMan、笨笨的羊、朵朵、Starl</td>
+    </tr>
+</table>
+
+<!--{tpl footer}-->

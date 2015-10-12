@@ -1,0 +1,39 @@
+{tpl header}
+
+    <!--header-->
+    <header id="header">
+      <a href="javascript:;" class="back" onclick="history.back(-1)"><i class="icon"></i>返回</a> 
+      <a href="{url user.account.profile}" class="edit"><i class="icon"></i>编辑个人信息</a> 
+      <strong class="page-name">我（{$_SESSION[uid]}）</strong>
+    </header>
+    <div class="header-place"></div>
+    <!--/header-->
+
+  <section class="ucenter">
+    <dl class="member-info">
+      <dt><img src="{if $account[avatarid]}{thumb($account[avatarid], 'small')}{elseif $account[avatar]}{$account[avatar]}{else}{$nopic}{/if}" /></dt>
+      <dd class="member-name">{$account[uname]}{if $account[nickname]}({$account[nickname]}){/if}</dd>
+      <dd class="member-phone">{if $account[mobile]}{$account[mobile]}{else}<a href="{url user.account.bindmobile}">绑定手机号</a>{/if}</dd>
+      <dd class="member-credit">积分：{$account[credit]}{if $shop}&nbsp;&nbsp;体力：{$shop[power]}{/if}</dd>
+      <dd class="member-edit"><a href="{url user.account.profile}"><i class="icon"></i>编辑个人信息</a></dd>
+    </dl>
+  </section>
+   
+  <section class="m-list">    
+    <ul>
+      <li><a href="{url repair.issue.list/by:mine}">我的修车单<i></i></a></li>
+      <li><a href="{url user.active.checkin}">签到记录<i></i></a></li>
+      <!-- {if $_SESSION['mobile']} -->
+      <li><a href="{url user.account.unbindmobile}">解绑手机号码<i></i></a></li>
+      <!-- {else} -->
+      <li><a href="{url user.account.bindmobile}">绑定手机号码<i></i></a></li>
+      <!-- {/if} -->
+      <li><a href="{url user.account.setpassword}">修改密码<i></i></a></li>
+      <li><a href="{url article.show.list/help}">帮助中心<i></i></a></li>
+      <li><a href="{url user.account.logout}">登出<i></i></a></li>
+    </ul>
+  </section>
+  
+{tpl shop/biz.shop.navs}
+{tpl nav}
+{tpl footer}

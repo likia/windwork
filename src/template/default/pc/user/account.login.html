@@ -1,0 +1,57 @@
+{tpl header}
+    <div class="section ucenter">
+      <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+      <div class="section-bd">
+        <h2 class="page-title">登录{$siteName}</h2>
+        <div class="main">
+          <form class="form" action="{url user.account.login}" method="post" enctype="application/x-www-form-urlencoded" target="_self" id="login-form">
+            <input type="hidden" name="forward" id="forward" value="{$_REQUEST[forward]}" /> 
+            
+            {tpl prompt}
+            
+            <div>
+              <label for="email" class="form-row-l">账　号：</label> 
+              <input class="text" type="text" name="account" id="account" value="{$_REQUEST['account']}" /> 
+              <b class="red">*</b> 
+              <span class="note">用户名或邮箱</span>
+              <span class="message"></span>
+            </div>
+            <div>
+              <label for="password" class="form-row-l">密　码：</label> 
+              <input class="text" type="password" name="password" id="password" value="{$_REQUEST['password']}" /> 
+              <b class="red">*</b> <span class="message"></span>
+            </div>
+            <!--{if $captchaOpt[login]}-->
+            <div>
+              <label for="secode" class="form-row-l">验证码：</label> <input class="text secode" type="text" name="secode" id="secode" size="6" onkeyup="this.value=this.value.toUpperCase()" autocomplete="off" /> <b class="red">*</b> 
+              <a href="javascript:;" onclick="$(this).find('img').attr('src', '{url system.misc.captcha/entry:sec}/'+Math.random());$('#secode').focus();" class="secode-img"><img src="{url system.misc.captcha/entry:sec}" />换一张</a>
+              <span class="message"></span>
+            </div>
+            <!--{/if}-->
+            <div>
+              <label class="form-row-l">&nbsp;</label>
+              <input class="btn" type="submit" value="登 录" />
+            </div>
+          </form>
+        </div>
+        <div class="side">
+          &gt; 没有{$siteName}的账号？<a href="{url user.account.register}">注册</a><br />
+          &gt; 忘记密码了？<a href="{url user.account.forgetpassword}">取回密码</a>
+        </div>
+      </div>
+      <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+    </div>
+    
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/jquery.validate.cfg.js"></script>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$("#login-form").validate(validateCfg.login);
+});
+
+//]]>
+</script>
+
+{tpl footer}

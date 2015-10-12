@@ -1,0 +1,52 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="section">
+  <form class="form" action="{url user.account.login/ajax:1}" method="post" target="_self" id="login-form">
+    <p>
+      账　号: <input class="text" type="text" name="account" id="account" value="" /> 
+      <b class="red">*</b> 
+      <span class="note">用户名或邮箱</span>
+      <span class="message"></span>
+    </p>
+    <p>密　码: <input class="text" type="password" name="password" id="password" value="" /> <b class="red">*</b> <span class="message"></span></p>
+    <!--{if $captchaOpt[login]}-->
+    <p>验证码: <input class="text secode" type="text" name="secode" id="secode" value="" size="6" onkeyup="this.value=this.value.toUpperCase()" autocomplete="off" /> <b class="red">*</b>
+       <a href="javascript:;" onclick="$(this).find('img').attr('src', '{url system.misc.captcha/entry:sec}/'+Math.random());$('#secode').focus();" class="secode-img"><img src="{url system.misc.captcha/entry:sec}" />换一张</a>
+       <span class="message"></span>
+    </p>
+    <!--{/if}-->
+    <p class="submit-box">
+      <input class="btn" type="submit" value="登 录" />
+      你也可以<a href="{url user.account.forgetpassword}">取回密码</a> 或 <a href="{url user.account.register}">注册</a>
+      <br /><span class="message error"></span>
+    </p>
+  </form>
+</div>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/jquery.validate.cfg.js"></script>
+<script type="text/javascript" language="javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	validateCfg.login.submitHandler = function() {
+		Wind.ui.showLoading();
+		$("#dialog-box #login-form .submit-box .message").text('');
+	    $.post('{url user.account.login/ajax:1/r}'+Math.random(),  $("#dialog-box #login-form :input"), function (r) {
+	    	Wind.ui.hideLoading();
+			if(r.err.length > 0) {
+				$("#dialog-box #login-form .submit-box .message").text(r.err);
+			} else {				
+				if(r.err.length) {
+					$('#login-tip').html(Wind.ui.messageFormat(r.err));
+				} else {
+					Wind.user.profile = r.message;
+					Wind.dialog.close();
+					Wind.user.showUserTopbar();
+				}
+			}
+		}, 'json');		
+	}
+	$("#dialog-box #login-form").validate(validateCfg.login);
+});
+
+//]]>
+</script>

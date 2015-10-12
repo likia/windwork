@@ -1,0 +1,71 @@
+<!--{if Message::hasMessage()}-->
+    <!--{if Message::hasErr()}-->
+    <div class="section prompt err">
+      <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+      <div class="section-bd">
+        <div class="box box-error-msg">
+            <ol class="">
+                <!--{loop Message::getErrs() $k $err}-->
+                <li>{$err}</li>
+                <!--{/loop}-->
+            </ol>
+        </div>
+      </div>
+      <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+    </div>
+    <!--{/if}-->
+    
+    <!--{if Message::hasWarn()}-->    
+    <div class="section prompt warn">
+      <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+      <div class="section-bd">
+        <div class="box box-warning">
+            <ol>
+                <!--{loop Message::getWarns() $warn}-->
+                <li>{$warn}</li>
+                <!--{/loop}-->
+            </ol>
+        </div>
+      </div>
+      <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+    </div>
+    <!--{/if}-->
+    
+    <!--{if Message::hasOK()}-->
+    <div class="section prompt ok">
+      <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+      <div class="section-bd">
+        <div class="box box-success">
+            <ol>
+                <!--{loop Message::getOKs() $ok}-->
+                <li>{$ok}</li>
+                <!--{/loop}-->
+            </ol>
+        </div>
+      </div>
+      <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+    </div>
+    <!--{/if}-->
+<script>
+
+var promptEffectCount = 500;
+function promptEffect() {
+	if(promptEffectCount < 0) {
+		$('.prompt').removeClass('effect')
+		return;
+	}
+	
+	if($('.prompt').hasClass('effect')) {
+		$('.prompt').removeClass('effect')
+	} else {
+		$('.prompt').addClass('effect')
+	}
+	
+	promptEffectCount -= 36;
+	setTimeout(promptEffect, promptEffectCount);
+}
+$(function() {
+	setTimeout(promptEffect, promptEffectCount);
+})
+</script>
+<!--{/if}-->

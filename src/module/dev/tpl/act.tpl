@@ -1,0 +1,6 @@
+/**
+ *
+ *
+ */
+public function {act}Action() {
+}

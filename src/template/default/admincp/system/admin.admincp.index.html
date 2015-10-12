@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>管理后台 - {$siteName}</title>
+<meta name="generator" content="Windwork {$version}" />
+<meta name="author" content="Windwork Team" />
+<meta name="copyright" content="2008-{date('Y')} Windwork Team." />
+<link rel="shortcut icon" href="{$basePath}static/favicon.ico"  />
+<link rel="stylesheet" type="text/css" href="{$stylePath}index.css" />
+<base href="{$basePath}" />
+</head>
+<body scroll="no">
+    <div id="tools">
+      <p>
+        您好, {$_SESSION['uname']} [<a href="{url('user.account.logout')}">退出</a>]         
+      </p>
+    </div>
+    <table id="fwrap" width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td id="ui-td-header" height="80" colspan="2" align="left">
+          <div id="header">
+              <div id="logo">Windwork Administrator's Control Panel</div>
+              <div id="nav">
+                  <div id="top_nav">
+                      {loop $menu $menuid $nav}
+                      {if !$nav['upid']}
+                      <a id="nav_{$menuid}" href="javascript:;" onclick="openTab({$menuid});"><span>{$nav['name']}</span></a>
+                      {/if}
+                      {/loop}
+                  </div>
+                  <div id="current_local"></div>
+              </div>
+              
+              <a id="home-link" href="{$basePath}" target="_blank" class="ui-button ui-state-default ui-corner-all ui-state-highlight" style="background:#F0F7FF; border-radius: 5px; border:1px solid #FCD113;">
+                  <span class="ui-icon ui-icon-newwin" style="left:2px; top:2px;"></span>
+                  <span style="margin:0 10px 0 20px;  line-height:20px;">前台首页</span>
+              </a>
+              
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="left" width="160" align="left" valign="top">
+          <ul id="left_menu"></ul>
+        </td>
+        <td align="left" valign="top">
+          <iframe id="main" name="main" width="100%" frameborder="0" height="100%" scrolling="yes"></iframe>
+        </td>
+      </tr>
+    </table>
+<div id="copyright">
+ Powered by <b><a href="http://www.gxhenghui.net" target="_blank"><font color="#ff0000" title="windwork.org">Heng</font><font color="#3300ff" title="gxhenghui.net">Hui</font></a></b>
+</div>
+<script type="text/javascript" src="{$basePath}static/js/jquery.js"></script>
+<script type="text/javascript" defer>
+//<![CDATA[
+var menu = {json_encode($menu)};
+
+	$('#main').ajaxStart(function(){alert(1);
+		$('body').append('<div id="ui-loading">&nbsp;</div>');
+	});
+	
+$(function(){
+	$('#ui-loading', parent.document).remove();
+	
+	$('#main').ajaxStart(function(){
+		$('body').append('<div id="ui-loading">&nbsp;</div>');
+	});
+	
+	$('body').ajaxComplete(function(){
+		$('#ui-loading', parent.document).remove();
+	});
+
+    $('.ui-buttonset label, .ui-button').hover(
+		function() { $(this).addClass('ui-state-hover'); }, 
+		function() { $(this).removeClass('ui-state-hover'); }
+	);
+	
+	$('#main').height($(window).height()-$('#header').height() - 5);
+	$(window).resize(function(){$('#main').height($(window).height()-$('#header').height() - 5);});
+		
+    openTab(1);
+});
+
+/**
+ * 打开顶上菜单
+ */
+function openTab(id) {
+	$('#top_nav a').removeClass('current');
+    $('#nav_'+id).addClass('current');
+		
+	if(menu[id] == 'undefined' || menu[id]['chile'] == 'undefined') return;
+	
+	// 左边菜单显示
+	var leftMenu = '';
+	for(var i in menu[id]['chile']) {
+		var node = menu[id]['chile'][i];
+		leftMenu += '<li><a href="'+node.url+'" target="main">'+node.name+'</a></li>';
+	}
+	
+	$('#left_menu').html(leftMenu);
+	$('#current_local').html(menu[id].name + ' » <span id="current_page_name"></span>');
+	
+	$('#left_menu li').click(function() {
+		$('#left_menu li').removeClass('current');
+		$(this).addClass('current');
+		$('#current_page_name').html($(this).find('a').text());
+		
+	});
+	
+	$('#left_menu li').first().click();
+	$('#main').attr('src', $('#left_menu li a').first().attr('href'));
+}
+
+
+if (window.top !== window.self) {
+	document.write = '';
+	window.top.location.href = window.self.location.href;
+	setTimeout(function () {
+		document.body.innerHTML = '';
+	}, 0);
+}
+
+document.getElementById('main').onload = function () {
+	$('#ui-loading').hide();
+}
+
+//]]>
+</script>
+
+ 
+</body>
+</html>

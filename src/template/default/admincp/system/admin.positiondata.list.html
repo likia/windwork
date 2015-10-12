@@ -1,0 +1,76 @@
+<!--{tpl header}-->
+<!--{if false}-->
+<link rel="stylesheet" rev="stylesheet" href="/template/default/admincp/style/style.css" type="text/css" media="all" />
+<!--{/if}-->
+<!--{tpl system/admin.position.navtab}-->
+  <div class="">
+     <b>选择推荐位：</b>
+     <!--{loop $positions $psitionId $positionItem}-->
+     <a href="{url $mod.$ctl.$act/posid:$psitionId/hash:$hash}" style="color:#666; display:inline-block; padding:0 4px; {if !empty($_GET['posid']) && $_GET['posid'] == $psitionId} background:#CCC; border-radius:4px; color:#444; {/if}"><span>{$positionItem[name]}</span></a>
+     <!--{/loop}-->
+  </div>
+<form action="" method="post" enctype="application/x-www-form-urlencoded" target="_self" onsubmit="return confirm('确定要执行该操作吗？')">
+  <input type="hidden" name="hash" value="{$hash}"  />
+  <div class="mt">
+      <table class="tb" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr class="th">
+          <th width="20" align="center"><input type="checkbox" name="checkall" /></th>
+          <th width="50" align="center">排序</th>
+          <th width="40" align="center">ID</th>
+          <th align="left">标题</th>
+          <th width="100" align="center">推荐位</th>
+          <th width="100" align="center">管理操作</th>
+        </tr>
+        <!--{loop $positionData $item}-->
+        <tr id="list-{$item['id']}" class="bb">
+          <td align="center"><input name="batchecked[{$item['id']}]" size="3" type="checkbox" value="{$item['id']}" class="batchecked" /></td>
+          <td align="center"><input type="text" name="sort[{$item['id']}]" value="{$item['displayorder']}" size="3" style="text-align:center;"></td>
+          <td align="center">{$item['id']}</td>
+          <td><a href="{$item[url]}" target="_blank">{$item['title']}</a></td>
+          <td align="center">{if $item['posid']}<a href="{url $mod.$ctl.$act/posid:$item[posid]/hash:$hash}">{$positions[$item['posid']]['name']}</a>{else} - {/if}</td>
+          <td align="center">
+            <a href="{url $mod.$ctl.update/$item[id]/hash:$hash}">编辑</a> | 
+            <a href="javascript:;" onclick="if(confirm('您确定要删除吗？')) deletePositionData({$item['id']});">删除</a>
+          </td>
+        </tr>
+        <!--{/loop}-->
+      </table>
+      <br />
+
+      <div class="tfooter">
+          <p class="bathandle">      
+            <select name="handle" class="fl" style="float:left; margin-right:3px;">
+              <option value="sort" selected="selected">排序</option>
+              <option value="delete">删除</option>
+            </select>
+            <input type="submit" value="提交" class="btn">      
+          </p>
+          <div>{$pageHtml}</div>
+      </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+$(function(){
+	$("input[name='checkall']").click(function(){
+		if($(this).attr('checked')) {
+			$('.batchecked').attr('checked', 'checked');
+		} else {
+			$('.batchecked').removeAttr('checked');
+		}
+	});
+});
+
+function deletePositionData(id) {
+	var url = Wind.util.makeAjaxUrl('system.admin.positiondata.delete/'+id);
+	$.getJSON(url, function(r){
+		if(r.err.length) {
+			Wind.message.show(r.err, '出错了！');
+			return false;
+		}
+		
+		$('#list-'+id).remove();
+	});
+}
+</script>
+<!--{tpl footer}-->
