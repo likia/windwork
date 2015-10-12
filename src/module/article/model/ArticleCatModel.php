@@ -41,7 +41,7 @@ class ArticleCatModel extends \core\mvc\Model {
 		$cats = $this->getTree();
 		
 		// 不允许把本身或子分类设为上级分类
-		if($this->parentid == $this->cid || in_array($this->parentid, $cats[$this->getObjId()]['chileArr'])) {
+		if($this->parentid == $this->cid || in_array($this->parentid, $cats[$this->getPkv()]['chileArr'])) {
 			$this->setErr('错误的上级分类，不允许选择自己或自己的子分类作为上级分类。');
 			return false;
 		}
@@ -115,19 +115,19 @@ class ArticleCatModel extends \core\mvc\Model {
 	public function delete() {
 		// 不允许删除有子分类的栏目
 		$cats = $this->getTree();
-		if (empty($cats[$this->getObjId()])) {
+		if (empty($cats[$this->getPkv()])) {
 			$this->setErr('该分类已删除或未添加！');
 			return false;
 		}
 		
-		if (!empty($cats[$this->getObjId()]['chileArr'])) {
+		if (!empty($cats[$this->getPkv()]['chileArr'])) {
 			$this->setErr('该分类下还有子分类，不允许删除！');
 			return false;			
 		}
 		
 		// 不允许删除有内容的分类
 		$article = new ArticleModel();
-		if($article->count(array('where' => array('cid', $this->getObjId())))) {
+		if($article->count(array('where' => array('cid', $this->getPkv())))) {
 			$this->setErr('该分类下还有文章，不允许删除！');
 			return false;			
 		}

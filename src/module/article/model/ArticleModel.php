@@ -25,7 +25,7 @@ class ArticleModel extends \core\mvc\Model {
 		$do = parent::load();
 		if($do) {
 			$contentObj = new ArticleContentModel();
-			if($contentObj->setObjId($this->getObjId())->load()) {
+			if($contentObj->setPkv($this->getPkv())->load()) {
 				$this->fromArray($this->toArray() + $contentObj->toArray());
 			}			
 		}
@@ -123,14 +123,14 @@ class ArticleModel extends \core\mvc\Model {
 	    $do = parent::update();	
 		if(false !== $do) {
 			$contentObj = new ArticleContentModel();
-			$contentObj->setObjId($this->getObjId())
+			$contentObj->setPkv($this->getPkv())
 			->setContent($this->content)
 			->update();
 		}
 		
 		$positionDataObj = new \module\system\model\PositionDataModel();
 		// 删除当前文章旧的推荐数据
-		$positionDataObj->deleteByTypeItem('article', $this->getObjId());
+		$positionDataObj->deleteByTypeItem('article', $this->getPkv());
 		
 		// 处理推荐
 		if (false !== $do && !empty($this->position)) {
@@ -167,8 +167,8 @@ class ArticleModel extends \core\mvc\Model {
 		
 		$do = parent::delete();
 		if(false !== $do) {
-			$contentObj->setObjId($this->getObjId())->delete();
-			$positionDataObj->deleteByTypeItem('article', $this->getObjId());
+			$contentObj->setPkv($this->getPkv())->delete();
+			$positionDataObj->deleteByTypeItem('article', $this->getPkv());
 		}
 			
 		
@@ -203,7 +203,7 @@ class ArticleModel extends \core\mvc\Model {
 	 * @return bool
 	 */
 	public function updateDisplayOrder($displayOrder) {
-		if(!$this->getObjId()) {
+		if(!$this->getPkv()) {
 			$this->setErr('请设置文章id！');
 			return false;
 		}
@@ -258,7 +258,7 @@ class ArticleModel extends \core\mvc\Model {
 	 * @return bool
 	 */
 	public function updateStatus($status) {
-		if(!$this->getObjId()) {
+		if(!$this->getPkv()) {
 			$this->setErr('请设置文章id！');
 			return false;
 		}

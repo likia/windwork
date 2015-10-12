@@ -21,7 +21,7 @@ class ArticleContentModel extends \core\mvc\Model {
 	}
 	
 	public function replace() {
-		if (!$this->getObjId()) {
+		if (!$this->getPkv()) {
 			$this->setErr('错误：请设置文章id！');
 			return false;
 		}

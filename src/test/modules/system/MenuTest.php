@@ -33,7 +33,7 @@ class MenuTest extends PHPUnit_Framework_TestCase {
 	 */
 	protected function tearDown() {
 		foreach ($this->newIds as $id) {
-			$this->Menu->setObjId($id)->delete();
+			$this->Menu->setPkv($id)->delete();
 		}
 		
 		$this->Menu = null;
@@ -74,7 +74,7 @@ class MenuTest extends PHPUnit_Framework_TestCase {
 		
 		foreach ($items as $item) {
 			$this->Menu->fromArray($item)->create();
-			$this->newIds[] = $this->Menu->getObjId();
+			$this->newIds[] = $this->Menu->getPkv();
 		}
 				
 		// read
@@ -83,7 +83,7 @@ class MenuTest extends PHPUnit_Framework_TestCase {
 		
 		// update
 		$obj = new \module\system\model\MenuModel();
-		$obj->setObjId($this->newIds[0])->load();
+		$obj->setPkv($this->newIds[0])->load();
 		$this->assertNotEquals($items[1]['name'], $obj->name);
 		$this->assertNotEquals($items[1]['upid'], $obj->upid);
 		$this->assertNotEquals($items[1]['url'], $obj->url);
@@ -98,18 +98,18 @@ class MenuTest extends PHPUnit_Framework_TestCase {
 		// sort
 		$data = array($this->newIds[0] => 8, $this->newIds[1] => 12);
 		foreach ($data as $key => $val) {
-			$this->Menu->setObjId($key)->load();
+			$this->Menu->setPkv($key)->load();
 			if($this->Menu->displayOrder == $val) {
 				continue;
 			}
 			
 			$this->Menu->setDisplayOrder($val)->update();
-			$this->assertEquals($val, $obj->setObjId($key)->load()->displayorder);
+			$this->assertEquals($val, $obj->setPkv($key)->load()->displayorder);
 		}
 		
 		// delete
 		foreach ($this->newIds as $id) {
-			$obj->setObjId($id)->delete();
+			$obj->setPkv($id)->delete();
 		}
 
 		$menus = $this->Menu->getTree();

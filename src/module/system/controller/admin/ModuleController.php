@@ -45,7 +45,7 @@ class ModuleController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		
 		if(false === $this->m->install()){
 			Message::setErr($this->m->getErrs());
@@ -63,7 +63,7 @@ class ModuleController extends \module\system\controller\admin\AdminBase {
 	 * @param string $id
 	 */
 	public function uninstallAction($id = '') {
-		if(false === $this->m->setObjId($id)->uninstall()){
+		if(false === $this->m->setPkv($id)->uninstall()){
 			Message::setErr($this->m->getErrs());
 			//$this->showMessage();
 		} else {
@@ -84,7 +84,7 @@ class ModuleController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		
-		if($this->m->setObjId($id)->deactivate()){
+		if($this->m->setPkv($id)->deactivate()){
 			Message::setOK('成功禁用模块： '.$id);
 		} else {
 			Message::setErr($this->m->getErrs());
@@ -103,7 +103,7 @@ class ModuleController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		
-		if($this->m->setObjId($id)->activate()){
+		if($this->m->setPkv($id)->activate()){
 			Message::setOK('成功启用模块： '.$id);
 		} else {
 			Message::setErr($this->m->getErrs());

@@ -64,7 +64,7 @@ class RoleController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		
-		$this->role->setObjId($roid);
+		$this->role->setPkv($roid);
 		if(!$this->role->isExist()) {
 			Message::setErr('角色不存在！');
 			$this->showMessage();
@@ -95,7 +95,7 @@ class RoleController extends \module\system\controller\admin\AdminBase {
 		$roid = (int)$roid;
 		if(!$roid) {
 			Message::setErr('错误的参数！');
-		} elseif(false === $this->role->setObjId($roid)->delete()){
+		} elseif(false === $this->role->setPkv($roid)->delete()){
 			Message::setErr($this->role->getErrs());
 		} else {
 			Message::setOK('删除角色成功！');

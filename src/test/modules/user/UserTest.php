@@ -79,13 +79,13 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testLoad() {
 		$this->testCreate();
-		$uid = $this->User->getObjId();
+		$uid = $this->User->getPkv();
 		
 		$userObj = new UserModel();
 		
 		$userObj
 		->setTableObj(new TUser())
-		->setObjId($uid);
+		->setPkv($uid);
 		
 		$r = $userObj->load();
 		Test::trace($r->toArray());
@@ -151,11 +151,11 @@ class UserTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($obj->login($user['uname'], $user['password'], 'uname'));
 		$this->assertTrue($obj->login($user['email'], $user['password'], 'email'));
-		$this->assertTrue($obj->login($obj->getObjId(),  $user['password'], 'uid'));
+		$this->assertTrue($obj->login($obj->getPkv(),  $user['password'], 'uid'));
 
 		$this->assertFalse($obj->login($user['uname'], 'xxxxxxx', 'uname'));
 		$this->assertFalse($obj->login($user['email'], 'jjjjjjj', 'email'));
-		$this->assertFalse($obj->login($obj->getObjId(),  'yyyyyyy', 'uid'));
+		$this->assertFalse($obj->login($obj->getPkv(),  'yyyyyyy', 'uid'));
 		$this->assertFalse($obj->login('x@y.z', $user['password'], 'email'));
 		$this->assertFalse($obj->login(99999,  $user['password'], 'uid'));
 	}

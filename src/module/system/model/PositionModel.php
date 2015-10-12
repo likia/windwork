@@ -99,7 +99,7 @@ class PositionModel extends \core\mvc\Model {
 	
 		if (!$position) {
 			$position = new \module\system\model\PositionModel();
-			if($position->setObjId($posid)->load()) {
+			if($position->setPkv($posid)->load()) {
 				// 获取推荐位数据
 				$positionDataObj = new \module\system\model\PositionDataModel();
 				$position->data = $positionDataObj->getPositionData($posid, $position->shownum);

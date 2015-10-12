@@ -69,7 +69,7 @@ class DiyMenuModel extends \core\mvc\Model {
 	 * @param int $id
 	 */
 	public function updateById($id) {
-		$this->setObjId($id);
+		$this->setPkv($id);
 		
 		$this->name = trim($this->name);
 		$this->url = trim($this->url);
@@ -88,7 +88,7 @@ class DiyMenuModel extends \core\mvc\Model {
 	 * @return boolean
 	 */
 	public function loadById($id) {
-		$this->setObjId($id);
+		$this->setPkv($id);
 		return $this->load();
 	}
 
@@ -105,7 +105,7 @@ class DiyMenuModel extends \core\mvc\Model {
 			return false;
 		}
 		
-		$this->setObjId($id);
+		$this->setPkv($id);
 		return $this->delete();
 	}
 

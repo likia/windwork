@@ -64,7 +64,7 @@ class UserController extends \module\system\controller\admin\AdminBase {
 				Message::setErr($this->user->getErrs());
 			} else {
 				$_POST = array();
-				$uid = $this->user->getObjId();
+				$uid = $this->user->getPkv();
 				$msg = '成功添加用户'.$this->user->userTypes[$type]
 				     . " <a href='index.php?user.admin.user.update/{$uid}/hash:".csrfToken()."'>编辑</a>";
 				Message::setOK($msg);
@@ -78,7 +78,7 @@ class UserController extends \module\system\controller\admin\AdminBase {
 	
 	public function updateAction($uid = 0) {
 		$uid = (int)$uid;
-		if(!$uid || !$this->user->setObjId($uid)->load()) {			
+		if(!$uid || !$this->user->setPkv($uid)->load()) {			
 			Message::setErr('错误：该用户不存在！');
 			$this->showMessage();
 			return false;

@@ -43,7 +43,7 @@ class AccountController extends \core\mvc\Controller {
 	 */
 	public function setPasswordAction() {
 		$accountObj = new AccountModel();
-		$accountObj->setObjId($_SESSION['uid']);
+		$accountObj->setPkv($_SESSION['uid']);
 				
 		if ($this->request->isPost() && \core\util\Input::checkRePost()) {
 			$oldPassword  = $this->request->getRequest('oldpassword');

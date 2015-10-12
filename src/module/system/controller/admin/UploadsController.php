@@ -46,7 +46,7 @@ class UploadsController extends \module\system\controller\admin\AdminBase {
 	
 		if($this->request->isPost() && $batchecked = $this->request->getRequest('batchecked')) {
 			foreach ($batchecked as $UploadId) {
-				$this->m->setObjId($UploadId);
+				$this->m->setPkv($UploadId);
 				if(false === $this->m->delete()) {
 					Message::setErr($this->m->getErrs());
 					break;

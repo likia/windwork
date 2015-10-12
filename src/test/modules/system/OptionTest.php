@@ -63,7 +63,7 @@ class OptionTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testAlterValue() {
 		$id = 'site_name';
-		$opt = $this->Option->setObjId($id)->load()->toArray();
+		$opt = $this->Option->setPkv($id)->load()->toArray();
 		
 		Test::trace($opt);
 		
@@ -71,13 +71,13 @@ class OptionTest extends PHPUnit_Framework_TestCase {
 		$this->Option->alterValue($id, $val);
 
 		$optObj = new OptionModel();
-		$optObj->setObjId($id)->load();
+		$optObj->setPkv($id)->load();
 		
 		$this->assertTrue($optObj->value == $val);
 				
 
 		$this->Option->alterValue($id, $opt['value']);
-		$optObj->setObjId($id)->load();
+		$optObj->setPkv($id)->load();
 		$this->assertTrue($optObj->value != $val);
 	}
 	

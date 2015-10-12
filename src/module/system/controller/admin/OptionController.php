@@ -76,7 +76,7 @@ class OptionController extends \module\system\controller\admin\AdminBase {
 		// 如果配置项组不在列表组中，则不显示列表组
 		if(!in_array($group, $groups)) {
 			$modObj = new ModuleModel();
-			$modObj->setObjId($group);
+			$modObj->setPkv($group);
 			if(!$modObj->load()) {
 				throw new \core\Exception('该模块未安装，不能设置。');
 			}

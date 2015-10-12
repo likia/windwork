@@ -76,7 +76,7 @@ class NavController extends \module\system\controller\admin\AdminBase {
 			return ;
 		}
 		
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		
 		if ($this->request->isPost()) {
 			if(false !== $this->m->fromArray($_POST)->update()){
@@ -111,7 +111,7 @@ class NavController extends \module\system\controller\admin\AdminBase {
 	    	return ;
 	    }
 	    
-	    $this->m->setObjId($id);
+	    $this->m->setPkv($id);
 	    
 	    if(false === $this->m->delete()) {
 	    	Message::setErr($this->m->getErrs());
@@ -133,7 +133,7 @@ class NavController extends \module\system\controller\admin\AdminBase {
 	public function sortAction() {
 		if ($this->request->isPost()) {
 			foreach ($_POST['sort'] as $key => $val) {
-				$this->m->setObjId($key)->load();
+				$this->m->setPkv($key)->load();
 				if($this->m->displayOrder == $val) {
 					continue;
 				}

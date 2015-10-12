@@ -146,7 +146,7 @@ class DevModel extends Object {
 		}
 		
 		$modObj = new ModuleModel();		
-		$modInfo = $modObj->setObjId($opt['mod'])->getInfo();
+		$modInfo = $modObj->setPkv($opt['mod'])->getInfo();
 		
 		$parent = $opt['parent'];
 		
@@ -214,7 +214,7 @@ class DevModel extends Object {
 		}
 		
 		$modObj = new ModuleModel();		
-		$modInfo = $modObj->setObjId($opt['mod'])->getInfo();
+		$modInfo = $modObj->setPkv($opt['mod'])->getInfo();
 		
 		$tpl = file_get_contents(dirname(__DIR__).'/tpl/model.tpl');
 		$tpl = str_replace(

@@ -28,7 +28,7 @@ class AdModel extends \core\mvc\Model {
 		$this->content = unserialize($this->content);
 		
 		$rObj = new AdPlaceRModel();
-		$rs = $rObj->select(array('fields' => 'placeid', 'where' => array('id', $this->getObjId())));
+		$rs = $rObj->select(array('fields' => 'placeid', 'where' => array('id', $this->getPkv())));
 		
 		$this->placeids = array();
 		foreach ($rs as $place) {
@@ -90,7 +90,7 @@ class AdModel extends \core\mvc\Model {
 			$placeRObj = new AdPlaceRModel();
 			
 			foreach ($this->placeid as $adPlaceId) {
-				$placeRObj->setObjId(array('id' => $this->id, 'placeid' => $adPlaceId));
+				$placeRObj->setPkv(array('id' => $this->id, 'placeid' => $adPlaceId));
 				$placeRObj->create();
 			}			
 		}
@@ -144,7 +144,7 @@ class AdModel extends \core\mvc\Model {
 			$placeRObj = new AdPlaceRModel();
 				
 			foreach ($this->placeid as $adPlaceId) {
-				$placeRObj->setObjId(array('id' => $this->id, 'placeid' => $adPlaceId));
+				$placeRObj->setPkv(array('id' => $this->id, 'placeid' => $adPlaceId));
 				$placeRObj->create();
 			}
 				

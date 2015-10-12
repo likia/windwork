@@ -53,7 +53,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->testCreate();
 		
 		$m = new TestModel();
-		$m->setObjId($this->ModelgetObjId())->load();
+		$m->setPkv($this->ModelgetPkv())->load();
 
 		
 		$this->assertEquals($this->Model->getUserPass(), $m->getUserPass());
@@ -79,7 +79,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		
 		// 从持久层取出
 		$r = new TestModel();
-		$r->setObjId($mgetObjId())->load();
+		$r->setPkv($mgetPkv())->load();
 		$s3 = $r->getUserPass();
 		
 		$this->assertNotEquals($s1, $s2);
@@ -93,7 +93,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$id = $this->testCreate();
 		$obj = $this->Model;
 		
-		$obj->setObjId($id);
+		$obj->setPkv($id);
 		
 		$this->assertNotEmpty($obj->load());
 		
@@ -113,11 +113,11 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		
 		$m->create();
 		
-		$this->assertNotEmpty($mgetObjId());
+		$this->assertNotEmpty($mgetPkv());
 		
 		$this->Model = $m;
 		
-		return $mgetObjId();
+		return $mgetPkv();
 	}
 	
 	/**

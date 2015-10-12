@@ -58,7 +58,7 @@ class PositionController extends \module\system\controller\admin\AdminBase {
 			return ;
 		}
 		
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		if (!$this->m->isExist()) {
 			Message::setErr('该推荐位不存在！');
 		} else if ($this->request->isPost()) {
@@ -93,7 +93,7 @@ class PositionController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		 
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		 
 		if(false === $this->m->delete()) {
 			Message::setErr($this->m->getErrs());

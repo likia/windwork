@@ -81,7 +81,7 @@ class ContentController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		
 		if ($this->request->isPost()) {
 			if(false !== $this->m->fromArray($_POST)->update()){
@@ -128,7 +128,7 @@ class ContentController extends \module\system\controller\admin\AdminBase {
 			// 排序
 			if ($handle == 'sort') {
 				foreach ($_POST['displayorder'] as $articleId => $displayOrder) {
-					$this->m->setObjId($articleId);
+					$this->m->setPkv($articleId);
 					$this->m->updateDisplayOrder($displayOrder);
 				}
 			} elseif(empty($_POST['batchecked'])) {
@@ -138,7 +138,7 @@ class ContentController extends \module\system\controller\admin\AdminBase {
 			} elseif($handle == 'trash' || $handle == 'draft' || $handle == 'published') {
 				$status = $handle == 'trash' ? -1 : ($handle == 'published' ? 1 : 0);
 				foreach ($_POST['batchecked'] as $articleId) {
-					$this->m->setObjId($articleId);
+					$this->m->setPkv($articleId);
 					$this->m->updateStatus($status);
 				}
 			}

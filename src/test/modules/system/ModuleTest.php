@@ -58,13 +58,13 @@ class ModuleTest extends PHPUnit_Framework_TestCase {
 	public function testInstall() {
 		$mods = $this->Module->getInstalledMods();
 		
-		$inst = $this->Module->setObjId('ad')->install();		
+		$inst = $this->Module->setPkv('ad')->install();		
 		$mods = $this->Module->getInstalledMods();
 		
 		$this->assertTrue($inst);
 		$this->assertNotEmpty($mods['ad']);
 
-		$this->Module->setObjId('ad')->uninstall();
+		$this->Module->setPkv('ad')->uninstall();
 
 		$mods = $this->Module->getInstalledMods();
 		$this->assertTrue(empty($mods['ad']));

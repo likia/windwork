@@ -72,7 +72,7 @@ class CatController extends \module\system\controller\admin\AdminBase {
 			return ;
 		}
 		
-		$this->m->setObjId($cid);
+		$this->m->setPkv($cid);
 		
 		if ($this->request->isPost()) {
 			if(false !== $this->m->fromArray($_POST)->update()){
@@ -101,7 +101,7 @@ class CatController extends \module\system\controller\admin\AdminBase {
 	public function listAction() {
 		if ($this->request->isPost() && !empty($_POST['displayorder'])) {
 			foreach ($_POST['displayorder'] as $cid => $sort) {
-				if($this->m->setObjId($cid)->load() && $this->m->getDisplayorder() !== $sort) {
+				if($this->m->setPkv($cid)->load() && $this->m->getDisplayorder() !== $sort) {
 					$this->m->setDisplayorder($sort);
 					$this->m->update();
 				}
@@ -124,7 +124,7 @@ class CatController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		 
-		$this->m->setObjId($cid);
+		$this->m->setPkv($cid);
 		 
 		if(false === $this->m->delete()) {
 			Message::setErr($this->m->getErrs());

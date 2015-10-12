@@ -57,7 +57,7 @@ class ManageAdController extends \module\system\controller\admin\AdminBase {
 	 * @param int $aid
 	 */
 	public function updateAction($id = 0) {
-		if(!$id || !$this->m->setObjId($id)->isExist()) {
+		if(!$id || !$this->m->setPkv($id)->isExist()) {
 			$this->err404();
 			return false;
 		}
@@ -94,7 +94,7 @@ class ManageAdController extends \module\system\controller\admin\AdminBase {
 	 * @param int $id
 	 */
 	public function deleteAction($id = 0) {
-		if(!$id || !$this->m->setObjId($id)->load()) {
+		if(!$id || !$this->m->setPkv($id)->load()) {
 			$this->err404();
 			return;
 		}

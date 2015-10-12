@@ -440,5 +440,67 @@ class SqlBuilder {
 	
 		return $ret;
 	}
+	
+	/**
+	 * 查询选项解析
+	 * 
+	 * @param array $options = <pre>array(
+	 *     'fields' =>'f.a, f.b', // 字段名列表，默认是 *
+	 *     'table'  => 'table_a, table_b AS b', // 查询的表名，可以是多个表，默认是当前模型的表
+	 *     'join'   => array(array('table_name', 'field_a', 'field_b'), arrray(), ..., "格式2直接写join语法"), // => LEFT JOIN `table_name` ON `field_a` = `field_b`
+	 *     'where'  => array() // 查询条件 array('and|or', array('字段1', '值', '=,+,-,|,&,^,like,in,notin,>,<,<>,>=,<=,!='), array('字段1', '值', '逻辑'), ...)
+	 *     'group'  => '', // 将对其进行SQL注入过滤并且在前面加上GROUP BY 
+	 *     'having' => '', // 将对其进行SQL注入过滤并且在前面加上 HAVING
+	 *     'order'  => '', // 将对其进行SQL注入过滤并且在前面加上 ORDER BY
+	 * )</pre>
+	 * @see \core\db\ADB::whereArr()
+	 * @throws \core\mvc\Exception
+	 * @return array
+	 */
+	public static function buildQueryOptions($options = array()) {
+		if(!is_array($options)) {
+			throw new Exception('The param must be array!', \core\Exception::ERROR_PARAMETER_TYPE_ERROR);
+		}
+		
+		$result = array();
+		
+		// fields
+		$result['fields'] = empty($options['fields']) ? '*' : SqlBuilder::quoteFields($options['fields']);
+		
+		// table
+		$result['table'] = empty($options['table']) ? '' : SqlBuilder::quoteFields($options['table']);
+		
+		// 'join' => array(array($table, $fieldA, $fieldB), ....)
+		$result['join'] = '';
+		if (!empty($options['join'])) {
+			$options['join'] = (array)$options['join'];
+			foreach ($options['join'] as $joinItem) {
+				if (is_string($joinItem)) {
+					$result['join'] .= " {$joinItem} ";
+				} else {
+					if(count($joinItem) < 3 || !is_string($joinItem[0]) || !is_string($joinItem[1]) || !is_string($joinItem[2])) {
+						throw new Exception('Error join option!', \core\Exception::ERROR_PARAMETER_TYPE_ERROR);
+					}
+					$fieldA = SqlBuilder::quoteFields($joinItem[1]);
+					$fieldB = SqlBuilder::quoteFields($joinItem[2]);
+					$result['join'] .= " LEFT JOIN " . SqlBuilder::quoteFields($joinItem[0]) . " ON {$fieldA} = {$fieldB} ";
+				}
+			}
+		}
+		
+		// where
+		$result['where'] = empty($options['where']) ? '' : ' WHERE ' . SqlBuilder::whereArr($options['where']);
+		
+		// group
+		$result['group'] = empty($options['group']) ? '' : ' GROUP BY ' . SqlBuilder::quoteFields($options['group']);
+		
+		// having
+		$result['having'] = empty($options['having']) ? '' : ' HAVING ' . SqlBuilder::whereArr($options['having']);
+		
+		// order
+		$result['order'] = empty($options['order']) ? '' : ' ORDER BY ' . SqlBuilder::order($options['order']);
+				
+		return $result;
+	}
 }
 

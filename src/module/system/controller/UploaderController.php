@@ -99,7 +99,7 @@ use core\Storage;
 	 			
 	 		if($this->m->create()){
 	 			$r['uploadfile_response'] = array(
-	 				'id'    => $this->m->getObjId(),
+	 				'id'    => $this->m->getPkv(),
 	 				'rid'   => $rid,
  					'path'  => $this->m->getPath(),
 	 				'url'   => $this->m->getUrl(),
@@ -107,7 +107,7 @@ use core\Storage;
 	 			);
 	 			
 	 			$this->m->getIsImage() && 
-	 			$r['uploadfile_response']['thumb'] = Storage::getInstance()->getThumbUrl($this->m->getObjId(), 150, 150);
+	 			$r['uploadfile_response']['thumb'] = Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150);
 	 			$r['ok'] = '成功上传附件';
 	 			$this->m->toArray();
 	 		} else {
@@ -139,9 +139,9 @@ use core\Storage;
  					
  					if($this->m->create()){
  						$r['uploadfiles_response'][] = array(
-	 						'id'    => $this->m->getObjId(),
+	 						'id'    => $this->m->getPkv(),
 		 					'rid'   => $rid,
- 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getObjId(), 150, 150),
+ 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150),
 	 						'path'  => $this->m->getPath(),
  							'path'  => $this->m->getUrl(), 								
 	 						'name'  => $this->m->getName(),
@@ -175,7 +175,7 @@ use core\Storage;
 	 					return true;
 	 				} else {
 		 				$r['uploadfile_response'] = array(
-		 					'id'    => $this->m->getObjId(),
+		 					'id'    => $this->m->getPkv(),
 		 					'rid'   => $rid,
 	 						'path'  => $this->m->getPath(),
 		 					'url'   => $this->m->getUrl(),
@@ -183,7 +183,7 @@ use core\Storage;
 		 				);
 		 				
 		 				$this->m->getIsImage() && 
-		 				$r['uploadfile_response']['thumb'] = Storage::getInstance()->getThumbUrl($this->m->getObjId(), 150, 150);
+		 				$r['uploadfile_response']['thumb'] = Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150);
 		 				
 		 				$this->m->toArray();
 		 				Message::setOK('成功上传附件');	 						
@@ -207,7 +207,7 @@ use core\Storage;
 	public function updateAction($id = 0){
 	    $id = (int)$id;
     
-		if(!$id || !$this->m->setObjId($id)->load()) {
+		if(!$id || !$this->m->setPkv($id)->load()) {
 			$this->err404();
 			return false;
 		}
@@ -265,8 +265,8 @@ use core\Storage;
 	 					
 	 					if($this->m->update()){
 	 						$r['uploadfiles_response'][] = array(
-		 						'id'    => $this->m->getObjId(),
-	 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getObjId(), 150, 150),
+		 						'id'    => $this->m->getPkv(),
+	 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150),
 		 						'path'  => $this->m->getPath(),
 		 						'url'   => Storage::getInstance()->getUrl($this->m->getPath()),
 		 						'name'  => $this->m->getName(),
@@ -306,8 +306,8 @@ use core\Storage;
 		 						return true;
 		 					} else {
 			 					$r['uploadfile_response'] = array(
-			 						'id'    => $this->m->getObjId(),
-		 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getObjId(), 150, 150),
+			 						'id'    => $this->m->getPkv(),
+		 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150),
 			 						'path'  => $this->m->getPath(),
 			 						'url'   => Storage::getInstance()->getUrl($this->m->getPath()),
 			 						'name'  => $this->m->getName(),
@@ -334,7 +334,7 @@ use core\Storage;
 		
 		if ($this->request->isAjaxRequest()) {
 			$r = array(
-				'id' => $this->m->getObjId(),
+				'id' => $this->m->getPkv(),
 				'path' => $this->m->getPath(),
 				'url'  => Storage::getInstance()->getUrl($this->m->getPath()),
 				'name' => $this->m->getName(),
@@ -343,7 +343,7 @@ use core\Storage;
 			);
 			
 			if ($this->m->getIsImage()) {
-				$r['thumb'] = thumb($this->m->getObjId(), 150, 150);
+				$r['thumb'] = thumb($this->m->getPkv(), 150, 150);
 			}
 			
 			$this->showMessage($r);
@@ -366,7 +366,7 @@ use core\Storage;
 	    $id = (int)$id;
 	    
 	    if ($_SESSION['isadmin']) {
-	    	$this->m->setObjId($id);
+	    	$this->m->setPkv($id);
 	    	if ($this->m->delete()) {
 	    		Message::setOK('成功删除文件');
 	    	} else {
@@ -418,7 +418,7 @@ use core\Storage;
 			// 
 			$userObj = new \module\user\model\UserModel();
 			
-			if (!$userObj->setObjId($avatarUid)->load() || !$userObj->avatar) {
+			if (!$userObj->setPkv($avatarUid)->load() || !$userObj->avatar) {
 				$this->response->sendRedirect($nopic);
 				return;
 			}
@@ -510,7 +510,7 @@ use core\Storage;
 				$source = $storObj->getPathFromUrl($imgId);
 				if(!$storObj->isExist($source)) {
 					$uploadObj = new \module\system\model\UploadModel();
-					if(!$uploadObj->setObjId($imgId)->load()) {
+					if(!$uploadObj->setPkv($imgId)->load()) {
 						$this->response->sendRedirect($nopic);
 						return;
 					}
@@ -535,7 +535,7 @@ use core\Storage;
 			$storObj->load($path);
 		} else if (is_numeric($path)) {
 			$uploadObj = new \module\system\model\UploadModel();
-			if(!$uploadObj->setObjId($path)->load()) {
+			if(!$uploadObj->setPkv($path)->load()) {
 				$this->response->sendRedirect($nopic);
 				return;
 			}
@@ -556,7 +556,7 @@ use core\Storage;
 		
 		if($this->request->isPost() && $batchecked = $this->request->getRequest('batchecked')) {
 			foreach ($batchecked as $UploadId) {
-				$this->m->setObjId($UploadId);
+				$this->m->setPkv($UploadId);
 				if(false === $this->m->delete()) {
 					Message::setErr($this->m->getErrs());
 					break;

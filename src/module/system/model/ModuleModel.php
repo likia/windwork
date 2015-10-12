@@ -35,7 +35,7 @@ class ModuleModel extends \core\mvc\Model {
 		if($cache) {
 			$this->fromArray($cache);
 			return true;
-		} elseif ($this->setObjId($mod)->load()) {
+		} elseif ($this->setPkv($mod)->load()) {
 			Factory::cache()->write($cacheKey, $this->toArray());
 			return true;
 		}
@@ -484,7 +484,7 @@ class ModuleModel extends \core\mvc\Model {
 				continue;
 			}
 		
-			$modInfo = $thisObj->setObjId($entry)->getInfo();
+			$modInfo = $thisObj->setPkv($entry)->getInfo();
 		
 			//print_r($modInfo);
 			empty($modInfo['level']) && $modInfo['level'] = 'other';

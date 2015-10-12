@@ -33,7 +33,7 @@ class ApiController extends \core\mvc\Controller {
 		if(null === $ad = Factory::cache()->read($cacheKey)) {
 		    $ad = '';		
 			$m = new \module\ad\model\AdPlaceModel();
-			if($id && $m->setObjId($id)->load()) {
+			if($id && $m->setPkv($id)->load()) {
 				$ad = Common::jsWrite($m->getPlaceHtml());
 			}
 			

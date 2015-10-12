@@ -152,7 +152,7 @@ class PositionDataModel extends \core\mvc\Model {
 	 * @return bool
 	 */
 	public function updateDisplayOrder($displayOrder) {
-		if(!$this->getObjId()) {
+		if(!$this->getPkv()) {
 			$this->setErr('请设置id！');
 			return false;
 		}

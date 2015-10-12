@@ -56,7 +56,7 @@ class AccountModel extends UserModel {
 			'password' => $password
 		);
 		
-		return $this->updateBy($data, $this->autoWhere());
+		return $this->updateBy($data, $this->pkvWhere());
 	}
 	
 	/**
@@ -226,14 +226,14 @@ class AccountModel extends UserModel {
 			$uploadObj->setTempFile($file['tmp_name']);
 			
 			$oldUser = clone $this;			
-			if($oldUser->avatarid && $uploadObj->setObjId($oldUser->avatarid)->load()) {
+			if($oldUser->avatarid && $uploadObj->setPkv($oldUser->avatarid)->load()) {
 				if($uploadObj->update()) {
-					$data['avatarid'] = $uploadObj->getObjId();
+					$data['avatarid'] = $uploadObj->getPkv();
 					$data['avatar']   = $uploadObj->getPath();
 				}
 				//
 			} else if($uploadObj->create()) {
-				$data['avatarid'] = $uploadObj->getObjId();
+				$data['avatarid'] = $uploadObj->getPkv();
 				$data['avatar']   = $uploadObj->getPath();
 			}
 			
@@ -246,7 +246,7 @@ class AccountModel extends UserModel {
 			}
 		}
 				
-		$do = $this->updateBy($data, $this->autoWhere());
+		$do = $this->updateBy($data, $this->pkvWhere());
 		
 		return $do;
 	}
@@ -255,7 +255,7 @@ class AccountModel extends UserModel {
 	 * 加载当前登录用户消息
 	 */
 	public function loadCurrentUser() {
-		if(!$_SESSION['uid'] || !$this->setObjId($_SESSION['uid'])->load()) {
+		if(!$_SESSION['uid'] || !$this->setPkv($_SESSION['uid'])->load()) {
 		    $this->logout();
 		    return false;
 		}

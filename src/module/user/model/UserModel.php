@@ -179,7 +179,7 @@ class UserModel extends \core\mvc\Model {
 			$uploadObj->setTempFile($file['tmp_name']);
 				
 			if($uploadObj->create()) {
-				$this->avatarid = $uploadObj->getObjId();
+				$this->avatarid = $uploadObj->getPkv();
 				$this->avatar   = $uploadObj->getUrl();
 			}
 		}
@@ -198,7 +198,7 @@ class UserModel extends \core\mvc\Model {
 			$this->role = explode(',', $this->role);
 			
 			foreach ($this->role as $roid) {
-				$belongObj->setObjId(array('roid' => $roid, 'uid' => $this->id));
+				$belongObj->setPkv(array('roid' => $roid, 'uid' => $this->id));
 				$belongObj->create();
 			}				
 		}
@@ -226,7 +226,7 @@ class UserModel extends \core\mvc\Model {
 	 */
 	public function update() {
 		$oldUser = new self();
-		if(!$oldUser->setObjId($this->id)->load()) {
+		if(!$oldUser->setPkv($this->id)->load()) {
 			$this->setErr('该用户不存在');
 			return false;
 		}
@@ -318,14 +318,14 @@ class UserModel extends \core\mvc\Model {
 			$uploadObj->setErrno($file['error']);
 			$uploadObj->setTempFile($file['tmp_name']);
 			
-			if($oldUser->avatarid && $uploadObj->setObjId($oldUser->avatarid)->load()) {
+			if($oldUser->avatarid && $uploadObj->setPkv($oldUser->avatarid)->load()) {
 				if($uploadObj->update()) {
 					$this->avatarid = $oldUser->avatarid;
 					$this->avatar   = $uploadObj->getUrl();
 				}
 				//
 			} else if($uploadObj->create()) {
-				$this->avatarid = $uploadObj->getObjId();
+				$this->avatarid = $uploadObj->getPkv();
 				$this->avatar   = $uploadObj->getPath();
 			}			
 		}
@@ -347,7 +347,7 @@ class UserModel extends \core\mvc\Model {
 			$belongObj->deleteByUid($this->id);// 删除用户所属角色的关联
 			
 			foreach ($this->role as $roid) {
-				$belongObj->setObjId(array('roid' => $roid, 'uid' => $this->id));
+				$belongObj->setPkv(array('roid' => $roid, 'uid' => $this->id));
 				$belongObj->create();
 			}
 			
@@ -660,7 +660,7 @@ class UserModel extends \core\mvc\Model {
 			static::setLoginSession($this);
 			
 			$belongObj = new BelongModel();
-			$belongObj->setObjId(array('roid' => $userEntry['role'], 'uid' => $this->getObjId()));
+			$belongObj->setPkv(array('roid' => $userEntry['role'], 'uid' => $this->getPkv()));
 			$belongObj->create();
 		}
 		
@@ -682,7 +682,7 @@ class UserModel extends \core\mvc\Model {
     	
     	if(!$setBiz) {
     		// 把管理员设为分销员
-    		$this->setObjId($uid);
+    		$this->setPkv($uid);
     		$this->alterField(array('isext' => 1)); // 把用户设置为分销员用户
     	}
 

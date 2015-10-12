@@ -60,7 +60,7 @@ class ArticleTest extends PHPUnit_Framework_TestCase {
 		    		    
 		    // update
 		    $catObj2 = new \module\article\model\ArticleModel();
-		    $catObj2->setObjId($catObj1->getObjId())->load();
+		    $catObj2->setPkv($catObj1->getPkv())->load();
 		    $title = uniqid();
 		    $this->assertEquals($catObj1->title, $catObj2->title);
 		    $catObj2->setTitle($title);
@@ -69,7 +69,7 @@ class ArticleTest extends PHPUnit_Framework_TestCase {
 		    
 		    // 重新从数据库加载进行比较
 		    $catObj3 = new \module\article\model\ArticleModel();
-		    $catObj3->setObjId($catObj1->getObjId())->load();
+		    $catObj3->setPkv($catObj1->getPkv())->load();
 		    
 		    $this->assertNotEquals($catObj3->getTitle(), $catObj1->getTitle());
 		    $this->assertEquals($catObj2->getTitle(), $catObj3->getTitle());

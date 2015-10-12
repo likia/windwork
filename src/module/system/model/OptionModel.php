@@ -82,7 +82,7 @@ class OptionModel extends \core\mvc\Model {
 		}
 		
 		$thisObj = new static();
-		$exec = $thisObj->setObjId($optionName)->alterField(array('value' => $optionValue));
+		$exec = $thisObj->setPkv($optionName)->alterField(array('value' => $optionValue));
 				
 		if(false === $exec) {
 			throw new \core\mvc\Exception($thisObj->getLastErr());

@@ -92,7 +92,7 @@ class UploadModel extends \core\mvc\Model {
 			return false;
 		} else {
 			$obj = $this;
-			$obj->setObjId($id);
+			$obj->setPkv($id);
 			$obj->alterField(array('type' => $type));
 		}
 		
@@ -118,11 +118,11 @@ class UploadModel extends \core\mvc\Model {
 	
 	public function update() {
 		$oldObj = new self();
-		$oldObj->setObjId($this->id);
+		$oldObj->setPkv($this->id);
 		
 		if(!$this->errno && $this->upload()) {			
 			$oldObj->load();
-			Storage::getInstance()->removeThumb($oldObj->getObjId());
+			Storage::getInstance()->removeThumb($oldObj->getPkv());
 			Storage::getInstance()->remove($oldObj->path);
 		}
 

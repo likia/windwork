@@ -128,7 +128,7 @@ class LocationModel extends \core\mvc\Model {
 	 */
 	public function alterDisplayOrder($id, $value) {
 		$m = new static();
-		$m->setObjId($id);
+		$m->setPkv($id);
 		$do = $m->alterField(array('displayorder' => $value));
 		
 		static::clearCache();

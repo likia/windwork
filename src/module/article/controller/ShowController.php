@@ -57,7 +57,7 @@ class ShowController extends \core\mvc\Controller {
 				$cond[] = array('cid', $id);
 				$cat = $this->catObj->toArray();
 			} elseif (is_string($id) && $this->catObj->loadBy(array(array('slug', $id), array('enabled', 1)))) {
-				$id = $this->catObj->getObjId();
+				$id = $this->catObj->getPkv();
 				$cond[] = array('cid', $id);
 				$cat = $this->catObj->toArray();
 			}
@@ -114,7 +114,7 @@ class ShowController extends \core\mvc\Controller {
 		}
 
 		$cat = array();
-		if ($item->cid && $this->catObj->setObjId($item->cid)->load()) {
+		if ($item->cid && $this->catObj->setPkv($item->cid)->load()) {
 			$cat = $this->catObj->toArray();
 		}
 

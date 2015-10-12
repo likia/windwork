@@ -56,7 +56,7 @@ class PositionDataController extends \module\system\controller\admin\AdminBase {
 	
 
 	public function updateAction($id = 0) {
-		if (!$id || !$this->m->setObjId($id)->isExist()) {
+		if (!$id || !$this->m->setPkv($id)->isExist()) {
 			$this->err404();
 			return ;
 		}
@@ -89,7 +89,7 @@ class PositionDataController extends \module\system\controller\admin\AdminBase {
 			// 排序
 			if ($handle == 'sort') {
 				foreach ($_POST['sort'] as $positionDataId => $displayOrder) {
-					$this->m->setObjId($positionDataId);
+					$this->m->setPkv($positionDataId);
 					$this->m->updateDisplayOrder($displayOrder);
 				}
 			} elseif(empty($_POST['batchecked'])) {
@@ -128,7 +128,7 @@ class PositionDataController extends \module\system\controller\admin\AdminBase {
 			return false;
 		}
 		 
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		 
 		if(false === $this->m->delete()) {
 			Message::setErr($this->m->getErrs());

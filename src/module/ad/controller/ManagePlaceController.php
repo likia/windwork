@@ -52,7 +52,7 @@ class ManagePlaceController extends \module\system\controller\admin\AdminBase {
 	 * @param int $id
 	 */
 	public function updateAction($id = 0) {
-		if(!$id || !$this->m->setObjId($id)->isExist()) {
+		if(!$id || !$this->m->setPkv($id)->isExist()) {
 			$this->err404();
 			return false;
 		}
@@ -92,7 +92,7 @@ class ManagePlaceController extends \module\system\controller\admin\AdminBase {
 		}
 		
 		// 广告位跟广告不相依赖
-		$this->m->setObjId($id);
+		$this->m->setPkv($id);
 		if(false !== $this->m->delete()) {
 			Message::setOK('成功删除广告位！');
 		} else {
