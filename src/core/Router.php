@@ -154,23 +154,20 @@ class Router {
 			
 			// 提取mod/ctl/act
 			if (!preg_match("/[^a-z0-9_\\.]+/i", $arr[0])) {
-			    $mca = $arr[0];
-	
-			    // 模块.控制器.动作之间的点的个数
-			    $count = substr_count($mca, '.');
-			    if($count == 0) {
-			    	$mca .= "." . $opts['default_ctl'];
-			    }			     
-			    if($count < 2) {
-			    	$mca .= "." . $opts['default_act'];
-			    }
-			    
-			    $mcaArr = explode('.', $mca);
-			    $mcaArr = explode('.', $mca);
-			    			    
-			    $this->params['act'] = array_pop($mcaArr); // 最后一个点后面是action名
-			    $this->params['mod'] = array_shift($mcaArr); // 第一个点前面的模块名
-			    $this->params['ctl'] = join('.', $mcaArr); // 第一个点和最后一个点之间是控制器类识别
+				$mcaArr = explode('.', $arr[0]);
+				
+				// 取最后一个点后面的action名
+				if(isset($mcaArr[2])) {
+					$this->params['act'] = array_pop($mcaArr); 
+				}
+				
+				// 取得第一个点前面的模块名
+				$this->params['mod'] = array_shift($mcaArr);
+				
+				// 取得第一个点和最后一个点之间是控制器类识别
+				if ($mcaArr) {
+					$this->params['ctl'] = join('.', $mcaArr); 
+				}
 			    
 				unset($arr[0]);
 			}
