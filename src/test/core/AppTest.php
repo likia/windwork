@@ -1,6 +1,6 @@
 <?php
 
-require_once 'src\test\unittestinit.php';
+require_once 'src\test\phpunit.php';
 
 
 use core\App;

@@ -1,6 +1,6 @@
 <?php
 define('ROOT_PATH', __DIR__);
-require_once 'src/test/unittestinit.php';
+require_once 'src/test/phpunit.php';
 require_once 'src/core/adapter/sms/PicaSMS.php';
 
 require_once 'PHPUnit/Framework/TestCase.php';

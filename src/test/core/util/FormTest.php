@@ -1,7 +1,7 @@
 <?php
 use \core\util\Form;
 
-require_once 'src\test\unittestinit.php';
+require_once 'src\test\phpunit.php';
 require_once 'src\core\util\form.php';
 require_once 'PHPUnit\Framework\TestCase.php';
 

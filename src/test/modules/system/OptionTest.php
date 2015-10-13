@@ -2,7 +2,7 @@
 
 use \module\system\model\OptionModel;
 
-require_once 'test/unittestinit.php';
+require_once 'test/phpunit.php';
 require_once 'src\module\system\model\option.php';
 
 require_once 'PHPUnit\Framework\TestCase.php';

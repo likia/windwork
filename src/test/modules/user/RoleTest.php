@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework/TestCase.php';
-require_once 'test/unittestinit.php';
+require_once 'test/phpunit.php';
 
 
 use user\model\RoleModel;

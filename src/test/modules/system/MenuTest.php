@@ -2,7 +2,7 @@
 
 use system\model\MenuModel;
 
-require_once 'src\test\unittestinit.php';
+require_once 'src\test\phpunit.php';
 require_once 'src\modules\system\model\menu.php';
 require_once 'PHPUnit\Framework\TestCase.php';
 

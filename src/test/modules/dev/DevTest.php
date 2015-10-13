@@ -1,5 +1,5 @@
 <?php
-require_once 'test/unittestinit.php';
+require_once 'test/phpunit.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 
 use dev\model\DevModel;

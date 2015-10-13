@@ -2,7 +2,7 @@
 
 use \core\Factory;
 
-require_once 'src\test\unittestinit.php';
+require_once 'src\test\phpunit.php';
 require_once 'src\module\system\model\module.php';
 require_once 'PHPUnit\Framework\TestCase.php';
 

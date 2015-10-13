@@ -3,7 +3,7 @@
 use core\Factory;
 use core\mvc\Model;
 
-require_once 'src\test\unittestinit.php';
+require_once 'src\test\phpunit.php';
 require_once 'src\core\mvc\model.php';
 
 
@@ -53,7 +53,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->testCreate();
 		
 		$m = new TestModel();
-		$m->setPkv($this->ModelgetPkv())->load();
+		$m->setPkv($this->Model->getPkv())->load();
 
 		
 		$this->assertEquals($this->Model->getUserPass(), $m->getUserPass());
@@ -79,7 +79,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		
 		// 从持久层取出
 		$r = new TestModel();
-		$r->setPkv($mgetPkv())->load();
+		$r->setPkv($m->getPkv())->load();
 		$s3 = $r->getUserPass();
 		
 		$this->assertNotEquals($s1, $s2);
@@ -113,11 +113,11 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		
 		$m->create();
 		
-		$this->assertNotEmpty($mgetPkv());
+		$this->assertNotEmpty($m->getPkv());
 		
 		$this->Model = $m;
 		
-		return $mgetPkv();
+		return $m->getPkv();
 	}
 	
 	/**

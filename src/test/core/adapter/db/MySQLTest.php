@@ -1,5 +1,5 @@
 <?php
-require "test/unittestinit.php";
+require "test/phpunit.php";
 
 require_once 'core/adapter/IFactoryAble.php';
 require_once 'core/adapter/db/IDB.php';
