@@ -275,12 +275,12 @@ class UserModel extends \core\mvc\Model {
 				return false;
 			}
 		} else {
-			$this->lockedFields = array_map($this->lockedFields, array('email'));
+			$this->addLockFields('email');
 		}
 
 		// 用户名检查
 		if (!$this->uname){
-			$this->lockedFields = array_map($this->lockedFields, array('uname'));
+			$this->addLockFields('uname');
 		} elseif($this->isUserNameRepeat($this->uname)) {		
 			$this->setErr('该用户名已经存在');
 			return false;
@@ -288,7 +288,7 @@ class UserModel extends \core\mvc\Model {
 		
 		// 手机验证
 		if (!$this->mobile) {
-			$this->lockedFields = array_map($this->lockedFields, array('mobile'));
+			$this->addLockFields('mobile');
 		} elseif($this->isMobileRepeat($this->mobile)) {
 			$this->setErr('该手机号已经被使用');
 			return false;
@@ -299,7 +299,7 @@ class UserModel extends \core\mvc\Model {
 			$this->salt     = base_convert(mt_rand(), 10, 36);
 			$this->password = pw($this->password, $this->salt);			
 		} else {
-			$this->addLockFields(array('salt', 'password'));
+			$this->addLockFields('salt,password');
 		}
 
 		// 检查用户角色

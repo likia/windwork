@@ -38,7 +38,7 @@ abstract class Object {
 	 */
 	public function &__get($name) {
 		if (property_exists($this, $name)) {
-			throw new Exception("Property '{$name}' access denied");
+			throw new Exception(get_called_class() . "::{$name} access denied");
 		}
 		
 		$name = strtolower($name);
@@ -59,7 +59,7 @@ abstract class Object {
 	 */
 	public function __set($name, $val) {
 		if (property_exists($this, $name)) {
-			throw new Exception("Property '{$name}' access denied");
+			throw new Exception(get_called_class() . "::{$name} access denied");
 		}
 		
 		$name = strtolower($name);
@@ -115,7 +115,7 @@ abstract class Object {
 			}
 		}
 	
-		$message = 'Not exists method called: '.get_class($this) . '::'.$name.'()';
+		$message = 'Not exists method called: ' . get_called_class() . '::'.$name.'()';
 		throw new \BadMethodCallException($message);		
 	}
 	

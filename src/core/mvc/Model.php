@@ -75,7 +75,7 @@ abstract class Model extends \core\Object {
 	 */
 	public function __construct() {
 		if (!$this->table) {
-			throw new Exception(get_class($this).'::$table must not be empty!');
+			throw new Exception(get_called_class().'::$table must not be empty!');
 		}
 		
 		$tableInfo = static::db()->getTableInfo($this->table);
@@ -241,7 +241,7 @@ abstract class Model extends \core\Object {
 	 */
 	public function setPkv($pkv) {
 		if (!(is_scalar($pkv) || is_array($pkv))) {
-			throw new Exception('object or resource is not allow for param $id of '.get_class($this).'::->setPkv($pkv)');
+			throw new Exception('object or resource is not allow for param $id of '.get_called_class().'::->setPkv($pkv)');
 		}
 		$this->__pkv = $pkv;
 		
@@ -265,7 +265,7 @@ abstract class Model extends \core\Object {
 	 */
 	public function loadBy(array $whereArr = array()) {
 		if (empty($whereArr)) {
-			throw new Exception('The $whereArr param format error in '.get_class($this).'::loadBy($whereArr)!');
+			throw new Exception('The $whereArr param format error in '.get_called_class().'::loadBy($whereArr)!');
 		}
 
 		$array = $this->fetchRow(array('where' => $whereArr));

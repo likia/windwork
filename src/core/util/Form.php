@@ -79,7 +79,7 @@ class Form extends \core\Object {
 	public function addElement($element = array()) {
 		// 表单元素的type、name属性必须有
 		if (empty($element['type']) || empty($element['name'])) {			
-			throw new \core\Exception(__CLASS__ . '::addElement() param should have "type" and "name" Element');
+			throw new \core\Exception(get_called_class() . '::addElement() param should have "type" and "name" Element');
 		}
 		
 		// 如果没有指明表单元素的id属性，则使用name属性的值
@@ -87,7 +87,7 @@ class Form extends \core\Object {
 		
 		// 不是隐藏自动必须有title（自定义字段显示的名称）属性
 		if (strtolower($element['type']) != 'hidden' && !isset($element['title'])) {
-			throw new \core\Exception(__CLASS__ . '::addElement() param should have "title" Element');
+			throw new \core\Exception(get_called_class() . '::addElement() param should have "title" Element');
 		}
 		
 		// 提供选择的值（单选框，多悬空，下拉菜单有效）
@@ -182,7 +182,7 @@ class Form extends \core\Object {
 	 */
 	protected function checkbox($element = array()) {
 		if (empty($element['values'])) {
-			throw new \core\Exception(__CLASS__ . '::checkbox() param should have "values" Element');
+			throw new \core\Exception(get_called_class() . '::checkbox() param should have "values" Element');
 		}
 		
 		if(empty($element['value'])) {
@@ -214,7 +214,7 @@ class Form extends \core\Object {
 	 */
 	protected function radio($element = array()) {
 		if (empty($element['values'])) {
-			throw new \core\Exception(__CLASS__ . '::radio() param should have "values" Element');
+			throw new \core\Exception(get_called_class() . '::radio() param should have "values" Element');
 		}
 		
 		$html = '<div id="'.$element['name'].'" style="display:inline;">';
@@ -237,7 +237,7 @@ class Form extends \core\Object {
 	 */
 	protected function select($element = array()) {
 		if (empty($element['values'])) {
-			throw new \core\Exception(__CLASS__ . '::select() param should have "values" Element');
+			throw new \core\Exception(get_called_class() . '::select() param should have "values" Element');
 		}
 		
 		$html = '<select name="'.$element['name'].'" id="'.$element['id'].'"';

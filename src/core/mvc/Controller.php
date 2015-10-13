@@ -166,7 +166,7 @@ abstract class Controller {
 	 */
 	public function execute($params) {
 		if (!$this->inited) {
-			throw new Exception('请在'.get_class($this).'::__construct()调用parent::__construct()');
+			throw new Exception('请在'.get_called_class().'::__construct()调用parent::__construct()');
 		}
 		
 		$action = $this->request->getGet('act') . 'Action';
