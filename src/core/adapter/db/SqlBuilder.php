@@ -502,5 +502,47 @@ class SqlBuilder {
 				
 		return $result;
 	}
+	
+	/**
+	 * 从数组的下标对应的值中获取SQL的"字段1=值1,字段2=值2"的结构
+	 * 
+	 * @param array $data 
+	 * @param array $keyInArray
+	 * @param array $keyNotInArray
+	 * @throws Exception
+	 * @return string 返回 "`f1` = 'xx', `f2` = 'xxx'"
+	 */
+	public static function buildSqlSet(array $data, array $keyInArray, array $keyNotInArray = array()) {
+		$set = array();
+		$arg = array();
+		$fields = $keyNotInArray ? array_diff($keyInArray, $keyNotInArray) : $keyInArray;
+	
+		// 取表中存在的字段（MySQL字段名本身不区分大小写，我们全部转成小写）
+		foreach($data as $k => $v) {
+			$k = strtolower($k);
+			if (!in_array($k, $fields)) {
+				continue;
+			}
+				
+			if (is_array($v)) {
+				$v = serialize($v);
+			} if ($v === null) {
+				$v = 'null';;
+			}
+	
+			$set[] = " %a = %s ";
+			$arg[] = $k;
+			$arg[] = $v;
+		}
+	
+		if (!$set || !$arg) {
+			throw new Exception('请传入正确的数据');
+		}
+	
+		$sets  = join(',', $set);
+	
+		return SqlBuilder::format($sets, $arg);
+	}
+	
 }
 

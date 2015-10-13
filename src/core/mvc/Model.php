@@ -16,7 +16,7 @@ use core\adapter\db\SqlBuilder;
  * 基于数据库的领域模型（由业务逻辑+数据访问组成）
  * 
  * 模型对应表字段的值映射(保存)在Model::$attr中和Model::$fieldMap设置的字段对应的属性中。
- * 可以通过Model->setPkv($id)，Model->getPkv()或$this->__primary_key_values 设置和访问模型对应表主键的值。
+ * 可以通过Model->setPkv($id)，Model->getPkv()或$this->__pkv 设置和访问模型对应表主键的值。
  * 
  * @package     core.mvc
  * @author      cmm <cmm@windwork.org>
@@ -44,6 +44,9 @@ abstract class Model extends \core\Object {
 	
 	/**
 	 * 属性和表字段的绑定
+	 * 
+	 * 设置表字段对应模型类的属性，以实现把类属性绑定到表字段，并且Model->toArray()方法可获取绑定属性的值。
+	 * 表字段名不分大小写，属性名大小写敏感。
 	 * array(
 	 *     '表字段1' => '属性1',
 	 *     '表字段2' => '属性2',
@@ -54,7 +57,7 @@ abstract class Model extends \core\Object {
 	protected $fieldMap = array();
 		
 	/**
-	 * 模型是否已加载
+	 * 模型是否已从数据库加载（通过Model->load()或Model->loadBy()）
 	 * @var bool = false
 	 */
 	protected $loaded = false;
@@ -63,7 +66,7 @@ abstract class Model extends \core\Object {
 	 * 锁定字段不允许设置值
 	 * @var array = array()
 	 */
-	protected $lockedFields = array();
+	private $lockedFields = array();
 		
 	/**
 	 * 初始化表对象实例
@@ -77,9 +80,19 @@ abstract class Model extends \core\Object {
 		
 		$tableInfo = static::db()->getTableInfo($this->table);
 		
-		$this->internal['fields'] = array_keys($tableInfo['fields']); // 表字段名列表
-		$this->internal['pk']     = $tableInfo['pk']; // 表主键名，如果是多个字段的主键，则为array('主键1', '主键2')
+		$this->internal['fields'] = array_keys($tableInfo['fields']); // 表字段名列表，为支持不区分大小写，已转小写
+		$this->internal['pk']     = $tableInfo['pk']; // 表主键名，已转为小写，如果是多个字段的主键，则为array('主键1', '主键2')
 		$this->internal['ai']     = $tableInfo['ai'];
+		
+		// 使字段绑定属性的字段名不区分大小写
+		if($this->fieldMap) {
+			$this->fieldMap = array_combine(array_map('strtolower', array_keys($this->fieldMap)), array_values($this->fieldMap));
+		}
+
+		// 新增记录自动增长主键不允许设置值
+		if($this->internal['ai']) {
+			$this->addLockFields($this->internal['pk']);
+		}
 	}
 	
 	/**
@@ -115,7 +128,8 @@ abstract class Model extends \core\Object {
 		}
 		
 		$name = strtolower($name);
-		$name == '__primary_key_values' && $name = $this->getPk(); // $this->__primary_key_values 为获取主键值
+		$name == '__pkv' && $name = $this->getPk(); // $this->__pkv 为获取主键值
+		
 		if (is_array($name)) {
 			// 多字段主键值
 		    $rVal = array();
@@ -134,6 +148,7 @@ abstract class Model extends \core\Object {
 	 * @param mixed $v
 	 */
 	protected function setFieldVal($k, $v) {
+		$k = strtolower($k);
 		// 表字段有对应已定义模型类属性
 		if($this->fieldMap && array_key_exists($k, $this->fieldMap)) {			
 			$attr = $this->fieldMap[$k];
@@ -158,12 +173,13 @@ abstract class Model extends \core\Object {
 	 * @return \core\Object
 	 */
 	public function __set($name, $val) {
+		// 是否存在该属性（属性大小写敏感，因此调用已定义属性时需注意大小写）
 		if (property_exists($this, $name)) {
 			throw new Exception("Property '{$name}' access denied");
 		}
 
 		$name = strtolower($name);
-		$name == '__primary_key_values' &&  $name = $this->getPk(); // $this->__primary_key_values = $val 为设置主键值
+		$name == '__pkv' &&  $name = $this->getPk(); // $this->__pkv = $val 为设置主键值
 		
 		if (is_array($name)) {
 			// 多字段主键值必须设置全部主键字段值
@@ -189,7 +205,7 @@ abstract class Model extends \core\Object {
 	public function __isset($name) {
 		$name = strtolower($name);
 		
-		if ($name == '__primary_key_values') {
+		if ($name == '__pkv') {
 			return true;
 		} else {
 			return array_key_exists($name, $this->attrs);
@@ -203,7 +219,7 @@ abstract class Model extends \core\Object {
 	 */
 	public function __unset($name) {
 		$name = strtolower($name);
-		$name == '__primary_key_values' && $name = $this->getPk();
+		$name == '__pkv' && $name = $this->getPk();
 		
 		if (is_array($name)) {
 			foreach ($name as $field) {
@@ -227,7 +243,7 @@ abstract class Model extends \core\Object {
 		if (!(is_scalar($pkv) || is_array($pkv))) {
 			throw new Exception('object or resource is not allow for param $id of '.get_class($this).'::->setPkv($pkv)');
 		}
-		$this->__primary_key_values = $pkv;
+		$this->__pkv = $pkv;
 		
 		return $this;
 	}
@@ -248,20 +264,19 @@ abstract class Model extends \core\Object {
 	 * @return boolean
 	 */
 	public function loadBy(array $whereArr = array()) {
-		$where = SqlBuilder::whereArr($whereArr);
-		if (empty($where)) {
+		if (empty($whereArr)) {
 			throw new Exception('The $whereArr param format error in '.get_class($this).'::loadBy($whereArr)!');
 		}
+
+		$array = $this->fetchRow(array('where' => $whereArr));
 		
-		$array = static::db()->getRow("SELECT * FROM %t WHERE %x", array($this->table, $where));
-		
-		if(false !== $array) {
+		if($array) {
 			$this->fromArray($array);
-		} else {
-			return false;
+		    $this->loaded = true;
+			return true;
 		}
 		
-		$this->loaded = true;
+		return false;
 	}
 	
 	/**
@@ -275,8 +290,6 @@ abstract class Model extends \core\Object {
 			$this->setFieldVal($field, $value);		
 		}
 		
-		$this->loaded = true;
-		
 		return $this;
 	}
 	
@@ -286,16 +299,7 @@ abstract class Model extends \core\Object {
 	 * @return \core\mvc\Model
 	 */
 	public function update() {
-		$data = $this->toArray();
-		
-		unset($data['uuid']); // 坚决不允许修改uuid
-		
-		// 不允许修改主键值
-		foreach ((array)($this->getPk()) as $pk) {
-			unset($data[$pk]);
-		}
-		
-		return $this->updateBy($data, $this->pkvWhere());
+		return $this->updateBy($this->toArray(), $this->pkvWhere());
 	}
 
 	/**
@@ -306,32 +310,64 @@ abstract class Model extends \core\Object {
 	public function create() {
 		$data = $this->toArray();
 		
-		// 新增记录自动增长主键不允许设置值
-		if($this->internal['ai']) {
-			unset($data[$this->getPk()]);
-		}
-
-		$sql = "INSERT INTO %t SET %x";
 		$arg = array($this->table, $this->fieldSet($data));
-		self::db()->exec($sql); // 如果出错会抛出异常，无需判断false
+		self::db()->exec("INSERT INTO %t SET %x", $arg); // 如果出错会抛出异常，无需判断false
 		
+		// 插入数据库成功后设置主键值
 		$insertId = null;
 		if ($this->internal['ai']) {
+			// 自增主键
 			$insertId = self::db()->lastInsertId();
-		} else if (is_array($this->getPk())) {
+		} else if (is_array($this->internal['pk'])) {
+			// 多个字段主键
 			$insertId = array();
-			foreach ($this->getPk() as $pk) {
+			foreach ($this->internal['pk'] as $pk) {
 				if (isset($data[$pk])) {
 					$insertId[$pk] = $data[$pk];
 				}
 			}
-		} else if (!empty($this->getPk())) {
-			$insertId = $data[$this->getPk()];;
+		} else if (!empty($this->internal['pk'])) {
+			// 非自增单字段主键
+			$insertId = $data[$this->internal['pk']];;
 		}
 	
 		$this->setPkv($insertId);
 			
 		return true;
+	}
+	
+	/**
+	 * 插入多行数据
+	 * 过滤掉没有的字段
+	 * 
+	 * @param array $rows
+	 * @param string $replaceInto = false 是否使用 REPLACE INTO插入数据，false为使用 INSERT INTO
+	 * @return PDOStatement
+	 */
+	public function addRows(array $rows, $replaceInto = false) {
+		$type = $replaceInto ? 'REPLACE' : 'INSERT';
+		
+		// 数据中允许插入的字段
+		$allowFields = array_keys(current($rows));
+		$allowFields = array_map('strtolower', $allowFields);
+		$allowFields = array_intersect($allowFields, $this->internal['fields']);
+		$fields = SqlBuilder::quoteFields(implode(',', $allowFields));
+		
+		// 
+		$valueArr = array();
+		foreach ($rows as $row) {
+			$rowStr = '';
+			foreach ($row as $key => $val) {
+				if (!in_array(strtolower($key), $allowFields)) {
+					unset($row[$key]);
+				}
+			}
+			$rowStr = implode(',', array_map('SqlBuilder::quote', $row));
+			$valueArr[] = "({$rowStr})";
+		}
+		$values = $rowStr = implode(',', $valueArr);
+		
+		return self::db()->query("%x INTO %t (%x) VALUES %x", array($type, $this->table, $fields, $values));
 	}
 	
 	/**
@@ -350,17 +386,7 @@ abstract class Model extends \core\Object {
 	 * @return bool
 	 */
 	public function isExist() {
-		static $isExist = array();
-		
-		$key = md5(serialize($this->__primary_key_values));
-		
-		if(!isset($isExist[$this->tableClass][$key])) {
-			$this->checkPkId();
-			isset($isExist[$this->tableClass]) || $isExist[$this->tableClass] = array();
-			$isExist[$this->tableClass][$key] = (bool)$this->count(array('where' => $this->pkvWhere()));		
-		}
-		
-		return $isExist[$this->tableClass][$key];
+		return (bool)$this->count(array('where' => $this->pkvWhere()));
 	}
 	
 	/**
@@ -368,7 +394,7 @@ abstract class Model extends \core\Object {
 	 * @return mixed 如果是多个字段构成的主键，将返回数组结构的值，如: $pkv = array('pk1' => 123, 'pk2' => 'y', ...)
 	 */
 	public function getPkv() {
-		return $this->__primary_key_values;
+		return $this->__pkv;
 	}
 	
 	public function getPk() {
@@ -429,7 +455,7 @@ abstract class Model extends \core\Object {
 	 * @return bool
 	 */
 	public function save() {
-		if($this->__primary_key_values && $this->isExist()) {
+		if($this->__pkv && $this->isExist()) {
 			return $this->update();
 		} else {
 			return $this->create();
@@ -445,7 +471,7 @@ abstract class Model extends \core\Object {
 		$this->checkPkId();
 		if (is_array($this->getPk())) {
 			if (is_scalar($this->getPkv())) {
-				throw new Exception('Error type of '.__CLASS__.'::$id, it mast be array');
+				throw new Exception('Error type of '.get_called_class().'::$id, it mast be array');
 			}
 			
 			$whereArr = array();
@@ -541,6 +567,14 @@ abstract class Model extends \core\Object {
 		if (empty($where)) {
 			throw new Exception('The $whereArr param format error!');
 		}
+
+		// 坚决不允许修改uuid值
+		unset($data['uuid']); 
+		
+		// 不允许修改主键值
+		foreach ((array)($this->getPk()) as $pk) {
+			unset($data[$pk]);
+		}
 		
 		$arg = array($this->table, $this->fieldSet($data), $where);
 		$ret = static::db()->exec("UPDATE %t SET %x WHERE %x", $arg);
@@ -614,48 +648,22 @@ abstract class Model extends \core\Object {
 	
 
 	/**
-	 * 增改的字段信息 SET key => val
+	 * 从数组的下标对应的值中获取SQL的"字段1=值1,字段2=值2"的结构
 	 * @param array $data
 	 * @throws Exception
-	 * @return Ambigous <string, string>
+	 * @return string 返回 "`f1` = 'xx', `f2` = 'xxx'"
 	 */
-	protected function fieldSet($data) {
-		$set = array();
-		$arg = array();
-	
-		// 取表中存在的字段
-		foreach($data as $k => $v) {
-			if (in_array($k, $this->lockedFields) || !@in_array($k, $this->internal['fields'])) {
-				continue;
-			}
-				
-			if (is_array($v)) {
-				$v = serialize($v);
-			} if ($v === null) {
-				$v = 'null';;
-			}
-	
-			$set[] = " %a = %s ";
-			$arg[] = $k;
-			$arg[] = $v;
-		}
-	
-		if (!$set || !$arg) {
-			throw new Exception('请传入正确的数据');
-		}
-	
-		$sets  = join(',', $set);
-	
-		return SqlBuilder::format($sets, $arg);
+	protected function fieldSet(array $data) {
+		return SqlBuilder::buildSqlSet($data, $this->internal['fields'], $this->lockedFields);
 	}
 
 	/**
 	 * 添加锁定字段，锁定字段后，不保添加/更新字段的值到数据库。
-	 * @param string|array $fields
+	 * @param string $fields 字段名，用半角逗号隔开
 	 * @return \core\mvc\Model
 	 */
 	public function addLockFields($fields) {
-		$fields = (array)$fields;
+		$fields = explode(',', str_replace(' ', '', strtolower($fields)));
 		$this->lockedFields = array_merge($this->lockedFields, $fields);
 		return $this;
 	}

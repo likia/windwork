@@ -100,15 +100,15 @@ abstract class ADB {
 				'fields'  => array()
 			);
 			foreach ($rows as $row) {
-				$tableInfo['fields'][$row['Field']] = $row;
+				$tableInfo['fields'][strtolower($row['Field'])] = $row;
 				
 				if ($row['Key'] == 'PRI') {
 					if($tableInfo['pk']) {
 						$tableInfo['pk'] = (array)$tableInfo['pk'];
-						$tableInfo['pk'][] = $row['Field'];
+						$tableInfo['pk'][] = strtolower($row['Field']);
 					} else {
 						$tableInfo['ai'] = $row['Extra'] == 'auto_increment';
-						$tableInfo['pk'] = $row['Field'];
+						$tableInfo['pk'] = strtolower($row['Field']);
 					}
 				}
 			}
