@@ -27,7 +27,7 @@ class BannedIPHook implements \core\IHook {
 		$bannedIpObj = new BannedIPModel();
 		$mca = \core\App::getInstance()->getRequest()->getMCA();
 		$mca = strtolower($mca);
-		if ($mca != 'system.default.error' && $bannedIpObj->isBanned(Common::userIp())) {
+		if ($mca != 'system.default.error' && $bannedIpObj->isBanned(\core\App::getInstance()->getRequest()->getClientIp())) {
 			throw new \core\Exception('你的IP被拒绝访问！', \core\Exception::ERROR_HTTP_403);
 		}
 	}

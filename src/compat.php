@@ -13,27 +13,6 @@
  * 在这里实现系统用到的可能不存在的函数
  */
 
-/**
- * 转义外部传入变量
- *
- * @param array|string $var
- * @return array|string
- */
-function unquotesGpc($var) {
-	if(empty($var)) return $var;
-
-	if (is_array($var)) {
-		return array_map('unquotesGpc', $var);
-	}
-		
-    if (ini_get('magic_quotes_sybase')) {
-		$var = str_replace("''", "'", $var);		
-    } else {
-    	$var = stripslashes($var);
-    }
-    	
-	return trim($var);	
-}
 
 /**
  * 将任意维度的数组值进行 htmlspecialchars

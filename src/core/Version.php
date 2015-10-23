@@ -23,14 +23,14 @@ final class Version {
 	 * 
 	 * @var string
 	 */
-	const VERSION = '1.0';
+	const VERSION = '0.1.0-alpha';
 	
 	/**
 	 * 框架发布号
 	 * 
 	 * @var string
 	 */
-	const RELEASE = '20150522';
+	const RELEASE = '20151020';
 
 	/**
 	 * 框架补丁更新号

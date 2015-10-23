@@ -91,10 +91,10 @@ class Request {
 	 */
 	protected function normalizeRequest() {
 		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-			empty($_GET)     || $_GET     = array_map('unquotesGpc', $_GET);
-			empty($_POST)    || $_POST    = array_map('unquotesGpc', $_POST);
-			empty($_REQUEST) || $_REQUEST = array_map('unquotesGpc', $_REQUEST);
-			empty($_COOKIE)  || $_COOKIE  = array_map('unquotesGpc', $_COOKIE);
+			empty($_GET)     || $_GET     = array_map(array('\core\Request', 'unquotesGpc'), $_GET);
+			empty($_POST)    || $_POST    = array_map(array('\core\Request', 'unquotesGpc'), $_POST);
+			empty($_REQUEST) || $_REQUEST = array_map(array('\core\Request', 'unquotesGpc'), $_REQUEST);
+			empty($_COOKIE)  || $_COOKIE  = array_map(array('\core\Request', 'unquotesGpc'), $_COOKIE);
 		}
 	}
 
@@ -737,5 +737,52 @@ class Request {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * 转义外部传入变量
+	 *
+	 * @param array|string $var
+	 * @return array|string
+	 */
+	public static function unquotesGpc($var) {
+		if(empty($var)) return $var;
+	
+		if (is_array($var)) {
+			return array_map(array('\core\Request', 'unquotesGpc'), $var);
+		}
+			
+	    if (ini_get('magic_quotes_sybase')) {
+			$var = str_replace("''", "'", $var);		
+	    } else {
+	    	$var = stripslashes($var);
+	    }
+	    	
+		return trim($var);	
+	}
+	
+	/**
+	 * 验证检查表单重复提交
+	 * 
+	 * @return bool false：重复提交，验证不通过；true：验证通过
+	 */
+	public static function checkRePost() {
+		$rePostSessionKey = '^form.post.hash';
+		isset($_SESSION[$rePostSessionKey]) || $_SESSION[$rePostSessionKey] = array();
+		
+		$hash = sprintf('%x', abs(crc32(serialize(array_merge($_GET, $_POST, $_FILES)))));
+		$uriHash = sprintf('%x', abs(crc32(\core\App::getInstance()->getRequest()->getRequestUri())));
+		
+		if(isset($_SESSION[$rePostSessionKey][$uriHash]) && $_SESSION[$rePostSessionKey][$uriHash] == $hash) {
+			return false;
+		}
+		
+		$_SESSION[$rePostSessionKey][$uriHash] = $hash;
+		
+		if(count($_SESSION[$rePostSessionKey]) > 10) {
+			array_shift($_SESSION[$rePostSessionKey]);
+		}
+		
+		return true;
 	}
 }

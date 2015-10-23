@@ -360,7 +360,7 @@ class UnifiedOrder_pub extends Wxpay_client_pub
 			}
 		   	$this->parameters["appid"] = $this->getConfig('APPID');//公众账号ID
 		   	$this->parameters["mch_id"] = $this->getConfig('MCHID');//商户号
-		   	$this->parameters["spbill_create_ip"] = Common::userIp();//终端ip	    
+		   	$this->parameters["spbill_create_ip"] = \core\App::getInstance()->getRequest()->getClientIp();//终端ip	    
 		    $this->parameters["nonce_str"] = $this->createNoncestr();//随机字符串
 		    $this->parameters["sign"] = $this->getSign($this->parameters);//签名
 		    //logging('debug', $this->parameters);

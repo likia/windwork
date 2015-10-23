@@ -18,6 +18,10 @@ namespace core;
  * @since       1.0.0
  */
 class Wrapper {
+	/**
+	 * 
+	 * @var array
+	 */
 	private static $wrappers = array(
 	);
 	

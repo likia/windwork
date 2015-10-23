@@ -35,7 +35,7 @@ class AdminCPLogHook implements \core\IHook {
 		$log = array('uri' => REQUEST_URI, 'p' => $_POST, 'c' => $_COOKIE);
 		
 		$log = \core\Common::userBrowser();
-		$log .= ' '.\core\Common::userIp();
+		$log .= ' '.\core\App::getInstance()->getRequest()->getClientIp();
 		foreach ($log as $item) {
 			$log .= " {$item['uri']}";
 			$log .= " p:" . preg_replace("/\\n|\\s+/", '', var_export($item['p'], 1));

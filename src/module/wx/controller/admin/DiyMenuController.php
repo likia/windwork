@@ -56,7 +56,7 @@ class DiyMenuController extends \module\system\controller\admin\AdminBase {
      * 编辑添加公众号自定义菜单
      */
     public function createAction() {
-    	if($this->request->isPost() && \core\util\Input::checkRePost()) {
+    	if($this->request->isPost() && \core\Request::checkRePost()) {
     		$data = array(
     			'parentid'      => (int)$this->request->getPost('parentid'),
     			'name'          => $this->request->getPost('name'),
@@ -93,7 +93,7 @@ class DiyMenuController extends \module\system\controller\admin\AdminBase {
     		return;
     	}
     	
-    	if($this->request->isPost() && \core\util\Input::checkRePost()) {
+    	if($this->request->isPost() && \core\Request::checkRePost()) {
     		$data = array(
     			'parentid'      => (int)$this->request->getPost('parentid'),
     			'name'          => $this->request->getPost('name'),

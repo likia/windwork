@@ -49,7 +49,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * Tests Model->load()
 	 */
-	public function testRead() {
+	public function testLoad() {
 		$this->testCreate();
 		
 		$m = new TestModel();
@@ -59,6 +59,23 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->Model->getUserPass(), $m->getUserPass());
 		
 		return $m;
+	}
+		
+	/**
+	 * Tests Model->load()
+	 */
+	public function testAddRows() {
+		$arr = array();
+		$num = 10;
+		for($i = 0; $i < $num; $i++) {
+			$arr[] = array('name' => "name-{$i}", 'pass' => "p{$i}");
+		}
+		
+		$m = clone $this->Model;
+		$m->addRows($arr);
+		
+		$count = $m->count();
+		$this->assertEquals($num, $count);
 	}
 	
 	/**

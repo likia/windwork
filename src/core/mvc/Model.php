@@ -10,6 +10,7 @@
 namespace core\mvc;
 
 use core\adapter\db\SqlBuilder;
+
 /**
  * 模型基类
  * 
@@ -362,12 +363,12 @@ abstract class Model extends \core\Object {
 					unset($row[$key]);
 				}
 			}
-			$rowStr = implode(',', array_map('SqlBuilder::quote', $row));
+			$rowStr = implode(',', array_map('\core\adapter\db\SqlBuilder::quote', $row));
 			$valueArr[] = "({$rowStr})";
 		}
 		$values = $rowStr = implode(',', $valueArr);
 		
-		return self::db()->query("%x INTO %t (%x) VALUES %x", array($type, $this->table, $fields, $values));
+		return self::db()->exec("%x INTO %t (%x) VALUES %x", array($type, $this->table, $fields, $values));
 	}
 	
 	/**

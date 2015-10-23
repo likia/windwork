@@ -13,7 +13,7 @@ namespace core\util;
  * Zip压缩打包
  * 
  * @package     core.util
- * @author      cmm <cmm@windwork.org>
+ * @author      来自网络，作者未知
  * @since       1.0.0
  */
 class Zip {

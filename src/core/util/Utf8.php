@@ -1,7 +1,21 @@
 <?php
-
+/**
+ * Windwork
+ * 
+ * 一个开源的PHP轻量级高效Web开发框架
+ * 
+ * @copyright   Copyright (c) 2008-2015 Windwork Team. (http://www.windwork.org)
+ * @license     http://opensource.org/licenses/MIT	MIT License
+ */
 namespace core\util;
 
+/**
+ * 字符串编码处理
+ *
+ * @package     core.util
+ * @author      来自网络，作者未知
+ * @since       1.0.0
+ */
 class Utf8 {
 
 	/**

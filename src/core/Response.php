@@ -884,4 +884,29 @@ class Response {
 		$this->isSendedHeader = true;
 		return $this;
 	}
+	
+	/**
+	 * 获取服务器真实ip
+	 *
+	 * @return string
+	 */
+	public static function getServerIP() {
+	    static $serverIP = null;
+	
+	    if ($serverIP !== null) {
+	        return $serverIP;
+	    }
+	
+	    if (isset($_SERVER)) {
+	        if (isset($_SERVER['SERVER_ADDR'])) {
+	            $serverIP = $_SERVER['SERVER_ADDR'];
+	        } else {
+	            $serverIP = '0.0.0.0';
+	        }
+	    } else {
+	        $serverIP = getenv('SERVER_ADDR');
+	    }
+	
+	    return $serverIP;
+	}
 }

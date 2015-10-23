@@ -490,7 +490,7 @@ class UserModel extends \core\mvc\Model {
 		$_SESSION['type']      = $user->type;
 		
 		$_SESSION['logintime'] = time();
-		$_SESSION['ip']        = \core\Common::userIp();
+		$_SESSION['ip']        = \core\App::getInstance()->getRequest()->getClientIp();
 		$_SESSION['auth']      = true;
 	}
 	
@@ -515,7 +515,7 @@ class UserModel extends \core\mvc\Model {
 		$_SESSION['password']  = '';
 		$_SESSION['avatarid']  = 0;
 		$_SESSION['logintime'] = 0;
-		$_SESSION['ip']        = \core\Common::userIp();
+		$_SESSION['ip']        = \core\App::getInstance()->getRequest()->getClientIp();
 		$_SESSION['auth']      = false;
 		$_SESSION['isextvalid']= 0;
 	}
@@ -644,7 +644,7 @@ class UserModel extends \core\mvc\Model {
 			'role'     => Config::get('user_reg_roid'),
 			'regdateline' => time(),
 			'logtime'  => time(),
-			'regip'    => Common::userIp(),
+			'regip'    => \core\App::getInstance()->getRequest()->getClientIp(),
 			'openid'   => $entry['openid'],
 			'nickname' => $entry['nickname'],
 			'avatar'   => $entry['headimgurl'],

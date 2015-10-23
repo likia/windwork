@@ -82,7 +82,7 @@ class ArticleModel extends \core\mvc\Model {
 			return false;
 		}
 		
-		$this->userip = Common::userIp();
+		$this->userip = \core\App::getInstance()->getRequest()->getClientIp();
 		$this->dateline = time();
 		
 	    $do = parent::create();
@@ -117,7 +117,7 @@ class ArticleModel extends \core\mvc\Model {
 			return false;
 		}
 
-		$this->userip = Common::userIp();
+		$this->userip = \core\App::getInstance()->getRequest()->getClientIp();
 		$this->modifiedtime = time();
 		
 	    $do = parent::update();	

@@ -55,7 +55,7 @@ class StatsModel extends \core\mvc\Model {
 		$this->uri = paramDecode($_SERVER['REQUEST_URI']);
 		$robot = Common::isRobot();
 
-		list($ip1, $ip2, $ip3, $ip4) = explode('.', Common::userIp());
+		list($ip1, $ip2, $ip3, $ip4) = explode('.', \core\App::getInstance()->getRequest()->getClientIp());
 		
 		$this->ip1 = $ip1;
 		$this->ip2 = $ip2;
@@ -85,7 +85,7 @@ class StatsModel extends \core\mvc\Model {
 			return false;
 		}
 
-		list($ip1, $ip2, $ip3, $ip4) = explode('.', Common::userIp());
+		list($ip1, $ip2, $ip3, $ip4) = explode('.', \core\App::getInstance()->getRequest()->getClientIp());
 				
 		$whArr = array();
 		$whArr[] = array('uri', $this->uri);
