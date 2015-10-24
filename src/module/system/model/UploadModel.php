@@ -12,7 +12,6 @@ namespace module\system\model;
 use core\Common;
 use core\Factory;
 use core\Config;
-use core\Storage;
 use core\Lang;
 
 Lang::add('upload');
@@ -73,11 +72,11 @@ class UploadModel extends \core\mvc\Model {
 		'size'    => 'size'
 	);
 		
-	public function __construct($id = null) {
+	public function __construct() {
 		$this->setAllowUploadTypes(Config::get('upload_allow_type'));
 		$this->setAllowSize(Config::get('upload_max_size'));
 		
-		parent::__construct($id);
+		parent::__construct();
 	}
 	
 	/**
@@ -122,8 +121,8 @@ class UploadModel extends \core\mvc\Model {
 		
 		if(!$this->errno && $this->upload()) {			
 			$oldObj->load();
-			Storage::getInstance()->removeThumb($oldObj->getPkv());
-			Storage::getInstance()->remove($oldObj->path);
+			Factory::storage()->removeThumb($oldObj->getPkv());
+			Factory::storage()->remove($oldObj->path);
 		}
 
 		$this->name = Common::stripTags($this->name);
@@ -132,7 +131,7 @@ class UploadModel extends \core\mvc\Model {
 		$do = parent::update();
 		
 		if($do && $this->isImage) {
-			Storage::getInstance()->removeThumb($this->id);
+			Factory::storage()->removeThumb($this->id);
 			static::clearCache();
 		}
 		
@@ -191,17 +190,17 @@ class UploadModel extends \core\mvc\Model {
 			return false;
 		}
 
-		$uploadPath = Storage::getInstance()->generatePath($suffix);
+		$uploadPath = Factory::storage()->generatePath($suffix);
 		// 保存文件
 		if ($this->content) {
-			if(!Storage::getInstance()->save($uploadPath, $this->content)) {
+			if(!Factory::storage()->save($uploadPath, $this->content)) {
 				$this->setErr(Lang::get('upload_file_save_err'));
 				return false;				
 			}
-		} elseif($this->isUploadFile && !Storage::getInstance()->upload($this->tempFile, $uploadPath)) {
+		} elseif($this->isUploadFile && !Factory::storage()->upload($this->tempFile, $uploadPath)) {
 			$this->setErr(Lang::get('upload_file_move_err'));
 			return false;
-		} elseif (!$this->isUploadFile && Storage::getInstance()->copy($this->tempFile, $uploadPath)) {
+		} elseif (!$this->isUploadFile && Factory::storage()->copy($this->tempFile, $uploadPath)) {
 			$this->setErr(Lang::get('upload_file_copy_err'));
 			return false;
 		}
@@ -215,7 +214,7 @@ class UploadModel extends \core\mvc\Model {
 				$img = 'static/images/logo_water.png';
 			}
 		
-			$distFile = Storage::getInstance()->getRealPath($uploadPath);
+			$distFile = Factory::storage()->getRealPath($uploadPath);
 			$image = Factory::image();
 			$image->setImage($distFile);
 			$image->watermark($img, $pos, $qlt);
@@ -431,7 +430,7 @@ class UploadModel extends \core\mvc\Model {
 	}
 	
 	public function getUrl() {
-		return \core\Storage::getInstance()->getUrl($this->getPath());
+		return \core\Factory::storage()->getUrl($this->getPath());
 	}
 
 	/**
@@ -553,8 +552,8 @@ class UploadModel extends \core\mvc\Model {
 		
 			if ($album) {		
 				foreach ($album as $key => $val) {
-					$album[$key]['url'] = Storage::getInstance()->getUrl($val['path']);
-					$album[$key]['fullUrl'] = Storage::getInstance()->getFullUrl($val['path']);
+					$album[$key]['url'] = Factory::storage()->getUrl($val['path']);
+					$album[$key]['fullUrl'] = Factory::storage()->getFullUrl($val['path']);
 					$album[$key]['thumb'] = thumb($val['path'], 100, 100);
 				}
 			}
@@ -574,11 +573,11 @@ class UploadModel extends \core\mvc\Model {
 		$albumHeight = 0;
 		if ($album && is_array($album)) {
 			foreach ($album as $albumImg) {
-				if(!Storage::getInstance()->isExist($albumImg['path'])) {
+				if(!Factory::storage()->isExist($albumImg['path'])) {
 					continue;
 				}
 		
-				list($width, $height) = getimagesize(Storage::getInstance()->getRealPath($albumImg['path']));
+				list($width, $height) = getimagesize(Factory::storage()->getRealPath($albumImg['path']));
 				$height = $height*$albumWidth/$width;
 				$albumHeight = $albumHeight > 0 ? min(array($height, $albumHeight)) : $height;
 			}
@@ -611,7 +610,7 @@ class UploadModel extends \core\mvc\Model {
 			if ($images) {
 				foreach ($images as $key => $val) {
 					$images[$key]          = $val;
-					$images[$key]['url']   = Storage::getInstance()->getUrl($val['path']);
+					$images[$key]['url']   = Factory::storage()->getUrl($val['path']);
 					$images[$key]['thumb'] = thumb($val['id'], 100, 100);
 					$images[$key]['isAlbum'] = $val['type'] == 'album';
 				}			
@@ -628,7 +627,7 @@ class UploadModel extends \core\mvc\Model {
 		$do = parent::delete();
 		
 		if (false !== $do) {			
-			$storage = Storage::getInstance();			
+			$storage = Factory::storage();			
 			// 删除缩略图
 			if($this->isImage) {
 				$storage->removeThumb($this->id);	
@@ -663,7 +662,7 @@ class UploadModel extends \core\mvc\Model {
 		$do = parent::deleteBy($whArr);
 		
 		if (false !== $do) {
-			$storage = Storage::getInstance();
+			$storage = Factory::storage();
 			// 删除缩略图
 			$this->isImage && $storage->removeThumb($this->id);
 			// 删除文件
@@ -705,7 +704,7 @@ class UploadModel extends \core\mvc\Model {
 					
 					// 图片是否已经存在
 					if ($obj->loadBy(array(array('isimage', 1), array('md5', md5($imgContent))))) {
-						$url = Storage::getInstance()->getUrl($obj->getPath());											
+						$url = Factory::storage()->getUrl($obj->getPath());											
 						$content = str_replace($imgUrl, $url, $content);
 						continue;
 					}
@@ -746,7 +745,7 @@ class UploadModel extends \core\mvc\Model {
 					$obj->setTempName($name);
 					
 					if(false !== $obj->create()) {
-						$url = Storage::getInstance()->getUrl($obj->getPath());											
+						$url = Factory::storage()->getUrl($obj->getPath());											
 						$content = str_replace($imgUrl, $url, $content);
 					}
 				}

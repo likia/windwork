@@ -24,7 +24,7 @@ use core\adapter\mailer\IMailer;
 class Mail implements IMailer, \core\adapter\IFactoryAble {
 	protected $cfg;
 
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->cfg = $cfg;
 	}
 	

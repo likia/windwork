@@ -22,6 +22,6 @@ interface IFactoryAble {
 	 * 对象工厂类\core\Factory创建组件实例时统一通过构造函数传参
 	 * @param array $cfg
 	 */
-	public function __construct($cfg);
+	public function __construct(array $cfg);
 }
 

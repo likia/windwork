@@ -20,6 +20,7 @@ namespace core;
 class File {
 	/**
 	 * 文件安全路径
+	 * 过滤掉文件路径中非法的字符
 	 * @param string $path
 	 * @return string
 	 */
@@ -32,6 +33,7 @@ class File {
 	
 	/**
 	 * 文件安全目录
+	 * 过滤掉目录名称中非法的字符
 	 * @param string $dir
 	 * @return string
 	 */
@@ -53,9 +55,14 @@ class File {
 	 * 写入数据
 	 * @param string $file
 	 * @param string $content
+	 * @param int $flag 0|LOCK_EX|FILE_APPEND 
+	 *   0：覆盖写入
+	 *   LOCK_EX：锁定后写入再解锁
+	 *   FILE_APPEND：追加写入
+	 *   LOCK_EX|FILE_APPEND：加锁追加写入
 	 * @return bool
 	 */
-	public static function write($file, $content) {
+	public static function write($file, $content, $flag = 0) {
 		$file = static::safePath($file);
 		if (!is_dir(dirname($file))) {
 			@mkdir(dirname($file), 0755, true);
@@ -65,13 +72,13 @@ class File {
 			throw new \core\Exception('$content的数据类型错误！只能写入标量数据。');
 		}
 		
-		return file_put_contents($file, $content);
+		return file_put_contents($file, $content, $flag);
 	}
 	
 	/**
 	 * 读取文件内容
 	 * @param string $file
-	 * @return string|null 如果读取不出文件内容，则返回null
+	 * @return string|null 如果读取不出文件内容则返回null
 	 */
 	public static function read($file) {
 		$file = static::safePath($file);
@@ -85,7 +92,7 @@ class File {
 	/**
 	 * 删除文件
 	 * @param string $file
-	 * @return boolean|null
+	 * @return bool
 	 */
 	public static function delete($file) {
 		$file = static::safePath($file);
@@ -105,7 +112,7 @@ class File {
 	 * @return bool
 	 */
 	public static function removeDirs($dir, $rmSelf = true) {
-		// 不删除非法路径
+		// 不处理非法路径
 		$dir = File::safeDir($dir);
 	
 		if(!$dir || !$d = dir($dir)) {

@@ -80,7 +80,7 @@ abstract class ACache {
 	 * 构造函数中设置缓存实例相关选项
 	 * @param array $cfg
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->enabled = $cfg['cache_enabled'];
 		$this->isCompress = $cfg['cache_compress'];
 		$this->setCacheDir($cfg['cache_dir']);

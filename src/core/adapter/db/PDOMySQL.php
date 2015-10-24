@@ -33,7 +33,7 @@ class PDOMySQL extends ADB implements IDB, \core\adapter\IFactoryAble {
 	 * @param array $cfg
 	 * @throws \core\adapter\db\Exception
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		if (!class_exists('\\PDO')) {
 			throw new Exception('连接数据库时出错：请联系空间提供者启用PHP的PDO_MYSQL模块以支持连接MYSQL数据库。');
 		}

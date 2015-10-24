@@ -7,21 +7,26 @@
  * @copyright   Copyright (c) 2008-2015 Windwork Team. (http://www.windwork.org)
  * @license     http://opensource.org/licenses/MIT	MIT License
  */
-namespace core;
+namespace core\adapter\storage;
 
 /**
- * 存贮操作
+ * 存贮文件（用户上传的附件）操作
  * 长久保存可以从网络访问的数据 
  * 
  * 附件存贮规范：
  * 如果附件服务器使用和网站不一样的域名，在配置文件中设置附件网址(storage_site_url)，如新浪云的Storage存贮
  * 
- * @package     core
+ * @package     core.adapter.storage
  * @author      cmm <cmm@windwork.org>
  * @link        http://www.windwork.org/manual/core.storage.html
  * @since       1.0.0
  */
-class Storage {
+abstract class AStorage implements \core\adapter\IFactoryAble {
+	/**
+	 * 
+	 * @var array
+	 */
+	private $cfg;
 	
 	/**
 	 * 存贮站点根目录
@@ -36,37 +41,17 @@ class Storage {
 	 * @var string
 	 */
 	private $siteUrl = '';
-	
-	/**
-	 * instances
-	 * @var array
-	 */
-	private static $instances = array();
-	
-	/**
-	 * constructor
-	 */
-	private function __construct() {
-	}
-	
-	/**
-	 * 获取存贮类实例
-	 * @param string $namespace
-	 * @return \core\Storage
-	 */
-	public static function getInstance($namespace = '') {
-		$namespace || $namespace = '*';
-		
-		if (!isset(static::$instances[$namespace])) {
-			static::$instances[$namespace] = new static();
 
-			// 从配置注入存贮目录和存贮站点URL
-			static::$instances[$namespace]
-			  ->setStorageDir(\core\Config::get('storage_dir'))
-			  ->setSiteUrl(\core\Config::get('storage_site_url'));
-		}
-		
-		return static::$instances[$namespace];
+	/**
+	 * 
+	 * @param array $cfg
+	 */
+	public function __construct(array $cfg) {
+		$this->cfg = $cfg;
+		// 从配置注入存贮目录和存贮站点URL
+		$this
+		  ->setStorageDir($cfg['storage_dir'])
+		  ->setSiteUrl($cfg['storage_site_url']);
 	}
 
 	/**
@@ -136,12 +121,12 @@ class Storage {
 		if ($this->siteUrl) {
 			$url = trim($this->siteUrl, '/') . '/' . $path;
 		} else {
-			$url = "storage/" . trim($path, '/');
+			$url = basename($this->siteUrl)."/" . trim($path, '/');
 		}
 		
 		// 附件为动态内容并且没有使用url rewrite
 		if (!preg_match("/^(\\w+)\\:\\/\\//", $this->siteUrl) && !$this->isStatic()) {
-			 $url = Config::get('base_url') . Common::ltrimStr($url, Config::get('base_url'));
+			 $url = $this->cfg['base_url'] . \core\Common::ltrimStr($url, $this->cfg['base_url']);
 		}
 		
 		return $url;
@@ -153,7 +138,8 @@ class Storage {
 	 * @return string
 	 */
 	public function getPathFromUrl($url) {
-		return preg_replace("/(.*storage\/)/", '', $url);
+		$basename = basename($this->siteUrl);
+		return preg_replace("/(.*$basename\/)/", '', $url);
 	}
 	
 	/**
@@ -166,9 +152,9 @@ class Storage {
 		$url = $this->getUrl($path);
 						
 		if(!preg_match("/^(\\w+)\\:\\/\\//", $url)) {		
-			$domain = Config::get('host_info');
+			$domain = $this->cfg['host_info'];
 			$domain = rtrim($domain, '/');
-			$basePath = Config::get('base_path');			
+			$basePath = $this->cfg['base_path'];			
 			$url = "{$domain}{$basePath}{$url}";
 		}
 		
@@ -199,12 +185,12 @@ class Storage {
 	 */
 	public function getThumbUrl($path, $width, $height){
 		if (!$path) {
-			$url = Config::get('ui_nopic');
+			$url = $this->cfg['ui_nopic'];
 			if(!preg_match("/^(\\w+)\\:\\/\\//", $url)) {				
-				$domain = Config::get('static_site_url');
-				$domain || $domain = Config::get('host_info');
+				$domain = $this->cfg['static_site_url'];
+				$domain || $domain = $this->cfg['host_info'];
 				$domain = rtrim($domain, '/');
-				$basePath = Config::get('base_path');
+				$basePath = $this->cfg['base_path'];
 				$url = "{$domain}{$basePath}{$url}";
 			}
 		} else {
@@ -219,47 +205,20 @@ class Storage {
 	 * 删除附件
 	 * @param string $path
 	 */
-	public function remove($path) {
-		return @unlink($this->getRealPath($path));
-	}
+	abstract public function remove($path);
 	
 	/**
 	 * 删除缩略图
 	 * 
 	 * @param string $path 缩略图路径
 	 */
-	public function removeThumb($path) {		
-		// 缩略图路径
-		$thumbDir = dirname($this->getThumbPath($path, 1, 1));
-		$thumbDir = $this->getRealPath(trim($thumbDir, '/')) . '/';
-
-		if(!is_dir($thumbDir)) {
-			return false;
-		}
-		
-		$baseId = \core\util\Encoder::encode($path);
-		$d = dir($thumbDir);
-		
-		while (false !== ($entry = $d->read())) {
-			if ($entry[0] == '.') {
-				continue;
-			}
-			
-			if(false !== $pos = strpos($entry, $baseId.'$')){
-				@unlink($thumbDir.'/'.$entry);
-			}
-		}
-		
-		$d->close();
-	}
+	abstract public function removeThumb($path);
 	
 	/**
 	 * 删除所有缩略图
 	 *
 	 */
-	public function clearThumb() {
-		File::clearDir($this->getRealPath('thumb'));
-	}
+	abstract public function clearThumb();
 	
 	/**
 	 * 获取缩略图路径
@@ -366,7 +325,7 @@ class Storage {
 	 * @return string
 	 */
 	public function safePath($path) {
-		return File::safePath($path);
+		return \core\File::safePath($path);
 	}
 
 	/**
@@ -375,9 +334,7 @@ class Storage {
 	 * @param string $path
 	 * @return string
 	 */
-	public function getContent($path) {
-		return file_get_contents($this->getRealPath($path));
-	}
+	abstract public function getContent($path);
 	
 	/**
 	 * 存贮附件
@@ -386,14 +343,7 @@ class Storage {
 	 * @param string $content
 	 * @return bool
 	 */
-	public function save($path, $content) {
-		$path = $this->getRealPath($path);
-		if (!is_dir(dirname($path))) {
-			@mkdir(dirname($path), 0755, true);
-		}
-		
-		return file_put_contents($path, $content);
-	}
+	abstract public function save($path, $content);
 	
 	/**
 	 * 生成附件路径
@@ -406,7 +356,7 @@ class Storage {
 			throw new Exception('请设置后缀名参数');
 		}
 		
-		$path = date(\core\Config::get('upload_subdir_format'));
+		$path = date($this->cfg['upload_subdir_format']);
 		$path = $path . '/' . \core\Common::guid(16) . '.' . ltrim($suffix, '.');
 		
 		if($this->isExist($path)) {
@@ -421,13 +371,7 @@ class Storage {
 	 * @param string $tempFile
 	 * @param string $uploadPath
 	 */
-	public function upload($tempFile, $uploadPath) {
-		$uploadPath = $this->getRealPath($uploadPath);
-		if (!is_dir(dirname($uploadPath))) {
-			@mkdir(dirname($uploadPath), 0755, true);
-		}
-		return move_uploaded_file($tempFile, $uploadPath);
-	}
+	abstract public function upload($tempFile, $uploadPath);
 	
 	/**
 	 * 复制文件到附件目录
@@ -435,24 +379,14 @@ class Storage {
 	 * @param string $pathTo
 	 * @return boolean
 	 */
-	public function copy($pathFrom, $pathTo) {
-		$pathTo = $this->getRealPath($pathTo);
-		
-		if (!is_dir(dirname($pathTo))) {
-			@mkdir(dirname($pathTo), 0755, true);
-		}
-	
-		return copy($pathFrom, $pathTo);
-	}
+	abstract public function copy($pathFrom, $pathTo);
 	
 	/**
 	 * 附件是否存在
 	 * @param string $path
 	 * @return boolean
 	 */
-	public function isExist($path) {
-		return is_file($this->getRealPath($path));
-	}
+	abstract public function isExist($path);
 }
 
 

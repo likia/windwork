@@ -111,7 +111,7 @@ class AzDG implements ICrypt, \core\adapter\IFactoryAble {
 	 * (non-PHPdoc)
 	 * @see \core\adapter\IFactoryAble::__construct()
 	 */
-	public function __construct($cfg) {		
+	public function __construct(array $cfg) {		
 	}
 
 

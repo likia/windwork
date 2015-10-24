@@ -21,7 +21,7 @@ abstract class ALogger {
 	protected $logDir;
 	protected $enabled;
 	
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->enabled = $cfg['log_enabled'];
 		$this->setLogDir($cfg['log_dir']);
 	}

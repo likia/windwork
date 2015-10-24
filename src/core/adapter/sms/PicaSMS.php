@@ -33,7 +33,7 @@ class PicaSMS extends ASMS implements ISMS, \core\adapter\IFactoryAble {
 	 * 
 	 * @param array $cfg
 	 */
-	public function __construct($cfg){
+	public function __construct(array $cfg){
 		$this->config = $cfg;
 	}
 	

@@ -81,11 +81,11 @@ class UploadsController extends \module\system\controller\admin\AdminBase {
 					'datetime' => date('Y-m-d H:i:s', $file['dateline']),
 					'is_photo' => $file['isimage'],
 					'icon_url' => $file['isimage'] ? thumb($file['id'], 100, 100) : '',
-					'dir_path' => dirname(Storage::getInstance()->getUrl($file['path'])),
+					'dir_path' => dirname(\core\Factory::storage()->getUrl($file['path'])),
 					'is_dir'   => false,
 					'has_file' => false,
 					'filesize' => $file['size'],
-					'filename' => Storage::getInstance()->getUrl($file['path']),
+					'filename' => \core\Factory::storage()->getUrl($file['path']),
 					'filetype' => strtolower(pathinfo($file['path'], PATHINFO_EXTENSION)),
 				);
 			}
@@ -109,7 +109,7 @@ class UploadsController extends \module\system\controller\admin\AdminBase {
 	
 			$this->initView();
 			foreach ($list as $li => $lv) {
-				$list[$li]['url'] = Storage::getInstance()->getFullUrl($lv['path']);
+				$list[$li]['url'] = \core\Factory::storage()->getFullUrl($lv['path']);
 			}
 	
 			$this->view->assign('pager', $paging->getPager());

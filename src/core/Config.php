@@ -47,10 +47,11 @@ final class Config {
 	
 	/**
 	 * 读取所有的配置信息
+	 * 可使用引用调用
 	 *
 	 * @return array
 	 */
-	public static function getConfigs() {
+	public static function &getConfigs() {
 		return self::$configs;
 	}
 	

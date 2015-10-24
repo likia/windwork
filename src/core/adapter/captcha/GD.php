@@ -99,7 +99,7 @@ class GD implements ICaptcha, \core\adapter\IFactoryAble {
 	 * 
 	 * @param array $cfg
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		
 	}
 	

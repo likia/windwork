@@ -22,7 +22,7 @@ use core\Factory;
 class SMTP implements IMailer, \core\adapter\IFactoryAble {
 	protected $cfg = array();
 	
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->cfg = $cfg;
 	}
 

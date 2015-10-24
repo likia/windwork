@@ -179,7 +179,7 @@ if(!function_exists('parse_ini_string')){
  * @return string
  */
 function thumb($path, $width = 100, $height = 0) {
-	return \core\Storage::getInstance()->getThumbUrl($path, $width, $height);
+	return \core\Factory::storage()->getThumbUrl($path, $width, $height);
 }
 
 /**
@@ -389,7 +389,7 @@ function recDataList($posid, $type = '', $cid = 0, $rows = 0, $mustPic = false) 
  * @return string
  */
 function pathToUrl($path) {
-	return \core\Storage::getInstance()->getFullUrl($path);
+	return \core\Factory::storage()->getFullUrl($path);
 }
 
 /**

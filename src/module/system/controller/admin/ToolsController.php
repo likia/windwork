@@ -38,7 +38,7 @@ class ToolsController extends \module\system\controller\admin\AdminBase {
 				Message::setErr('请选择要清除的缓存！');
 			} else {
 				empty($type['data']) || Factory::cache()->clear();
-				empty($type['thumb']) || Storage::getInstance()->clearThumb();
+				empty($type['thumb']) || Factory::storage()->clearThumb();
 				
 				$compiledDir = $this->view->compiledDir;
 				if(!empty($type['tpl']) && is_writeable($compiledDir)) {

@@ -11,8 +11,7 @@ namespace module\user\model;
 
 use core\Config;
 use core\util\Validator;
-use core\Storage;
-use core\Common;
+use core\Factory;
 use core\Lang;
 
 /**
@@ -331,7 +330,7 @@ class UserModel extends \core\mvc\Model {
 		}
 		
 		if($this->avatarid) {
-			$storObj = Storage::getInstance();			
+			$storObj = Factory::storage();			
 			$storObj->remove("avatar/big/{$this->id}.jpg");
 			$storObj->remove("avatar/medium/{$this->id}.jpg");
 			$storObj->remove("avatar/small/{$this->id}.jpg");

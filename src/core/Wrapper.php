@@ -23,6 +23,7 @@ class Wrapper {
 	 * @var array
 	 */
 	private static $wrappers = array(
+		'db' => '\\core\\wrapper\\DB',
 	);
 	
 	/**
@@ -38,23 +39,29 @@ class Wrapper {
 		}		
 	}
 	
-	public static function setWrapper($wrapper, $class) {
-		if($wrapper && $class && !in_array($wrapper, stream_get_wrappers()) && class_exists($class)) {
-			if(array_key_exists($wrapper, static::$wrappers)) {
-				stream_register_wrapper($wrapper, static::$wrappers[$wrapper]);
-				//stream_context_create(array($wrapper => array()));
-			} else {
-				throw new Exception("Unsupport wrapper: $wrapper!");
-			}
+	/**
+	 * 注册wrapper
+	 * @param string $wrapper
+	 * @param string $class
+	 * @throws Exception
+	 */
+	public static function registerWrapper($wrapper, $class = '') {
+		$class || $class = static::$wrappers[$wrapper];
+		if($wrapper && $class && class_exists($class)) {
+			if(!in_array($wrapper, stream_get_wrappers())) {
+				stream_register_wrapper($wrapper, $class);
+			} 
+		} else {
+			throw new Exception("Unsupport wrapper: $wrapper!");
 		}
 	}
 	
 	/**
 	 * 注册运行时使用的自定义wrapper
 	 */
-	public static function register() {
+	public static function registerAllWrapper() {
 		foreach (static::$wrappers as $wrapper => $class) {
-			static::setWrapper($wrapper, $class);
+			static::registerWrapper($wrapper, $class);
 		}
 	}
 	

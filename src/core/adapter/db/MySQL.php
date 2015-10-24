@@ -31,7 +31,7 @@ class MySQL extends ADB implements IDB, \core\adapter\IFactoryAble {
 	 * @param array $cfg
 	 * @throws \core\adapter\db\Exception
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		if (!function_exists('mysql_connect')) {
 			throw new Exception('extension not installed. 连接数据库时出错：PHP的MYSQL模块(php_mysql.dll/php_mysql.so)未启用。');
 		}

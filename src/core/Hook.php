@@ -111,6 +111,7 @@ class Hook {
 	 *
 	 * @param string $registerKey 钩子位置
 	 * @param string|object|array $injectHook 注入信息 Hook Class|Hook instance|array('Hook Class', array($param1, $param2, ....)), array(Hook instance, array($param1, $param2, ....))
+	 * @return void
 	 */
 	public static function registerHook($registerKey, $injectHook) {
 		static::$hooks[$registerKey][] = $injectHook;
@@ -119,7 +120,7 @@ class Hook {
 	/**
 	 * 执行指定钩子点的所有方法
 	 * 
-	 * @param string $callId 指定钩子点
+	 * @param string $hookId = '' 指定钩子点
 	 * @return bool
 	 */
 	public static function call($hookId = '') {		
@@ -141,7 +142,7 @@ class Hook {
 	
 	/**
 	 * 执行钩子注入的具体业务
-	 * @param mixed $hook
+	 * @param mixed $hook  Hook Class|Hook instance|array('Hook Class', array($param1, $param2, ....)), array(Hook instance, array($param1, $param2, ....))
 	 * @throws \core\Exception
 	 * @return void|boolean
 	 */

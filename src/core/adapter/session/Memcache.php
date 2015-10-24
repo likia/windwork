@@ -20,7 +20,7 @@ namespace core\adapter\session;
 final class Memcache extends ASession implements ISession, \core\adapter\IFactoryAble {
 	private $cfg = array();
 	
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->cfg = $cfg;
 		if (ini_get('session.auto_start')) {
 			session_destroy();

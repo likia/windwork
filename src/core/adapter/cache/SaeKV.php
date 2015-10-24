@@ -29,7 +29,7 @@ class SaeKV extends ACache implements ICache, \core\adapter\IFactoryAble {
 	 * @param array $cfg
 	 * @throws \core\adapter\cache\Exception
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		parent::__construct($cfg);
 		$this->kv = new \SaeKV();
 		if(!$this->kv->init()) {

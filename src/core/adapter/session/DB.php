@@ -28,7 +28,7 @@ final class DB extends ASession implements ISession, \core\adapter\IFactoryAble 
 	 */
 	protected $db = null;
 
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->db = \core\Factory::db();
 		
 		if (ini_get('session.auto_start')) {

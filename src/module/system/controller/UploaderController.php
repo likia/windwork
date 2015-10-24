@@ -107,7 +107,7 @@ use core\Storage;
 	 			);
 	 			
 	 			$this->m->getIsImage() && 
-	 			$r['uploadfile_response']['thumb'] = Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150);
+	 			$r['uploadfile_response']['thumb'] = \core\Factory::storage()->getThumbUrl($this->m->getPkv(), 150, 150);
 	 			$r['ok'] = '成功上传附件';
 	 			$this->m->toArray();
 	 		} else {
@@ -141,7 +141,7 @@ use core\Storage;
  						$r['uploadfiles_response'][] = array(
 	 						'id'    => $this->m->getPkv(),
 		 					'rid'   => $rid,
- 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150),
+ 							'thumb' => \core\Factory::storage()->getThumbUrl($this->m->getPkv(), 150, 150),
 	 						'path'  => $this->m->getPath(),
  							'path'  => $this->m->getUrl(), 								
 	 						'name'  => $this->m->getName(),
@@ -169,7 +169,7 @@ use core\Storage;
 	 				if($from == 'editor') {
 	 					$r = array(
 	 						"error" => 0,
-	 						"url" => Storage::getInstance()->getFullUrl($this->m->getPath()),
+	 						"url" => \core\Factory::storage()->getFullUrl($this->m->getPath()),
 	 					);
 	 					Common::showJson($r);
 	 					return true;
@@ -183,7 +183,7 @@ use core\Storage;
 		 				);
 		 				
 		 				$this->m->getIsImage() && 
-		 				$r['uploadfile_response']['thumb'] = Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150);
+		 				$r['uploadfile_response']['thumb'] = \core\Factory::storage()->getThumbUrl($this->m->getPkv(), 150, 150);
 		 				
 		 				$this->m->toArray();
 		 				Message::setOK('成功上传附件');	 						
@@ -266,9 +266,9 @@ use core\Storage;
 	 					if($this->m->update()){
 	 						$r['uploadfiles_response'][] = array(
 		 						'id'    => $this->m->getPkv(),
-	 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150),
+	 							'thumb' => \core\Factory::storage()->getThumbUrl($this->m->getPkv(), 150, 150),
 		 						'path'  => $this->m->getPath(),
-		 						'url'   => Storage::getInstance()->getUrl($this->m->getPath()),
+		 						'url'   => \core\Factory::storage()->getUrl($this->m->getPath()),
 		 						'name'  => $this->m->getName(),
 		 					);
 	 						$count ++;
@@ -300,16 +300,16 @@ use core\Storage;
 		 					if($from == 'editor') {
 		 						$r = array(
 		 							"error" => 0,
-		 							"url" => Storage::getInstance()->getFullUrl($this->m->getPath()),
+		 							"url" => Factory::storage()->getFullUrl($this->m->getPath()),
 		 						);
 		 						Common::showJson($r);
 		 						return true;
 		 					} else {
 			 					$r['uploadfile_response'] = array(
 			 						'id'    => $this->m->getPkv(),
-		 							'thumb' => Storage::getInstance()->getThumbUrl($this->m->getPkv(), 150, 150),
+		 							'thumb' => Factory::storage()->getThumbUrl($this->m->getPkv(), 150, 150),
 			 						'path'  => $this->m->getPath(),
-			 						'url'   => Storage::getInstance()->getUrl($this->m->getPath()),
+			 						'url'   => Factory::storage()->getUrl($this->m->getPath()),
 			 						'name'  => $this->m->getName(),
 			 						'rid'   => $this->m->uuid,
 			 					);
@@ -336,7 +336,7 @@ use core\Storage;
 			$r = array(
 				'id' => $this->m->getPkv(),
 				'path' => $this->m->getPath(),
-				'url'  => Storage::getInstance()->getUrl($this->m->getPath()),
+				'url'  => Factory::storage()->getUrl($this->m->getPath()),
 				'name' => $this->m->getName(),
 				'note' => $this->m->getNote(),
 				'isimage' => $this->m->getIsImage(),
@@ -386,7 +386,7 @@ use core\Storage;
 	
 	public function loadAction($path = 0, $p1 = null, $p2 = null, $p3 = null){
 		$nopic = Config::get('base_path').Config::get('ui_nopic');
-		$storObj = Storage::getInstance();
+		$storObj = Factory::storage();
 		
 		// 头像 storage/avatar/big|medium|small/{$uid}.jpg
 		if ($path == 'avatar') {
@@ -591,11 +591,11 @@ use core\Storage;
 					'datetime' => date('Y-m-d H:i:s', $file['dateline']),
 					'is_photo' => $file['isimage'],
 					'icon_url' => $file['isimage'] ? thumb($file['id'], 100, 100) : '',
-					'dir_path' => dirname(Storage::getInstance()->getUrl($file['path'])),
+					'dir_path' => dirname(Factory::storage()->getUrl($file['path'])),
 					'is_dir'   => false,
 					'has_file' => false,
 					'filesize' => $file['size'],
-					'filename' => Storage::getInstance()->getUrl($file['path']),
+					'filename' => Factory::storage()->getUrl($file['path']),
 					'filetype' => strtolower(pathinfo($file['path'], PATHINFO_EXTENSION)),
 				);
 			}
@@ -619,7 +619,7 @@ use core\Storage;
 		
 			$this->initView();
 			foreach ($list as $li => $lv) {
-				$list[$li]['url'] = Storage::getInstance()->getFullUrl($lv['path']);
+				$list[$li]['url'] = Factory::storage()->getFullUrl($lv['path']);
 			}
 		
 			$this->view->assign('pager', $paging->getPager());

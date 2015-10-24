@@ -30,8 +30,8 @@ class Factory {
 	 * 获取组件工厂对象实例
 	 *
 	 * @param string $type 获取实例类型
-	 * @param string $class 实例的置配器
-	 * @param array $cfg
+	 * @param string $class = '' 实例的置配器
+	 * @param array $cfg = array()
 	 * @return \core\Object
 	 */
 	public static function getInstance($type, $class = '', $cfg = array()) {
@@ -54,8 +54,8 @@ class Factory {
 	/**
 	 * 获取数据库操作对象实例
 	 * 
-	 * @param string $class 数据库操操作类
-	 * @param array $cfg
+	 * @param string $class = '' 数据库操操作类
+	 * @param array $cfg = array()
 	 * @return \core\adapter\db\IDB
 	 */
 	public static function db($class = '', $cfg = array()) {
@@ -65,8 +65,8 @@ class Factory {
 	/**
 	 * 获取图片处理对象实例
 	 * 
-	 * @param string $class 图片处理类
-	 * @param array $cfg
+	 * @param string $class = '' 图片处理类
+	 * @param array $cfg = array()
 	 * @return \core\adapter\image\IImage
 	 */
 	public static function image($class = '', $cfg = array()) {
@@ -76,8 +76,8 @@ class Factory {
 	/**
 	 * 获取消息队列操作对象实例
 	 * 
-	 * @param string $class 消息队列操作类
-	 * @param array $cfg
+	 * @param string $class = '' 消息队列操作类
+	 * @param array $cfg = array()
 	 * @return \core\adapter\mq\IMQ
 	 */
 	public static function mq($class = '', $cfg = array()) {
@@ -87,8 +87,8 @@ class Factory {
 	/**
 	 * 获取Session操作对象实例
 	 * 
-	 * @param string $class 缓存操作类
-	 * @param array $cfg
+	 * @param string $class = '' 缓存操作类
+	 * @param array $cfg  = array()
 	 * @return \core\adapter\session\ISession
 	 */
 	public static function session($class = '', $cfg = array()) {
@@ -98,8 +98,8 @@ class Factory {
 	/**
 	 * 发送电子邮件实例
 	 *
-	 * @param string $class
-	 * @param array $cfg
+	 * @param string $class = ''
+	 * @param array $cfg = array()
 	 * @return \core\adapter\mailer\IMailer
 	 */
 	public static function mailer($class = '', $cfg = array()) {
@@ -109,8 +109,8 @@ class Factory {
 	/**
 	 * 日志对象实例
 	 *
-	 * @param string $class
-	 * @param array $cfg
+	 * @param string $class = ''
+	 * @param array $cfg = array()
 	 * @return \core\adapter\logger\ILogger
 	 */
 	public static function logger($class = '', $cfg = array()) {
@@ -120,8 +120,8 @@ class Factory {
 	/**
 	 * 可逆加密解密对象实例
 	 *
-	 * @param string $class
-	 * @param array $cfg
+	 * @param string $class = ''
+	 * @param array $cfg = array()
 	 * @return \core\adapter\crypt\ICrypt
 	 */
 	public static function crypt($class = 'AzDG', $cfg = array()) {
@@ -131,8 +131,8 @@ class Factory {
 	/**
 	 * 验证码对象实例
 	 *
-	 * @param string $class
-	 * @param array $cfg
+	 * @param string $class = ''
+	 * @param array $cfg = array()
 	 * @return \core\adapter\captcha\ICaptcha
 	 */
 	public static function captcha($class = '', $cfg = array()) {
@@ -149,8 +149,8 @@ class Factory {
 
 	/**
 	 * 获取默认缓存对象实例
-	 * @param array $class
-	 * @param array $cfg
+	 * @param array $class = ''
+	 * @param array $cfg = array()
 	 * @return \core\adapter\cache\ICache
 	 */
 	public static function cache($class = '', $cfg = array()) {
@@ -169,5 +169,16 @@ class Factory {
 		empty($cfg) && $cfg = Config::get("sms");
 		
 		return static::getInstance('sms', $class, $cfg);
+	}
+
+	/**
+	 * 存贮对象实例
+	 *
+	 * @param string $class = ''
+	 * @param array $cfg = array()
+	 * @return \core\adapter\storage\AStorage
+	 */
+	public static function storage($class = '', $cfg = array()) {
+		return static::getInstance('storage', $class, $cfg);
 	}
 }

@@ -202,15 +202,6 @@ final class App {
 		ini_set('session.cookie_path',     Config::get('session_cookie_path'));
 		ini_set('session.cookie_domain',   Config::get('session_cookie_domain'));
 		ini_set('session.cookie_lifetime', Config::get('session_cookie_lifetime'));
-				
-		/*
-		// Wrapper
-		Wrapper::initWrapper(Config::get('cache_dir'),         Config::get('cache_wrapper_class'));
-		Wrapper::initWrapper(Config::get('tpl_compiled_dir'),  Config::get('tpl_wrapper_class'));
-		Wrapper::initWrapper(Config::get('log_dir'),           Config::get('log_wrapper_class'));
-		Wrapper::initWrapper(Config::get('storage_dir'),       Config::get('storage_wrapper_class'));				
-		Wrapper::register();
-		//*/
 	}
 		
 	/**

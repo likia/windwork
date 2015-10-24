@@ -125,7 +125,7 @@ abstract class ADB {
 	 * 构筑函数设置配置信息
 	 * @param array $cfg
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 		$this->cfg = array_intersect_key($this->cfg, $cfg);
 		$this->debug = $cfg['db_debug'];
 	}

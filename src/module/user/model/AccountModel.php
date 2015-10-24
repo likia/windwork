@@ -10,10 +10,8 @@
 namespace module\user\model;
 
 use core\util\Validator;
-
 use core\Config;
 use core\Factory;
-use core\Storage;
 
 /**
  * 普通会员账号相关
@@ -238,7 +236,7 @@ class AccountModel extends UserModel {
 			}
 			
 			if ($data['avatar']) {
-				$storObj = Storage::getInstance();
+				$storObj = Factory::storage();
 				$storObj->remove("avatar/big/{$this->id}.jpg");
 				$storObj->remove("avatar/medium/{$this->id}.jpg");
 				$storObj->remove("avatar/small/{$this->id}.jpg");

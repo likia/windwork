@@ -58,7 +58,7 @@ final class Standard extends ASession implements ISession, \core\adapter\IFactor
 	 * (non-PHPdoc)
 	 * @see \core\adapter\IFactoryAble::__construct()
 	 */
-	public function __construct($cfg) {
+	public function __construct(array $cfg) {
 	}
 
 }

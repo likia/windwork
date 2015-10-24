@@ -56,7 +56,7 @@ class GD implements IImage, \core\adapter\IFactoryAble {
 	/**
 	 * 构造函数中设置内存限制多一点以能处理较大图片
 	 */
-	public function __construct() {
+	public function __construct(array $cfg) {
 		@ini_set("memory_limit", "128M");  // 处理大图片的时候要较很大的内存
 	}
 	
