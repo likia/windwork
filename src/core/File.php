@@ -109,6 +109,7 @@ class File {
 	 * 删除文件夹（包括有子目录或有文件）
 	 *
 	 * @param string $dir 目录
+	 * @param bool $rmSelf = false 是否删除本身
 	 * @return bool
 	 */
 	public static function removeDirs($dir, $rmSelf = true) {

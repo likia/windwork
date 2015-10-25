@@ -42,6 +42,6 @@ class AdminCPLogHook implements \core\IHook {
 			$log .= " c:" . preg_replace("/\\n|\\s+/", '', var_export($item['c'], 1));
 		}
 		
-		Factory::logger()->write('info', $log);
+		logging('info', $log);
 	}
 }

@@ -96,6 +96,7 @@ final class App {
 	private $isInitWeb = false;
 	
 	/**
+	 * 获取请求对象
 	 * @return \core\Request
 	 */
 	public function getRequest() {
@@ -103,6 +104,7 @@ final class App {
 	}
 
 	/**
+	 * 获取响应对象
 	 * @return \core\Response
 	 */
 	public function getResponse() {
@@ -146,7 +148,7 @@ final class App {
 			// 自定义异常处理
 			set_exception_handler(array('\\core\\Common', 'exceptionHandler'));
 			
-			// 加载配置文件
+			// 配置信息
 			Config::setConfigs($configs);
 			
 			// 初始化hook，加载hook配置
@@ -225,8 +227,8 @@ final class App {
 			exit;
 		}
 		
-		// 初始化路由设置，依赖于Config::set('host_info'),Config::set('base_path')
-		\core\Router::$options = array_merge(\core\Router::$options, array_intersect_key(Config::getConfigs(), \core\Router::$options));
+		// 初始化路由设置，生成URL依赖于Config::set('host_info'),Config::set('base_path')
+		\core\mvc\Router::$options = array_merge(\core\mvc\Router::$options, array_intersect_key(Config::getConfigs(), \core\mvc\Router::$options));
 		
 		// SESSION初始化
 		\core\Factory::session()->start();
@@ -276,24 +278,26 @@ final class App {
 	 *       'args' => array(),
 	 *   ));
 	 * </pre>
-	 * @param string|\core\Router $pathVars
+	 * @param string|\core\mvc\Router $routeVars
 	 * @param bool $isCleanGPR 是否清空 $_GET/$_POST/$_REQUEST变量内容
 	 */
-	public function dispatch($pathVars = '', $isCleanGPR = false) {
+	public function dispatch($routeVars = '', $isCleanGPR = false) {
 		if (!$this->isInitWeb) {
 			$this->initWeb();
 		}
+		
+		$uri = !$routeVars || is_string($routeVars) ? $routeVars : $routeVars->toUrl();
 		
 		// 防dispatch死循环
 		static $count = 0;
 		$count ++;
 		if ($count > 10) {
-			throw new Exception("\"{$pathVars}\" 请求错误，dispatch死循环了！");
+			throw new Exception("\"{$uri}\" 请求错误，dispatch死循环了！");
 		}
 		
 		// 发送响应内容一次后结束程序
 		if ($this->response->isSendedHeader()) {
-			logging('error', "'{$pathVars}' 多次发送header");
+			logging('error', "'{$uri}' 发生多次响应");
 			return;
 		}
 		
@@ -305,7 +309,7 @@ final class App {
 		Hook::call('start_new_controller');
 
 		// 初始化控制器实例
-		$this->initController($pathVars);
+		$this->initController($routeVars);
 
 		// 控制器继承约束
 		if(!$this->ctlObj instanceof \core\mvc\Controller) {
@@ -319,7 +323,7 @@ final class App {
 		Hook::call('start_action');
 		
 		if($this->response->isSendedHeader()) {
-			logging('error', "'{$pathVars}' 多次发送header");
+			logging('error', "'{$uri}' 发生多次响应！");
 			return;
 		}
 		
@@ -345,22 +349,23 @@ final class App {
 	/**
 	 * 初始化控制器实例
 	 * 模块名、控制器命名空间都为小写
-	 * @param string|Router $pathVars
+	 * @param string|\core\mvc\Router $pathVars
 	 * @throws \core\Exception
 	 */
 	private function initController($pathVars) {		
 		// 请求变量设置
-		if($pathVars instanceof Router) {
+		if($pathVars instanceof \core\mvc\Router) {
 			$router = $pathVars;
 		} else {
-	    	$router = new Router();
+	    	$router = new \core\mvc\Router();
 			if($pathVars && is_string($pathVars)) {
 				$router->parseUrl($pathVars);
 			} else {
-				if(key($_GET) && !current($_GET)) {
+				$uri = $this->request->getRequestUri();
+				$router->parseUrl($uri);
+				if(false !== stripos($uri, 'index.php?') && key($_GET) && !current($_GET)) {
 					array_shift($_GET);
 				}
-				$router->parseUrl($this->request->getRequestUri());
 			}
 		}
 		

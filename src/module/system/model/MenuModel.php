@@ -9,7 +9,7 @@
  */
 namespace module\system\model;
 
-use core\Router;
+use core\mvc\Router;
 use core\util\Tree;
 
 /**

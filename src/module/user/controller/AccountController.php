@@ -78,7 +78,7 @@ class AccountController extends \core\mvc\Controller {
 	public function registerAction() {
 		// 已登录用户直接跳转到用户中心
 		if (!empty($_SESSION['uid'])) {
-			$this->response->sendRedirect(\core\Router::buildUrl("user.Account.profile", null, true));
+			$this->response->sendRedirect(url("user.Account.profile", true));
 			return ;
 		}
 		
@@ -168,7 +168,7 @@ class AccountController extends \core\mvc\Controller {
 					if (!$this->request->isAjaxRequest()) {						
 						if(!$forward){
 							$referer = $this->request->getRefererUrl();
-							$refererObj = new \core\Router();
+							$refererObj = new \core\mvc\Router();
 							$refererObj->parseUrl($referer);
 							if($refererObj->params['act'] != 'login') {
 								$forward = $referer;
@@ -285,7 +285,7 @@ class AccountController extends \core\mvc\Controller {
 		if($this->request->isPost() && \core\Request::checkRePost()) {
 			$newPassword = $this->request->getRequest('newpassword');
 			if(false !== $accountObj->updatePasswordByEmailResetPasswordHash($newPassword, $email, $hash)) {
-				Message::setOK('重置密码成功！<a href="'.\core\Router::buildUrl('user.account.login').'">马上登录</a>');
+				Message::setOK('重置密码成功！<a href="'.url('user.account.login').'">马上登录</a>');
 			} else {
 				Message::setErr($accountObj->getErrs());
 			}

@@ -18,7 +18,7 @@ namespace core\adapter\storage;
  * 
  * @package     core.adapter.storage
  * @author      cmm <cmm@windwork.org>
- * @link        http://www.windwork.org/manual/core.storage.html
+ * @link        http://www.windwork.org/manual/core.adapter.storage.html
  * @since       1.0.0
  */
 abstract class AStorage implements \core\adapter\IFactoryAble {
@@ -43,7 +43,7 @@ abstract class AStorage implements \core\adapter\IFactoryAble {
 	private $siteUrl = '';
 
 	/**
-	 * 
+	 * 构造函数设置附件路径及附件站点URL
 	 * @param array $cfg
 	 */
 	public function __construct(array $cfg) {

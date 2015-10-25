@@ -398,6 +398,10 @@ abstract class Model extends \core\Object {
 		return $this->__pkv;
 	}
 	
+	/**
+	 * 获取主键名
+	 * @return string|array
+	 */
 	public function getPk() {
 		return $this->internal['pk'];
 	}
@@ -506,13 +510,14 @@ abstract class Model extends \core\Object {
 	 * 
 	 * @see \core\adapter\db\SqlBuilder::buildQueryOptions();
 	 * 
-	 * @param array $option = <pre>array(
+	 * @param array $options = <pre>array(
 	 *     'table'  => 'table_a, table_b AS b', // 查询的表名，可以是多个表，默认是当前模型的表
 	 *     'join'   => array(array('table_name', 'field_a', 'field_b'), arrray(), ...), // => LEFT JOIN `table_name` ON `field_a` = `field_b`
 	 *     'where'  => array() // 查询条件 array('and|or', array('字段1', '值', '=,+,-,|,&,^,like,in,notin,>,<,<>,>=,<=,!='), array('字段1', '值', '逻辑'), ...)
 	 *     'group'  => '', // 将对其进行SQL注入过滤并且在前面加上GROUP BY 
 	 *     'having' => '', // 将对其进行SQL注入过滤并且在前面加上 HAVING
 	 * )</pre>
+	 * @param string $field = '*'
 	 * @return number
 	 */
 	public function count($options = array(), $field = '*') {
@@ -536,7 +541,7 @@ abstract class Model extends \core\Object {
 	 * @see \core\db\ADB::whereArr()
 	 * @see \core\adapter\db\SqlBuilder::buildQueryOptions()
 	 * 
-	 * @param array $option 查询选项(详看See Also)
+	 * @param array $options 查询选项(详看\core\adapter\db\SqlBuilder::buildQueryOptions())
 	 * @param int $offset 获取记录开始下标
 	 * @param int $rows 获取记录数
 	 * @param bool $isCache 是否缓存查询结果
@@ -586,9 +591,9 @@ abstract class Model extends \core\Object {
 	/**
 	 * 获取一条记录
 	 * 
-	 * @see \core\db\Adb::whereArr()
+	 * @see \core\adapter\db\SqlBuilder::buildQueryOptions()
 	 * 
-	 * @param array $option 查询条件，参看 \core\mvc\Mocel::select()
+	 * @param array $options 查询条件，参看 \core\mvc\Mocel::select()
 	 * @param bool $isCache 是否缓存查询结果
 	 * @return array
 	 */
@@ -601,15 +606,14 @@ abstract class Model extends \core\Object {
 	/**
 	 * 获取一个字段的值
 	 *
-	 * @see \core\adapter\db\ADB::whereArr()
+	 * @see \core\adapter\db\SqlBuilder::buildQueryOptions()
 	 * 
+	 * @param array $options 查询条件，参看 \core\mvc\Mocel::select()
 	 * @param string $field 查询的字段
-	 * @param array $option 查询条件，参看 \core\mvc\Mocel::select()
-	 * @param string $order 显示排序
 	 * @param bool $isCache 是否缓存查询结果
 	 * @return scalar
 	 */
-	public function fetchField($field = '', $options = array(), $isCache = false) {
+	public function fetchField($options = array(), $field = '', $isCache = false) {
 		$field && $options['fields'] = $field;
 		$row = $this->fetchRow($options, $isCache);
 	

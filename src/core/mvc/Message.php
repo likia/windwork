@@ -38,7 +38,7 @@ class Message {
 	
 
 	/**
-	 *
+	 * 消息信息
 	 * @var array
 	 */
 	private static $messages = array(

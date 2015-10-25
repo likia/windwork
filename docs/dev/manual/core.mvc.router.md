@@ -94,7 +94,7 @@ class AccountController extends \core\mvc\Controller {
 分析URL获取参数
 -----------
 ```
-$router = new \core\Router();
+$router = new \core\mvc\Router();
 $url = 'index.php?user.account.login/dopost/name:demo/password:123456';
 // 分析URL
 $router->parseUrl($url);
@@ -113,13 +113,13 @@ $router->params == array(
 
 生成URL
 ---------------
-用\core\Router::buildUrl()生成url，Router会自动把URl转成简写url，如果启用url重写，它也会自动生成重写的url。   
+用\core\mvc\Router::buildUrl()生成url，Router会自动把URl转成简写url，如果启用url重写，它也会自动生成重写的url。   
 
 
 ```
 /**
  * 生成URL
- * @param string|\core\Router $url
+ * @param string|\core\mvc\Router $url
  * @param bool $absolute
  * @return string
  */
@@ -136,7 +136,7 @@ public static function buildUrl($url, $absolute = false)
  * @return string
  */
 function url($uri, $fullUrl = 0) {
-	return \core\Router::buildUrl($uri, $fullUrl);
+	return \core\mvc\Router::buildUrl($uri, $fullUrl);
 }
 ```
 

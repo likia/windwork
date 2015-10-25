@@ -37,16 +37,99 @@ abstract class ALogger {
 		
 		$this->logDir = $dir;
 	}
+
+	/**
+	 * 系统不可用
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	 */
+	public function emergency($message, array $context = array()) {
+		$this->log('emergency', $message, $context);
+	}
 	
 	/**
-	 * 检查日志级别
-	 * @param string $level info|debug|exception|error
-	 * @throws \core\adapter\logger\Exception
-	 */
-	public function checkLevel($level) {
-		if(!in_array($level, array('info', 'debug', 'exception', 'error'))) {
-			throw new \core\adapter\logger\Exception('日志级别应该为：info|debug|exception|error');
-		}
+	 * 功能必须马上修复
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function alert($message, array $context = array()){
+		$this->log('alert', $message, $context);
+	}
+	
+	/**
+	 * 危险的环境.
+	 *
+	 * Example: 应用组件不可用, 不可预知的异常.
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function critical($message, array $context = array()){
+		$this->log('critical', $message, $context);
+	}
+	
+	/**
+	 * 不需要立即处理的运行时错误，但通常应该被记录和监测。
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function error($message, array $context = array()){
+		$this->log('error', $message, $context);
+	}
+	
+	/**
+	 * 运行时警告 (非致命错误)。仅给出提示信息，但是脚本不会终止运行。
+	 *
+	 * Example: 使用不赞成的接口, 不好的东西但不一定是错误
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function warning($message, array $context = array()){
+		$this->log('warning', $message, $context);
+	}
+	
+	/**
+	 * 运行时通知。表示脚本遇到可能会表现为错误的情况，但是在可以正常运行的脚本里面也可能会有类似的通知。
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function notice($message, array $context = array()){
+		$this->log('notice', $message, $context);
+	}
+	
+	/**
+	 * 有意义的事件
+	 *
+	 * Example: 用户登录，sql日志等
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function info($message, array $context = array()){
+		$this->log('info', $message, $context);
+	}
+	
+	/**
+	 * 详细的调试信息
+	 *
+	 * @param string $message
+	 * @param array $context
+	 * @return null
+	*/
+	public function debug($message, array $context = array()){
+		$this->log('debug', $message, $context);
 	}
 }
 

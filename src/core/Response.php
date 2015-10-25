@@ -25,6 +25,10 @@ namespace core;
  * @since       1.0.0
  */
 class Response {
+	/**
+	 * 是否已经发送响应信息，已发送则不重新发送
+	 * @var bool
+	 */
 	protected $isSendedHeader = false;
 	
 	/**
@@ -503,7 +507,8 @@ class Response {
 	protected $data = array();
 
 	/**
-	 * @return string 返回当前请求的返回类型
+	 * 获取当前响应的mime类型
+	 * @return string
 	 */
 	public function getResponseType() {
 		return $this->type;
@@ -807,7 +812,7 @@ class Response {
 	}
 	
 	/**
-	 * 
+	 * 响应状态码对应的响应信息
 	 * @param int $code
 	 * @return string
 	 */

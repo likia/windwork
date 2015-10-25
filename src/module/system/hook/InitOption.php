@@ -26,7 +26,7 @@ class InitOption implements \core\IHook {
 		    $options = \module\system\model\OptionModel::getOptions();
 			$sortArr = array(); // 根据值长度进行排序
 			
-			foreach (\core\Router::$rules as $ruleKey => $ruleVal) {
+			foreach (\core\mvc\Router::$rules as $ruleKey => $ruleVal) {
 				$rewriteRules[strtolower($ruleKey)] = $ruleVal;
 				$sortArr[strtolower($ruleKey)] = strlen($ruleVal);
 			}
@@ -62,7 +62,7 @@ class InitOption implements \core\IHook {
 		
 		// 后台数据库存在的配置项合并到文件配置的配置项
 		\core\Config::setConfigs(array_merge($options, \core\Config::getConfigs()));
-		\core\Router::$rules = $options['url_rewrite_rule_arr'];
+		\core\mvc\Router::$rules = $options['url_rewrite_rule_arr'];
 	}
 
 }

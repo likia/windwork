@@ -121,7 +121,7 @@ class Request {
 	 * 根据名称获得服务器和执行环境信息
 	 *
 	 * 主要获取的依次顺序为：_attribute、$_GET、$_POST、$_COOKIE、$_REQUEST、$_ENV、$_SERVER
-	 * @param string $name 获取数据的key值
+	 * @param string $key 获取数据的key值
 	 * @param string $defaultValue 设置缺省值,当获取值失败的时候返回缺省值,默认该值为空字串
 	 * @return string|object|array 返回获得值
 	 */

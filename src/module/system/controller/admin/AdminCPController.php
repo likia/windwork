@@ -75,7 +75,7 @@ class AdminCPController extends \module\system\controller\admin\AdminBase {
 				}
 				
 				// 没有权限则
-				$router = new \core\Router();
+				$router = new \core\mvc\Router();
 				$router->parseUrl($item2['url']);
 				
 				if(!AclModel::isAccessable($router->params['mod'], $router->params['ctl'], $router->params['act'])) {

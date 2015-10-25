@@ -19,7 +19,7 @@ namespace core;
  */
 class Wrapper {
 	/**
-	 * 
+	 * 框架支持的Wrapper协议对应的实现类
 	 * @var array
 	 */
 	private static $wrappers = array(
@@ -65,6 +65,11 @@ class Wrapper {
 		}
 	}
 	
+	/**
+	 * 从路径获取wrapper
+	 * @param string $path
+	 * @return string
+	 */
 	public static function getWrapperFromPath($path) {
 		$wrapper = '';
 		if(preg_match("|(\\w+)://.*|", $path, $m)) {

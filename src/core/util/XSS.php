@@ -18,7 +18,7 @@ namespace core\util;
  */
 class XSS {
 	/**
-	 * 跨站请求伪造验证令牌
+	 * 获取防跨站请求伪造验证的令牌
 	 * 依赖于session
 	 * @return string
 	 */
@@ -32,6 +32,10 @@ class XSS {
 		return $_SESSION['csrf-token'];
 	}
 	
+	/**
+	 * 验证防跨站请求伪造验证的令牌
+	 * @return boolean
+	 */
 	public static function checkCsrfToken() {
 		if (!empty($_REQUEST['hash']) || $_REQUEST['hash'] != csrfToken()) {
 			return false;

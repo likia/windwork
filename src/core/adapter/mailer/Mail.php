@@ -9,7 +9,6 @@
  */
 namespace core\adapter\mailer;
 
-use core\Factory;
 
 use core\adapter\mailer\IMailer;
 
@@ -49,7 +48,7 @@ class Mail implements IMailer, \core\adapter\IFactoryAble {
 		$headers .= "Content-Transfer-Encoding: base64\r\n";
 		
 		if(!mail($emailTo, $emailSubject, $emailMessage, $headers)) {
-			Factory::logger()->write('error', "Mail failed: {$to} {$subject}");
+			logging('error', "Mail failed: {$to} {$subject}");
 			return false;
 		}
 		

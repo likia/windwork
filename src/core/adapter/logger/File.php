@@ -23,24 +23,24 @@ class File extends ALogger implements ILogger, \core\adapter\IFactoryAble {
 	 * @var int
 	 */
 	const LOG_SIZE = 2056000;
-		
+
 	/**
-	 * 写日志
+	 * 写入日志
 	 * 
+	 * 可以在config/config.php中启用日志，所有日志按类别保存
 	 * <pre>
 	 * 如果日志文件大于当前设置($logSize)日志大小，则把日志文件重命名存档，再创建新的日志文件
 	 * </pre>
 	 *
-	 * @param string $level 日志级别
+	 * @param string $level 日志级别 emergency|alert|critical|error|warning|notice|info|debug
 	 * @param string $message  日志内容
-	 * @throws \core\log\Exception
-	 */
-	public function write($level, $message) {
+     * @param array $context
+     * @return null
+     */
+	public function log($level, $message, array $context = array()) {
 		if (!$this->enabled) {
 			return;
 		}
-		
-		$this->checkLevel($level);
 		
 		$time = time();
 		$yearMonth = date('Y-m', $time);

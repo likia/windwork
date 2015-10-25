@@ -1,8 +1,8 @@
 <?php
 require_once 'src/core/App.php';
-require_once 'src/core/Router.php';
+require_once 'src/core/mvc/Router.php';
 
-use \core\Router;
+use \core\mvc\Router;
 
 \core\App::getInstance();
 

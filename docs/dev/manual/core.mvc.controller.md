@@ -73,7 +73,7 @@ class AccountController extends \core\mvc\Controller {
 
 2、请求URL映射到控制器
 -----------------------
-详细文档见[Router](router.html)
+详细文档见[Router](core.mvc.router.html)
 在查询字符串开头为url映射参数，映射参数为：模块.控制器.动作
 例如：
 ```

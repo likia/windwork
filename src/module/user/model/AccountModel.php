@@ -77,7 +77,7 @@ class AccountModel extends UserModel {
 		
 		$siteName = Config::get('site_name');
 		$siteUrl = Config::get('host_info');
-		$url = \core\Router::buildUrl("user.account.resetpassword/resetpasswordhash:{$hash}/email:" . urlencode($email));
+		$url = url("user.account.resetpassword/resetpasswordhash:{$hash}/email:" . urlencode($email));
 		
 		$message = "亲，<br />　　这是你在<strong>{$siteName}</strong>重置密码的邮件，"
 				 . "<a href=\"{$url}\">点击这里重置密码</a>\n<br /><br />"

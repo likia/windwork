@@ -192,7 +192,7 @@ function thumb($path, $width = 100, $height = 0) {
  */
 function avatar($uid, $type = 'small', $reload = false) {
 	$urlExt = \core\Config::get('url_rewrite_ext');
-	$avatar = \core\Router::buildUrl("system.uploader.load/avatar/{$type}/{$uid}.jpg");
+	$avatar = url("system.uploader.load/avatar/{$type}/{$uid}.jpg");
 	
 	$urlExt && $urlExt != '.jpg' && $avatar = \core\Common::rtrimStr($avatar, $urlExt);
 	
@@ -214,7 +214,7 @@ function avatar($uid, $type = 'small', $reload = false) {
  * @return string
  */
 function url($uri, $fullUrl = false) {
-	return \core\Router::buildUrl($uri, $fullUrl);
+	return \core\mvc\Router::buildUrl($uri, $fullUrl);
 }
 
 if (!function_exists('array_column')) {
@@ -425,15 +425,15 @@ function paramEncode($str) {
  * 写入日志
  * 
  * 可以在config/config.php中启用日志，所有日志按类别保存
- * @param string $level 日志级别  info|debug|exception|error
+ * @param string $level 日志级别 emergency|alert|critical|error|warning|notice|info|debug
  * @param string $message
  */
 function logging($level, $message) {
-	\core\Factory::logger()->write($level, $message);
+	\core\Factory::logger()->log($level, $message);
 }
 
 /**
- * 
+ * 获取防跨站请求伪造验证的令牌
  * @return string
  */
 function csrfToken() {

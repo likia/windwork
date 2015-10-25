@@ -66,7 +66,7 @@ class NavModel extends \core\mvc\Model {
 	}
 	
 	protected function parseUrl() {
-		$router = new \core\Router();
+		$router = new \core\mvc\Router();
 		$router->parseUrl($this->url);
 		
 		$this->mod = $router->params['mod'];

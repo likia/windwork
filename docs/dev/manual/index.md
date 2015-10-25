@@ -27,9 +27,9 @@ Windwork是一个开源的轻量级Web框架。
 文档目录
 --------
 * [编码规范](general.coding-standard.html)  
-* [目录结构](general.folder-structure.html)   
-* [路由（router）](core.router.html)   
-* [MVC](core.mvc.html)
+* [目录结构](general.folder-structure.html)  
+* [MVC](core.mvc.html) 
+    * [路由（router）](core.mvc.router.html)   
     * [控制器](core.mvc.controller.html)   
     * [模型](core.mvc.model.html)   
     * [视图](core.mvc.template.html)   

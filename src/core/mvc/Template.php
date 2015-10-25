@@ -314,7 +314,7 @@ class Template {
                     . "use core\\Config;\n"
                     . "use core\\Lang;\n"
                     . "use core\\Common;\n"
-                    . "use core\\Router;\n"
+                    . "use core\\mvc\\Router;\n"
                     . "use core\\mvc\\Message;\n"
                     . "\$request = App::getInstance()->getRequest();\n"
                     . "\$response = App::getInstance()->getResponse();\n"
@@ -359,13 +359,13 @@ class Template {
     }
     
     /**
-     * 布局
+     * 视图中的钩子
      *
      * @todo 
-     * @param string $key 小工具下标
+     * @param array $m 
      */
     protected function hooks($m) {
-    	$key = $m[1];
+    	$key = $m[1]; // Hook ID
         if(!$this->hooks) {
 			$this->hooks = \core\Hook::$hooks;
             $tplHooksFile = SRC_PATH. "data/hooks.tlp.php";
@@ -381,11 +381,11 @@ class Template {
     /**
      * 解析子模板标签
      *
-     * @param string $subTpl
+     * @param array $m
      * @return string
      */
     protected function subTpl($m) {
-    	$subTpl = $m[1];
+    	$subTpl = $m[1]; // 匹配的子模板
         if ($this->mergeCompile) {
         	$subTpl = "{$this->tplDir}/{$subTpl}.html";
             $content = file_get_contents($subTpl);

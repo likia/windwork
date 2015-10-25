@@ -18,8 +18,11 @@ namespace core\mvc;
  * @since       1.0.0
  */
 abstract class Restful extends Controller {
-	
-	public function execute($params) {
+	/**
+	 * @see \core\mvc\Controller::execute()
+	 * @param array $params 
+	 */
+	public function execute(array $params) {
 		if($this->request->getRequest('act') == 'error') {
 			parent::errorAction();
 			return;

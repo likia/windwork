@@ -78,7 +78,7 @@ class AccountController extends \core\mvc\Controller {
     }
 }</code></pre>
 <h2>分析URL获取参数</h2>
-<pre><code>$router = new \core\Router();
+<pre><code>$router = new \core\mvc\Router();
 $url = 'index.php?user.account.login/dopost/name:demo/password:123456';
 // 分析URL
 $router-&gt;parseUrl($url);
@@ -94,10 +94,10 @@ $router-&gt;params == array(
     ['password'] =&gt; '123456',
 );</code></pre>
 <h2>生成URL</h2>
-<p>用\core\Router::buildUrl()生成url，Router会自动把URl转成简写url，如果启用url重写，它也会自动生成重写的url。   </p>
+<p>用\core\mvc\Router::buildUrl()生成url，Router会自动把URl转成简写url，如果启用url重写，它也会自动生成重写的url。   </p>
 <pre><code>/**
  * 生成URL
- * @param string|\core\Router $url
+ * @param string|\core\mvc\Router $url
  * @param bool $absolute
  * @return string
  */
@@ -111,7 +111,7 @@ public static function buildUrl($url, $absolute = false)</code></pre>
  * @return string
  */
 function url($uri, $fullUrl = 0) {
-    return \core\Router::buildUrl($uri, $fullUrl);
+    return \core\mvc\Router::buildUrl($uri, $fullUrl);
 }</code></pre>
 <h2>URL简化</h2>
 <p>可以设置简化URL让URL更简洁及更方便搜索引擎收录。

@@ -117,12 +117,12 @@ class Pagination {
 	
 	/**
 	 * 
-	 * @var \core\Router
+	 * @var \core\mvc\Router
 	 */
 	protected $router = null;
 	
 	public function __construct() {
-		$this->router = new \core\Router();
+		$this->router = new \core\mvc\Router();
 	}
 	
 	public function getPagerComplex() {

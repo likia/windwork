@@ -154,7 +154,7 @@ abstract class Controller {
 
 		$this->inited = true;
 		
-		$this->initView();
+		//$this->initView();
 	}
 	
 	
@@ -164,7 +164,7 @@ abstract class Controller {
 	 * @param array $params
 	 * @throws \core\mvc\Exception
 	 */
-	public function execute($params) {
+	public function execute(array $params) {
 		if (!$this->inited) {
 			throw new Exception('请在'.get_called_class().'::__construct()调用parent::__construct()');
 		}

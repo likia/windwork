@@ -18,13 +18,13 @@ namespace core\adapter\storage;
  * 
  * @package     core.adapter.storage
  * @author      cmm <cmm@windwork.org>
- * @link        http://www.windwork.org/manual/core.storage.html
+ * @link        http://www.windwork.org/manual/core.adapter.storage.html
  * @since       1.0.0
  */
 class File extends AStorage {
 
 	/**
-	 * 
+	 * 支持通过wrapper访问存贮
 	 * @param array $cfg
 	 */
 	public function __construct(array $cfg) {

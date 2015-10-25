@@ -7,7 +7,9 @@
  * @copyright   Copyright (c) 2008-2015 Windwork Team. (http://www.windwork.org)
  * @license     http://opensource.org/licenses/MIT	MIT License
  */
-namespace core;
+namespace core\mvc;
+
+use \core\Common;
 
 /**
  * 路由类
@@ -102,7 +104,7 @@ class Router {
 	 * 取得链接应该映射到哪个模块、控制器、动作，并且传哪些参数到动作方法中。
 	 * 
 	 * @param string $uri
-	 * @return \core\Router
+	 * @return \core\mvc\Router
 	 */
 	public function parseUrl($uri) {
 		$opts = &static::$options;
@@ -191,7 +193,7 @@ class Router {
 
 	/**
 	 * 生成URL
-	 * @param string|\core\Router $uri
+	 * @param string|\core\mvc\Router $uri
 	 * @param bool $fullUrl = false 是否生成完整URL
 	 * @return string
 	 */
@@ -201,13 +203,13 @@ class Router {
 
 	/**
 	 * 生成URL
-	 * @param string|\core\Router $uri
+	 * @param string|\core\mvc\Router $uri
 	 * @param array $args = array() 添加URL参数
 	 * @param bool $fullUrl = false 是否生成完整URL
 	 * @return string
 	 */
 	private static function buildUrlByUriArgs($uri, array $args = array(), $fullUrl = false) {
-		if ($uri instanceof \core\Router) {
+		if ($uri instanceof \core\mvc\Router) {
 			$obj = &$uri;
 			if($args) {
 				$obj->params = array_merge($obj->params, $args);
@@ -268,7 +270,7 @@ class Router {
 		}
 		
 		// 本地化语言变量/locale:zh_CN|zh_TW|en_US|en_UK...，默认不加上则使用配置文件的语言
-		if (static::$options['locale'] && false === strpos($url, '/locale:') && Lang::getLocale() !== Config::get('locale') && false === strpos($url, '&locale=')) {
+		if (static::$options['locale'] && false === strpos($url, '/locale:') && \core\Lang::getLocale() !== \core\Config::get('locale') && false === strpos($url, '&locale=')) {
 			$url .= '/locale:'.static::$options['locale'];
 		}
 		

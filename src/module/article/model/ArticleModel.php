@@ -94,7 +94,7 @@ class ArticleModel extends \core\mvc\Model {
 			$posData = array(
 				'title'    => $this->title,
 				'desc'     => $this->description,
-				'url'      => \core\Router::buildUrl("article.show.item/{$this->id}"),
+				'url'      => url("article.show.item/{$this->id}"),
 				'picid'    => $this->picid,
 				'cid'      => $this->cid,
 				'type'     => 'article',
@@ -137,7 +137,7 @@ class ArticleModel extends \core\mvc\Model {
 			$posData = array(
 				'title'    => $this->title,
 				'desc'     => $this->description,
-				'url'      => \core\Router::buildUrl("article.show.item/{$this->id}"),
+				'url'      => url("article.show.item/{$this->id}"),
 				'picid'    => $this->picid,
 				'cid'      => $this->cid,
 				'type'     => 'article',

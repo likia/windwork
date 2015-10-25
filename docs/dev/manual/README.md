@@ -46,6 +46,7 @@ Windwork是一个开源的轻量级Web框架。
   |    |    |- Message.php
   |    |    |- Model.php
   |    |    |- Restful.php
+  |    |    |- Router.php
   |    |    |- Template.php
   |    |- sms
   |    |- util
@@ -62,7 +63,6 @@ Windwork是一个开源的轻量级Web框架。
   |    |- Lang.php
   |    |- Object.php
   |    |- Request.php
-  |    |- Router.php
   |    |- Storage.php
   |    |- Version.php
   |    |- Wrapper.php

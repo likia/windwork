@@ -27,7 +27,6 @@ class SMTP implements IMailer, \core\adapter\IFactoryAble {
 	}
 
 	public function send($to, $subject, $message, $from = '', $siteName = '', $userName = '') {
-		$logger = Factory::logger();
 		$from || $from = $this->cfg['mail_from'];
 				
 		// 收件人地址中包含用户名
@@ -52,21 +51,21 @@ class SMTP implements IMailer, \core\adapter\IFactoryAble {
 				 . "Content-Transfer-Encoding: base64\r\n";
 	
 		if(!$fp = fsockopen($this->cfg['mail_host'], $this->cfg['mail_port'], $errno, $errstr, 30)) {
-			$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) CONNECT - Unable to connect to the SMTP server");
+			logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) CONNECT - Unable to connect to the SMTP server");
 			return false;
 		}
 		stream_set_blocking($fp, true);
 	
 		$lastMessage = fgets($fp, 512);
 		if(substr($lastMessage, 0, 3) != '220') {
-			$logger->write('SMTP', "{$this->cfg['mail_host']}:{$this->cfg['mail_port']} CONNECT - $lastMessage");
+			logging('error', "SMTP {$this->cfg['mail_host']}:{$this->cfg['mail_port']} CONNECT - $lastMessage");
 			return false;
 		}
 	
 		fputs($fp, ($this->cfg['mail_auth'] ? 'EHLO' : 'HELO')." windwork\r\n");
 		$lastMessage = fgets($fp, 512);
 		if(substr($lastMessage, 0, 3) != 220 && substr($lastMessage, 0, 3) != 250) {
-			$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) HELO/EHLO - $lastMessage", 0);
+			logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) HELO/EHLO - $lastMessage", 0);
 			return false;
 		}
 	
@@ -81,21 +80,21 @@ class SMTP implements IMailer, \core\adapter\IFactoryAble {
 			fputs($fp, "AUTH LOGIN\r\n");
 			$lastMessage = fgets($fp, 512);
 			if(substr($lastMessage, 0, 3) != 334) {
-				$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) AUTH LOGIN - $lastMessage", 0);
+				logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) AUTH LOGIN - $lastMessage", 0);
 				return false;
 			}
 	
 			fputs($fp, base64_encode($this->cfg['mail_user'])."\r\n");
 			$lastMessage = fgets($fp, 512);
 			if(substr($lastMessage, 0, 3) != 334) {
-				$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) USERNAME - $lastMessage", 0);
+				logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) USERNAME - $lastMessage", 0);
 				return false;
 			}
 	
 			fputs($fp, base64_encode($this->cfg['mail_pass'])."\r\n");
 			$lastMessage = fgets($fp, 512);
 			if(substr($lastMessage, 0, 3) != 235) {
-				$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) PASSWORD - $lastMessage", 0);
+				logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) PASSWORD - $lastMessage", 0);
 				return false;
 			}
 	
@@ -108,7 +107,7 @@ class SMTP implements IMailer, \core\adapter\IFactoryAble {
 			fputs($fp, "MAIL FROM: <".preg_replace("/.*\\<(.+?)\\>.*/", "\\1", $emailFrom).">\r\n");
 			$lastMessage = fgets($fp, 512);
 			if(substr($lastMessage, 0, 3) != 250) {
-				$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) MAIL FROM - $lastMessage", 0);
+				logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) MAIL FROM - $lastMessage", 0);
 				return false;
 			}
 		}
@@ -118,14 +117,14 @@ class SMTP implements IMailer, \core\adapter\IFactoryAble {
 		if(substr($lastMessage, 0, 3) != 250) {
 			fputs($fp, "RCPT TO: <".preg_replace("/.*\\<(.+?)\\>.*/", "\\1", $to).">\r\n");
 			$lastMessage = fgets($fp, 512);
-			$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) RCPT TO - $lastMessage", 0);
+			logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) RCPT TO - $lastMessage", 0);
 			return false;
 		}
 	
 		fputs($fp, "DATA\r\n");
 		$lastMessage = fgets($fp, 512);
 		if(substr($lastMessage, 0, 3) != 354) {
-			$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) DATA - $lastMessage", 0);
+			logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) DATA - $lastMessage", 0);
 			return false;
 		}
 	
@@ -139,7 +138,7 @@ class SMTP implements IMailer, \core\adapter\IFactoryAble {
 		fputs($fp, "{$emailMessage}\r\n.\r\n");
 		$lastMessage = fgets($fp, 512);
 		if(substr($lastMessage, 0, 3) != 250) {
-			$logger->write('SMTP', "({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) END - {$lastMessage}", 0);
+			logging('error', "SMTP ({$this->cfg['mail_host']}:{$this->cfg['mail_port']}) END - {$lastMessage}", 0);
 		}
 		fputs($fp, "QUIT\r\n");
 		
