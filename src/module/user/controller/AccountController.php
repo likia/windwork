@@ -45,7 +45,7 @@ class AccountController extends \core\mvc\Controller {
 		$accountObj = new AccountModel();
 		$accountObj->setPkv($_SESSION['uid']);
 				
-		if ($this->request->isPost() && \core\Request::checkRePost()) {
+		if ($this->request->isPost() && $this->request->checkRePost()) {
 			$oldPassword  = $this->request->getRequest('oldpassword');
 			$newPassword  = $this->request->getRequest('newpassword');
 			
@@ -87,7 +87,7 @@ class AccountController extends \core\mvc\Controller {
 			return;
 		}
 		
-		if ($this->request->isPost() && \core\Request::checkRePost()) {
+		if ($this->request->isPost() && $this->request->checkRePost()) {
 			// 检查验证码
 			$captchaOpt = Config::get('captcha_enabled_opt');
 			if(!empty($captchaOpt['reg']) && !Factory::captcha()->check($this->request->getRequest('secode'), 'reg')) {
@@ -149,7 +149,7 @@ class AccountController extends \core\mvc\Controller {
 			return;
 		}
 		
-		if($this->request->isPost() && \core\Request::checkRePost()) {
+		if($this->request->isPost() && $this->request->checkRePost()) {
 			$captchaOpt = Config::get('captcha_enabled_opt');
 			$secode     = $this->request->getRequest('secode');
 			// 验证码
@@ -232,7 +232,7 @@ class AccountController extends \core\mvc\Controller {
 	 * 取回密码
 	 */
 	public function forgetPasswordAction() {
-		if($this->request->isPost() && \core\Request::checkRePost()) {
+		if($this->request->isPost() && $this->request->checkRePost()) {
 		    $captchaOpt = Config::get('captcha_enabled_opt');
 			$secode     = $this->request->getRequest('secode');
 			
@@ -282,7 +282,7 @@ class AccountController extends \core\mvc\Controller {
 		}
 		
 		// 重置密码
-		if($this->request->isPost() && \core\Request::checkRePost()) {
+		if($this->request->isPost() && $this->request->checkRePost()) {
 			$newPassword = $this->request->getRequest('newpassword');
 			if(false !== $accountObj->updatePasswordByEmailResetPasswordHash($newPassword, $email, $hash)) {
 				Message::setOK('重置密码成功！<a href="'.url('user.account.login').'">马上登录</a>');
@@ -311,7 +311,7 @@ class AccountController extends \core\mvc\Controller {
 			return false;
 		}
 		
-		if($this->request->isPost() && \core\Request::checkRePost()) {
+		if($this->request->isPost() && $this->request->checkRePost()) {
 			// TODO 修改更多资料	
 			$account = array(
 				//'mobile'    => $_POST['mobile'], 

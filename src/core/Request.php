@@ -91,10 +91,10 @@ class Request {
 	 */
 	protected function normalizeRequest() {
 		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-			empty($_GET)     || $_GET     = array_map(array('\core\Request', 'unquotesGpc'), $_GET);
-			empty($_POST)    || $_POST    = array_map(array('\core\Request', 'unquotesGpc'), $_POST);
-			empty($_REQUEST) || $_REQUEST = array_map(array('\core\Request', 'unquotesGpc'), $_REQUEST);
-			empty($_COOKIE)  || $_COOKIE  = array_map(array('\core\Request', 'unquotesGpc'), $_COOKIE);
+			empty($_GET)     || $_GET     = array_map(array($this, 'unquotesGpc'), $_GET);
+			empty($_POST)    || $_POST    = array_map(array($this, 'unquotesGpc'), $_POST);
+			empty($_REQUEST) || $_REQUEST = array_map(array($this, 'unquotesGpc'), $_REQUEST);
+			empty($_COOKIE)  || $_COOKIE  = array_map(array($this, 'unquotesGpc'), $_COOKIE);
 		}
 	}
 
@@ -455,7 +455,8 @@ class Request {
 	/**
 	 * 获取Http头信息
 	 * 
-	 * @param string $header 头部名称
+	 * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+	 * @param string $header 头部名称 
 	 * @param string $default 获取失败将返回该值,默认为null
 	 * @return string
 	 */
@@ -717,11 +718,11 @@ class Request {
 	 * @param array|string $var
 	 * @return array|string
 	 */
-	public static function unquotesGpc($var) {
+	private function unquotesGpc($var) {
 		if(empty($var)) return $var;
 	
 		if (is_array($var)) {
-			return array_map(array('\core\Request', 'unquotesGpc'), $var);
+			return array_map(array($this, 'unquotesGpc'), $var);
 		}
 			
 	    if (ini_get('magic_quotes_sybase')) {
@@ -738,7 +739,7 @@ class Request {
 	 * 
 	 * @return bool false：重复提交，验证不通过；true：验证通过
 	 */
-	public static function checkRePost() {
+	public function checkRePost() {
 		$rePostSessionKey = '^form.post.hash';
 		isset($_SESSION[$rePostSessionKey]) || $_SESSION[$rePostSessionKey] = array();
 		
