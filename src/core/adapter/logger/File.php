@@ -44,12 +44,12 @@ class File extends ALogger implements ILogger, \core\adapter\IFactoryAble {
 		
 		$time = time();
 		$yearMonth = date('Y-m', $time);
-		$logFile = $this->logDir . "/{$level}.log.php";
+		$logFile = $this->logDir . "/log.{$level}.php";
 	
 		// 日志文件超过限定大小将分文件保存
 		if(@is_file($logFile) && filesize($logFile) > self::LOG_SIZE) {
 			$archiveTime = date('YmdHis', $time);
-			$logFileArchive = $this->logDir . "/{$level}-{$archiveTime}.log.php";
+			$logFileArchive = $this->logDir . "/log.{$level}-{$archiveTime}.php";
 			// 文件是否正在保存，如果正在保存，其他请求就不再保存
 			if(!is_file($logFileArchive)) {
 				@rename($logFile, $logFileArchive);
