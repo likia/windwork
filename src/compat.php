@@ -286,12 +286,14 @@ if (!function_exists('array_column')) {
 }
 
 /**
- * 智能日期显示（把时间显示为n小时n分钟前/后、昨天、前天、年-月-日）
+ * 智能日期显示（把时间显示为n小时n分钟前/后，或昨天、前天、年-月-日后面连着时分秒）
+ * @todo 在\core\util\DateTime类实现
  * @param int $time 
- * @param string $format
+ * @param string $ymd 年月日显示格式
+ * @param string $his 时分秒显示格式，空则不显示
  * @return string
  */
-function smartDate($time, $format = 'Y-m-d') {
+function smartDate($time, $ymd = 'Y-m-d', $his = 'H:i:s') {
 	$r = '';
 	
 	if (abs(time() - $time) < 24*3600) {
@@ -308,44 +310,23 @@ function smartDate($time, $format = 'Y-m-d') {
 			}
 			$r .=  ceil($seconds%3600/60) . "分钟后";
 		}
-	} elseif (date('Y-m-d', strtotime('-1 day')) == date('Y-m-d', $time)) {
-		$r = '昨天';
-	} elseif (date('Y-m-d', strtotime('-2 day')) == date('Y-m-d', $time)) {
-		$r = '前天';
-	} elseif (date('Y-m-d', strtotime('+1 day')) == date('Y-m-d', $time)) {
-		$r = '明天';
-	} elseif (date('Y-m-d', strtotime('+2 day')) == date('Y-m-d', $time)) {
-		$r = '后天';
 	} else {
-		$r = date($format, $time);
+		if (date('Y-m-d', strtotime('-1 day')) == date('Y-m-d', $time)) {
+			$r = '昨天';
+		} elseif (date('Y-m-d', strtotime('-2 day')) == date('Y-m-d', $time)) {
+			$r = '前天';
+		} elseif (date('Y-m-d', strtotime('+1 day')) == date('Y-m-d', $time)) {
+			$r = '明天';
+		} elseif (date('Y-m-d', strtotime('+2 day')) == date('Y-m-d', $time)) {
+			$r = '后天';
+		} else {
+			$r = date($ymd, $time);
+		}
+		
+	    $his && $r .= ' ' . date($his);
 	}
 	
 	return $r;
-}
-
- /**
-  * 智能日期显示（把时间显示为今天、昨天、前天）
-  * @param int $time
-  * @param string $format
-  * @return string
-  */
-function smartDateTime($time) {
-    if (date('Y-m-d') == date('Y-m-d', $time)) {
- 		$r = '今天';
- 	} elseif (date('Y-m-d', strtotime('-1 day')) == date('Y-m-d', $time)) {
- 		$r = '昨天';
- 	} elseif (date('Y-m-d', strtotime('-2 day')) == date('Y-m-d', $time)) {
- 		$r = '前天';
- 	} elseif (date('Y-m-d', strtotime('+1 day')) == date('Y-m-d', $time)) {
- 		$r = '明天';
- 	} elseif (date('Y-m-d', strtotime('+2 day')) == date('Y-m-d', $time)) {
- 		$r = '后天';
- 	} else {
- 		$r = date('Y-m-d', $time);
- 	}
- 	$r .= date(' H:i:s', $time);
- 
- 	return $r;
 }
 
  /**

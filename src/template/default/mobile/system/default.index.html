@@ -46,7 +46,7 @@
         <div class="avatar"><img src="{avatar($listItem['uid'], 'small')}" /></div>
         <div class="issue-attrs">
           <div class="nickname">{$listItem[uname]}</div>
-          <div class="date">{smartDateTime($listItem[dateline])}</div>
+          <div class="date">{smartDate($listItem[dateline])}</div>
           <div class="message"><a href="{url repair.issue.item/$listItem[id]}">{$listItem[content]}<span class="to-item">[详情]</span></a></div>
           <div class="address"><i></i>{$listItem[address]}</div>
           
