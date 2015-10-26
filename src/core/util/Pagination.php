@@ -11,7 +11,6 @@ namespace core\util;
 
 use \core\App;
 use \core\Exception;
-use core\Common;
 
 /**
  * 分页类
@@ -265,7 +264,7 @@ class Pagination {
 	 * @return string
 	 */
 	public function getPager() {
-		if (Common::checkMobile()) {
+		if (UserAgent::checkMobile()) {
 			$fnc = 'getMobilePager';
 		} else {
 		    $fnc = "getPager{$this->style}";

@@ -9,7 +9,7 @@
  */
 namespace module\system\hook;
 
-use core\Factory;
+use core\util\UserAgent;
 
 /**
  * 访问日志（不建议使用，web服务器已经记录访问日志。）
@@ -26,10 +26,12 @@ class ExecLogHook implements \core\IHook {
 	 */
 	public function execute($params = array()) {
 		$ctlObj = \core\App::getInstance()->getCtlObj();
-		$log = array('uri' => REQUEST_URI, 'p' => $_POST, 'c' => $_COOKIE);
+		$request = \core\App::getInstance()->getRequest();
+		$log = array('uri' => $request->getRequestUri(), 'p' => $_POST, 'c' => $_COOKIE);
 		
-		$log = \core\Common::userBrowser();
-		$log .= ' '.\core\App::getInstance()->getRequest()->getClientIp();
+		$log = UserAgent::getUserBrowser();
+		$log .= ' '. $request->getClientIp();
+		
 		foreach ($log as $item) {
 			$log .= " {$item['uri']}";
 			$log .= " p:" . preg_replace("/\\n|\\s+/", '', var_export($item['p'], 1));

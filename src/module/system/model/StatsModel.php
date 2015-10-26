@@ -11,6 +11,7 @@ namespace module\system\model;
 
 use core\Common;
 use core\Config;
+use core\util\UserAgent;
 
 /**
  * 访问统计
@@ -52,21 +53,23 @@ class StatsModel extends \core\mvc\Model {
 			return;
 		}
 		
-		$this->uri = paramDecode($_SERVER['REQUEST_URI']);
-		$robot = Common::isRobot();
+		$request = \core\App::getInstance()->getRequest();
+		$robot = \core\util\UserAgent::checkRobot();
+		
+		$this->uri = $request->getRequestUri();
 
-		list($ip1, $ip2, $ip3, $ip4) = explode('.', \core\App::getInstance()->getRequest()->getClientIp());
+		list($ip1, $ip2, $ip3, $ip4) = explode('.', $request->getClientIp());
 		
 		$this->ip1 = $ip1;
 		$this->ip2 = $ip2;
 		$this->ip3 = $ip3;
 		$this->ip4 = $ip4;
-		
+
 		$this->uid = $_SESSION['uid'];
 		$this->dateline = time();
 		$this->isrobot  = $robot ? 1 : 0;
-		$this->agent    = $robot ? $robot : Common::userBrowser();
-		$this->os       = Common::userOS();
+		$this->agent    = $robot ? $robot : UserAgent::getUserBrowser();
+		$this->os       = UserAgent::getUserOS();
 		$this->referer  = @$_SERVER['HTTP_REFERER'];
 		
 		if($this->agent == 'Unknow Browser' || $robot == 'UnknowSpider') {

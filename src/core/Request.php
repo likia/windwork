@@ -99,53 +99,6 @@ class Request {
 	}
 
 	/**
-	 * 设置属性数据
-	 *
-	 * @param string|array|object $data 需要设置的数据
-	 * @param string $key 设置的数据保存用的key,默认为空,当数组和object类型的时候将会执行array_merge操作
-	 * @return void
-	 */
-	public function setAttribute($data, $key = '') {
-		if ($key) {
-			$this->attribute[$key] = $data;
-		} elseif (is_object($data)) {
-			$data = get_object_vars($data);
-		} elseif (is_array($data)) {
-			$this->attribute = array_merge($this->attribute, $data);
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * 根据名称获得服务器和执行环境信息
-	 *
-	 * 主要获取的依次顺序为：_attribute、$_GET、$_POST、$_COOKIE、$_REQUEST、$_ENV、$_SERVER
-	 * @param string $key 获取数据的key值
-	 * @param string $defaultValue 设置缺省值,当获取值失败的时候返回缺省值,默认该值为空字串
-	 * @return string|object|array 返回获得值
-	 */
-	public function getAttribute($key, $defaultValue = '') {
-		if (isset($this->attribute[$key])) {
-			return $this->attribute[$key];
-		} else if (isset($_GET[$key])) {
-			return $_GET[$key];
-		} else if (isset($_POST[$key])) {
-			return $_POST[$key];
-		} else if (isset($_COOKIE[$key])) {
-			return $_COOKIE[$key];
-		} else if (isset($_REQUEST[$key])) {
-			return $_REQUEST[$key];
-		} else if (isset($_ENV[$key])) {
-			return $_ENV[$key];
-		} else if (isset($_SERVER[$key])) {
-			return $_SERVER[$key];
-		} else {
-			return $defaultValue;
-		}
-	}
-
-	/**
 	 * 获得用户请求的数据
 	 * 
 	 * 返回$_GET,$_POST的值,未设置则返回$defaultValue
@@ -294,7 +247,7 @@ class Request {
 	 * 将返回POST\GET\DELETE等HTTP请求方式
 	 * @return string 
 	 */
-	public function getRequestMethod() {
+	public function getMethod() {
 		return strtoupper($this->getServer('REQUEST_METHOD'));
 	}
 
@@ -305,7 +258,7 @@ class Request {
 	 * @return string  
 	 */
 	public function getRequestType() {
-		return 'web';
+		return PHP_SAPI == 'cli' ? 'cli' : 'web';
 	}
 
 	/**
@@ -321,6 +274,25 @@ class Request {
 		    || !empty($_GET['iframe_callback'])
 		);
 	}
+	
+    /**
+     * 是否是XMLHttpRequest请求
+     *
+     * @return bool
+     */
+    public function isXmlHttpRequest() {
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+    }
+    
+    /**
+     * 是否是Flash客户端请求
+     *
+     * @return bool
+     */
+    public function isFlashRequest() {
+        $agent = $this->getUserAgent();
+        return $agent && false !== stripos($agent, ' flash');
+    }
 
 	/**
 	 * 请求是否使用的是HTTPS安全链接
@@ -339,7 +311,7 @@ class Request {
 	 * @return bool 
 	 */
 	public function isGet() {
-		return !strcasecmp($this->getRequestMethod(), 'GET');
+		return !strcasecmp($this->getMethod(), 'GET');
 	}
 
 	/**
@@ -350,7 +322,7 @@ class Request {
 	 * @return bool
 	 */
 	public function isPost() {
-		return !strcasecmp($this->getRequestMethod(), 'POST');
+		return !strcasecmp($this->getMethod(), 'POST');
 	}
 
 	/**
@@ -361,7 +333,7 @@ class Request {
 	 * @return bool
 	 */
 	public function isPut() {
-		return !strcasecmp($this->getRequestMethod(), 'PUT');
+		return !strcasecmp($this->getMethod(), 'PUT');
 	}
 
 	/**
@@ -372,7 +344,7 @@ class Request {
 	 * @return bool
 	 */
 	public function isDelete() {
-		return !strcasecmp($this->getRequestMethod(), 'Delete');
+		return !strcasecmp($this->getMethod(), 'Delete');
 	}
 
 	/**
@@ -488,12 +460,12 @@ class Request {
 	 * @return string
 	 */
 	public function getHeader($header, $default = null) {
-		$tmp = strtoupper(str_replace('-', '_', $header));
-		if (substr($tmp, 0, 5) != 'HTTP_') {
-			$tmp = 'HTTP_' . $tmp;
+		$name = strtoupper(str_replace('-', '_', $header));
+		if (substr($name, 0, 5) != 'HTTP_') {
+			$name = 'HTTP_' . $name;
 		}
 		
-		if (($header = $this->getServer($tmp)) != null) {
+		if (($header = $this->getServer($name)) != null) {
 			return $header;
 		}
 		

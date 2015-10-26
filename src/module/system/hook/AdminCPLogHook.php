@@ -11,6 +11,7 @@ namespace module\system\hook;
 
 use core\App;
 use core\Factory;
+use core\util\UserAgent;
 
 /**
  * 后台管理日志
@@ -31,16 +32,13 @@ class AdminCPLogHook implements \core\IHook {
 		if(!$ctlObj instanceof \module\system\controller\admin\AdminBase) {
 			return;
 		}
+
+		$request = \core\App::getInstance()->getRequest();
 		
-		$log = array('uri' => REQUEST_URI, 'p' => $_POST, 'c' => $_COOKIE);
-		
-		$log = \core\Common::userBrowser();
-		$log .= ' '.\core\App::getInstance()->getRequest()->getClientIp();
-		foreach ($log as $item) {
-			$log .= " {$item['uri']}";
-			$log .= " p:" . preg_replace("/\\n|\\s+/", '', var_export($item['p'], 1));
-			$log .= " c:" . preg_replace("/\\n|\\s+/", '', var_export($item['c'], 1));
-		}
+		$log = $request->getRequestUri() 
+		  . ' ' . UserAgent::getUserBrowser() 
+		  . ' ' . $request->getClientIp()
+		  . ' post:' . preg_replace("/\\n|\\s+/", '', var_export($_POST, 1));
 		
 		logging('info', $log);
 	}

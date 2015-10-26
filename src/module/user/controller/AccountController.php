@@ -32,7 +32,7 @@ class AccountController extends \core\mvc\Controller {
 		$this->initView();
 		$this->account = new AccountModel();
 		
-		if (Common::checkMobile() || $this->request->getGet('ismobile')) {
+		if (\core\util\UserAgent::checkMobile() || $this->request->getGet('ismobile')) {
 			$this->view->isMobileView = 1;
 		}
 		

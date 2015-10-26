@@ -13,6 +13,7 @@ use core\App;
 use core\Config;
 use core\Common;
 use core\mvc\Message;
+use core\util\UserAgent;
 
 /**
  * 控制器基础类 
@@ -279,10 +280,10 @@ abstract class Controller {
 	 */
 	public function errorAction($code = 200) {
 		if (!$this->request->isAjaxRequest()) {
-			App::getInstance()->getResponse()->setStatus($code);
+			$this->response->setStatus($code);
 		}
 		
-		if (Common::checkMobile()) {
+		if (UserAgent::checkMobile()) {
 			$this->initView();
 			$this->view->isMobileView = true;
 		}

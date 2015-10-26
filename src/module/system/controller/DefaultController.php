@@ -9,8 +9,6 @@
  */
 namespace module\system\controller;
 
-use core\Common;
-	
 /**
  * 系统默认页面
  * 
@@ -25,7 +23,7 @@ use core\Common;
  		parent::__construct();
  		$this->initView();
  		
- 		if (Common::checkMobile() || $this->request->getGet('ismobile')) {
+ 		if (\core\util\UserAgent::checkMobile() || $this->request->getGet('ismobile')) {
  			$this->view->isMobileView = 1;
  		}
  	}
