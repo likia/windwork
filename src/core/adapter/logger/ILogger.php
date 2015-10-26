@@ -104,7 +104,7 @@ interface ILogger {
 	 * 
 	 * 可以在config/config.php中启用日志，所有日志按类别保存
 	 *
-	 * @param string $level 日志级别  emergency|alert|critical|error|warning|notice|info|debug
+	 * @param string $level 日志级别  emergency|alert|critical|error|warning|notice|info|debug|exception
 	 * @param string $message  日志内容
      * @param array $context
      * @return null

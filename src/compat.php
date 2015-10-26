@@ -406,7 +406,7 @@ function paramEncode($str) {
  * 写入日志
  * 
  * 可以在config/config.php中启用日志，所有日志按类别保存
- * @param string $level 日志级别 emergency|alert|critical|error|warning|notice|info|debug
+ * @param string $level 日志级别 emergency|alert|critical|error|warning|notice|info|debug|exception
  * @param string $message
  */
 function logging($level, $message) {

@@ -32,7 +32,7 @@ class File extends ALogger implements ILogger, \core\adapter\IFactoryAble {
 	 * 如果日志文件大于当前设置($logSize)日志大小，则把日志文件重命名存档，再创建新的日志文件
 	 * </pre>
 	 *
-	 * @param string $level 日志级别 emergency|alert|critical|error|warning|notice|info|debug
+	 * @param string $level 日志级别 emergency|alert|critical|error|warning|notice|info|debug|exception
 	 * @param string $message  日志内容
      * @param array $context
      * @return null
