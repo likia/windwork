@@ -12,6 +12,7 @@ namespace module\user\model;
 use core\mvc\Model;
 use core\mvc\Exception;
 use core\Factory;
+use core\Config;
 
 /**
  * 权限控制列表模型
@@ -182,6 +183,14 @@ class AclModel extends Model {
 		if (empty($mod) || empty($ctl) || empty($act)) {
 			throw new \core\Exception('错误的参数');
 		}
+		
+		// 禁止访问的用户
+		if ($_SESSION['status'] == 3) {
+			if ($throw) {
+				throw new \core\Exception('你已被禁止访问！', \core\Exception::ERROR_HTTP_403);
+			}
+			return false;
+		}
 
 		$mod = strtolower($mod);
 		$ctl = strtolower($ctl);
@@ -207,7 +216,7 @@ class AclModel extends Model {
 		// 如果action不存在
 		if (!$modObj->isActionExists($ctl, $act)) {
 			if ($throw) {
-				throw new Exception("Action not exists", \core\Exception::ERROR_HTTP_404);
+				throw new Exception("该页面不存在！", \core\Exception::ERROR_HTTP_404);
 			}
 			
 			return false;
@@ -231,14 +240,20 @@ class AclModel extends Model {
 		$isAccessable = false;
 		
 		$role = (array)$_SESSION['role'];
-	
+		
 		// 用户/会员所在用户组有权限访问
 		if(array_intersect($role, array_keys($actAcls))) {
-			// TODO 管理员|编辑 未审核，角色降级为普通会员
-			
-			// TODO 普通会员未审核，降级为游客
 			$isAccessable = true;
-		} else {		
+			// 未审核的用户（包括管理员、会员等）需等待审核
+			if ($_SESSION['status'] == 0) {
+				// 游客角色
+				$role = Config::get('user_guest_roid');
+				$isAccessable = !empty($actAcls[$role]);
+				if (!$isAccessable && $throw) {
+					throw new \core\Exception("您的注册信息需要审核，请耐心等待管理员审核！", \core\Exception::ERROR_HTTP_403);
+				}
+			}
+		} else {
 			if ($throw) {
 				if ($_SESSION['uid']) {
 					throw new \core\Exception("你没有权限访问该页面！", \core\Exception::ERROR_HTTP_403);

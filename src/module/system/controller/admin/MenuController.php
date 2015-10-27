@@ -21,7 +21,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class MenuController extends \module\system\controller\admin\AdminBase {
+class MenuController extends \module\system\controller\admin\BaseController {
 	/**
 	 * 
 	 * @var \module\system\model\MenuModel

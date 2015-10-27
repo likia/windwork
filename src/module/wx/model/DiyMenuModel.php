@@ -10,7 +10,7 @@
 namespace module\wx\model;
 
 use core\util\Tree;
-use core\wx\ResponseCode;
+use core\util\wx\ResponseCode;
 
 /**
  * 自定义菜单模型（官方微信菜单）

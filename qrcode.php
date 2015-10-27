@@ -1,5 +1,4 @@
 <?php
-$start = microtime(1);
 $text = @$_REQUEST['text'];
 
 if(!$text) {
@@ -15,6 +14,7 @@ header('content-type:image/png');
 
 $text = \core\util\Encoder::decode($text);
 $text = mb_substr($text, 0, 200, 'UTF-8');
+
 $qrCode = new \Endroid\QrCode\QrCode();
 $qrCode
 	->setText($text)

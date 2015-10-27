@@ -12,7 +12,6 @@ namespace module\system\controller\admin;
 use core\Common;
 use core\mvc\Message;
 use core\Config;
-use core\Storage;
 
 /**
  * 附件管理
@@ -23,7 +22,7 @@ use core\Storage;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class UploadsController extends \module\system\controller\admin\AdminBase {
+class UploadsController extends \module\system\controller\admin\BaseController {
 	/**
 	 *
 	 * @var \module\system\model\UploadModel

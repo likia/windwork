@@ -22,7 +22,7 @@ use module\user\model\UserModel;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class UserController extends \module\system\controller\admin\AdminBase {
+class UserController extends \module\system\controller\admin\BaseController {
 	/**
 	 *
 	 * @var \module\user\model\UserModel

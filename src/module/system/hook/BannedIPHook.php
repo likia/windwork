@@ -10,7 +10,6 @@
 namespace module\system\hook;
 
 use module\system\model\BannedIPModel;
-use core\Common;
 
 /**
  * 禁止IP过滤器

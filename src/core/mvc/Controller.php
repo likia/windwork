@@ -9,7 +9,6 @@
  */
 namespace core\mvc;
 
-use core\App;
 use core\Config;
 use core\Common;
 use core\mvc\Message;

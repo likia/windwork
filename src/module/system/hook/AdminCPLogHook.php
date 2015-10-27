@@ -10,7 +10,6 @@
 namespace module\system\hook;
 
 use core\App;
-use core\Factory;
 use core\util\UserAgent;
 
 /**
@@ -29,7 +28,7 @@ class AdminCPLogHook implements \core\IHook {
 	public function execute($params = array()) {
 		$ctlObj = App::getInstance()->getCtlObj();
 		
-		if(!$ctlObj instanceof \module\system\controller\admin\AdminBase) {
+		if(!$ctlObj instanceof \module\system\controller\admin\BaseController) {
 			return;
 		}
 

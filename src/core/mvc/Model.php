@@ -408,6 +408,7 @@ abstract class Model extends \core\Object {
 	
 	/**
 	 * 将实体对象转成数组型供调用属性数据
+	 * 建议直接用对象访问数据，尽可能少用转换成数组的方式获取数据。
 	 * @return array
 	 */
 	public function toArray() {

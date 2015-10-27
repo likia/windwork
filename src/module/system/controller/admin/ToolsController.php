@@ -11,7 +11,6 @@ namespace module\system\controller\admin;
 
 use core\mvc\Message;
 use core\Factory;
-use core\Storage;
 
 /**
  * 前台模板和主题设置
@@ -22,7 +21,7 @@ use core\Storage;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class ToolsController extends \module\system\controller\admin\AdminBase {
+class ToolsController extends \module\system\controller\admin\BaseController {
 	public function __construct() {
 		parent::__construct();		
 		$this->initView();

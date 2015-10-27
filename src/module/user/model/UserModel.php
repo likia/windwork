@@ -504,6 +504,7 @@ class UserModel extends \core\mvc\Model {
 		$_SESSION['nickname']  = 'guest';
 		$_SESSION['realname']  = 'guest';
 		$_SESSION['type']      = 'guest';
+		$_SESSION['status']    = 1;
 		$_SESSION['email']     = '';
 		$_SESSION['mobile']    = '';
 		$_SESSION['issuper']   = 0;

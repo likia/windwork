@@ -9,7 +9,6 @@
  */
 namespace module\system\model;
 
-use core\Common;
 use core\Config;
 use core\util\UserAgent;
 

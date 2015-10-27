@@ -20,7 +20,7 @@ use core\mvc\Message;
  * @copyright   © 2010-2015 恒辉科技版权所有
  * @author      恒辉科技 <cmpan@qq.com>
  */
-class DiyMenuController extends \module\system\controller\admin\AdminBase {
+class DiyMenuController extends \module\system\controller\admin\BaseController {
 	/**
 	 * 
 	 * @var \module\wx\model\DiyMenuModel
@@ -139,7 +139,7 @@ class DiyMenuController extends \module\system\controller\admin\AdminBase {
     	$appId = \core\Config::get('wx_app_id');
     	$appSecret = \core\Config::get('wx_app_secret');
     	
-    	$accessToken = \core\wx\Api::getAccessTokenByAppIdSecret($appId, $appSecret);
+    	$accessToken = \core\util\wx\Api::getAccessTokenByAppIdSecret($appId, $appSecret);
     	if(false !== $this->diyMenu->buildWXMenuByAccessToken($accessToken)) {
     		Message::setOK('恭喜你，生成微信自定义菜单成功！');
     	} else {

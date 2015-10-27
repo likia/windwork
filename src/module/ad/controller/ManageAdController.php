@@ -19,7 +19,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class ManageAdController extends \module\system\controller\admin\AdminBase {
+class ManageAdController extends \module\system\controller\admin\BaseController {
 	
 	/**
 	 *

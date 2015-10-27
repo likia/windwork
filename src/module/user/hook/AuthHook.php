@@ -11,7 +11,6 @@ namespace module\user\hook;
 
 use core\App;
 use module\user\model\AclModel;
-use core\Config;
 use core\IHook;
 
 /**
@@ -29,9 +28,9 @@ class AuthHook implements IHook {
 	 */
 	public function execute($params = array()) {
 		$app = App::getInstance();
-		$mod = &$_GET['mod'];
-		$ctl = &$_GET['ctl'];
-		$act = &$_GET['act'];
+		$mod = strtolower($_GET['mod']);
+		$ctl = strtolower($_GET['ctl']);
+		$act = strtolower($_GET['act']);
 
 		if(!isset($_SESSION['uid'])) {
 			// 用户信息已在用户首次访问或登录时定义到session 
@@ -48,26 +47,18 @@ class AuthHook implements IHook {
 			return true;
 		}
 		
-		if (strtolower("{$mod}.{$ctl}") == 'system.default') {
+		if ("{$mod}.{$ctl}" == 'system.default') {
 			return true;
 		}
 		
-		$defMCA = Config::get('default_mod') . '.' . Config::get('default_ctl') . '.' . Config::get('default_act');
-
-
-		if (strtolower("{$mod}.{$ctl}.{$act}") == 'user.account.login' && !empty($_SESSION['uid'])) {
-			$app->dispatch("user.account.center");
-			return;
-		}
-		
-		// 后台
-		if($app->getCtlObj() instanceof \module\system\controller\admin\AdminBase) {
+		// 系统管理后台
+		if($app->getCtlObj() instanceof \module\system\controller\admin\BaseController) {
 			//*
 			// TODO 后台相关初始化
-			if(empty($_SESSION['admincpchecked']) && "system.default.login" != strtolower("{$mod}.{$ctl}.{$act}")) {
+			if(empty($_SESSION['admincpchecked']) && "system.default.login" != "{$mod}.{$ctl}.{$act}") {
 				if(!empty($_SESSION['isadmin'])) {
 					// 是管理员，验证登录后台
-					"system.admin.admincp.login" == strtolower("{$mod}.{$ctl}.{$act}") or
+					"system.admin.admincp.login" == "{$mod}.{$ctl}.{$act}" or
 					$app->dispatch("system.admin.admincp.login/forward:".urlencode($app->getRequest()->getRequestUrl()));
 				} else if(!empty($_SESSION['uid'])) {
 					// 不是管理员并且已登录，提示无权访问

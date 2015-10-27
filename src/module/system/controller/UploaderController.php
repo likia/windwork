@@ -13,7 +13,6 @@ use core\Common;
 use core\mvc\Message;
 use core\Factory;
 use core\Config;
-use core\Storage;
 
 /**
  * 系统默认页面

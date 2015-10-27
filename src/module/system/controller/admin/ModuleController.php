@@ -21,7 +21,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class ModuleController extends \module\system\controller\admin\AdminBase {
+class ModuleController extends \module\system\controller\admin\BaseController {
 	/**
 	 * 模块模型对象实例
 	 * @var \module\system\model\ModuleModel

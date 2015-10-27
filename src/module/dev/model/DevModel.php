@@ -150,7 +150,7 @@ class DevModel extends Object {
 		
 		$parent = $opt['parent'];
 		
-		$ctlTplName = (stripos($parent, 'AdminBase')) ? 'managectl.tpl' : 'ctl.tpl';
+		$ctlTplName = (stripos($parent, 'admin')) ? 'managectl.tpl' : 'ctl.tpl';
 		
 		$tpl = file_get_contents(dirname(__DIR__) . '/tpl/' . $ctlTplName);
 		$tpl = str_replace(
