@@ -23,7 +23,7 @@ use core\Config;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-abstract class AdminBase extends \core\mvc\Controller {
+abstract class BaseController extends \core\mvc\Controller {
 	/**
 	 * 构造函数继承父类，初始化视图，加载后台语言包
 	 */
