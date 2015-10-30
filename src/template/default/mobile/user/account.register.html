@@ -13,7 +13,7 @@
       
         {tpl prompt}
         <form action="{url user.account.register}" method="post" target="_self" id="regform" class="regform">
-          <input type="hidden" class="text" name="accounttype" id="accounttype" value="member" autocomplete="off" />
+          <input type="hidden" class="text" name="accounttype" id="accounttype" value="ext" autocomplete="off" />
           <dl class="inputs">
           <dd>
             <input type="text" class="text" name="email" id="email" value="" autocomplete="off" placeholder="邮箱" />
@@ -45,7 +45,7 @@
         </form>
       </div>
       <dl class="guide">
-        <dd>&gt; 已经有{$siteName}的账号？<a href="{url user.account.login}">登录</a></dd>
+        <dd>&gt; 已经有账号？<a href="{url user.account.login}">登录</a></dd>
         <dd>&gt; 忘记密码了？<a href="{url user.account.forgetpassword}">取回密码</a></dd>
       </dl>
   </div>

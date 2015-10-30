@@ -154,7 +154,7 @@ class AccountModel extends UserModel {
 	public function register() {
 		if($this->type == 'ext') {
 			$this->isextvalid = 0;
-			$this->role = Config::get('ext_reg_roid');  // 修车厂注册角色ID
+			$this->role = Config::get('ext_reg_roid');  // 商家注册角色ID
 		} else {
 			$this->type = 'member';
 			$this->role = Config::get('user_reg_roid'); // 用户注册角色ID
@@ -196,7 +196,7 @@ class AccountModel extends UserModel {
 			return false;
 		}
 	
-		static::setLoginSession($this);
+		$this->setLoginSession();
 	
 		return true;
 	}
@@ -237,10 +237,10 @@ class AccountModel extends UserModel {
 			
 			if ($data['avatar']) {
 				$storObj = Factory::storage();
-				$storObj->remove("avatar/big/{$this->id}.jpg");
-				$storObj->remove("avatar/medium/{$this->id}.jpg");
-				$storObj->remove("avatar/small/{$this->id}.jpg");
-				$storObj->remove("avatar/tiny/{$this->id}.jpg");
+				$storObj->remove("avatar/big/{$this->uid}.jpg");
+				$storObj->remove("avatar/medium/{$this->uid}.jpg");
+				$storObj->remove("avatar/small/{$this->uid}.jpg");
+				$storObj->remove("avatar/tiny/{$this->uid}.jpg");
 			}
 		}
 				

@@ -6,21 +6,15 @@
 <meta name="format-detection" content="telephone=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>{if @$title}{strip_tags($title)} - {/if}{$siteName}-{$slogan}</title>
+<title>{if @$title}{strip_tags($title)}{else}{$siteName}-{$slogan}{/if}</title>
 <meta name="keywords" content="{$keyword}" />
 <meta name="description" content="{$description}" />
 <meta name="generator" content="Windwork {$version}" />
 <meta name="author" content="Windwork Team" />
 <meta name="copyright" content="2010-{date('Y')} Windwork Team." />
-<link rel="shortcut icon" href="{$basePath}static/images/favicon.png"  />
-<link rel="stylesheet" type="text/css" href="{$staticPath}font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="{$mStylePath}mobile/style.css?v=1211.3" />
-<!--{if empty($isFromWeixin)}-->
-<style>
-header { position:fixed; }
-.header-place { height:45px; }
-</style>
-<!--{/if}-->
+<link rel="shortcut icon" href="{$staticPath}images/favicon.png"  />
+<link rel="stylesheet" type="text/css" href="{$staticPath}styles/weui/dist/style/weui.min.css">
+<link rel="stylesheet" type="text/css" href="{$stylePath}mobile/style.css" />
 <script type="text/javascript" src="{$staticPath}js/head.core.min.js"></script>
 <script type="text/javascript" src="{$staticPath}js/jquery.js"></script>
 <script type="text/javascript" src="{$staticPath}js/wind.js"></script>
@@ -34,11 +28,8 @@ Wind.init({
 	nopicUrl:    '{$nopic}',
 	storagePath: '{Config::get("storage_site_url")}'
 });
-$(function() {
-	//Wind.user.showUserTopbar();
-});
 </script>
 {$embedHeader}
-<base href="{$appUrl}" />
+<base href="{$ctxUrl}" />
 </head>
 <body id="{$mod}-{$ctl}-{$act}" class="mod-{$mod} ctl-{$ctl} act-{$act}">

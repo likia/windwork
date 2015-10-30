@@ -7,12 +7,29 @@
     <!--footer-->
     <div id="footer">
       <div class="wrap">
-    	<div class="addr"></div>
-        <div class="footer-inner">
-          <p class="copyright">
-            &copy; 2010-{date('Y')} <a href="{$domain}">{$siteName}</a>版权所有 <a href="http://www.miitbeian.gov.cn/">{Config::get('site_icp')}</a> <br />
-          </p>
-        </div>
+          <div class="footer-inner">
+            <p class="logo"><a href="{$basePath}"><img src="static/images/ewm.png" width="80" height="80" alt="{$siteName}" title="{$siteName}" /><br />手机扫描访问</a></p>
+            <p class="logo" id="weixin"><a href="{$basePath}"><img src="static/images/ewm.png" width="80" height="80" alt="{$siteName}" title="{$siteName}" /><br />关注恒辉微信</a></p>
+            
+            <p class="footer-nav">
+                {loop \module\article\model\ArticleModel::getList(3) $aboutUs}
+                <a href="{url article.show.item/$aboutUs[slug]}">{$aboutUs[title]}</a>
+                {/loop}
+            </p>
+            
+            <p class="copyright">
+                Copyright &copy; 2010-{date('Y')} <a href="{$domain}">{$siteName}</a> <a href="http://www.miitbeian.gov.cn/">{Config::get('site_icp')}</a> <br />
+                {$siteDesc}
+            </p>
+            <p>
+                关注我们：
+                <a class="footer-weibo" href="#">新浪微博</a>
+                <a class="footer-qzone" href="#">QQ空间</a>
+                <a class="footer-qqt" href="#">腾讯微博</a>
+                <a class="footer-douban" href="#">豆瓣小站</a>
+                <a class="footer-blog" href="">恒辉博客</a>
+            </p>
+          </div>
       </div>
     </div>
     <!--/footer-->
@@ -22,6 +39,15 @@
 
   <!--{static}-->
   <script type="text/javascript">
+	$(window).scroll(function(){
+		if($(window).scrollTop() > 100) {							
+			$('.to-top').show();
+			$('.quick-nav').css('top', ($(window).scrollTop() + 4) + 'px');
+		} else {
+			$('.to-top').hide();
+		}
+	});
+	
     $(function() {
 		$('.btn,#search-bar').hover(
 		    function(){$(this).addClass('hover')},
@@ -30,6 +56,8 @@
 	});
   </script>
   <!--{/static}-->
+
+  
   <!--[if IE 6]>
   <script type="text/javascript" src="{$staticPath}js/DD_belatedPNG-min.js" ></script>
   <script type="text/javascript">

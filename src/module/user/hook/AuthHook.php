@@ -52,7 +52,7 @@ class AuthHook implements IHook {
 		}
 		
 		// 系统管理后台
-		if($app->getCtlObj() instanceof \module\system\controller\admin\BaseController) {
+		if($app->getCtlObj() instanceof \module\system\controller\base\AdminController) {
 			//*
 			// TODO 后台相关初始化
 			if(empty($_SESSION['admincpchecked']) && "system.default.login" != "{$mod}.{$ctl}.{$act}") {

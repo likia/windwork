@@ -21,7 +21,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class NavController extends \module\system\controller\admin\BaseController {
+class NavController extends \module\system\controller\base\AdminController {
 	/**
 	 * 
 	 * @var \module\system\model\NavModel

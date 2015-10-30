@@ -1,0 +1,98 @@
+
+      </div>
+      <!--/wrap-->
+    </div>
+    <!--/content-->
+    {if empty($_GET['iframe'])}
+    <!--footer-->
+    <div id="footer">
+      <div class="wrap">
+          <div class="footer-inner">
+            <p class="copyright">
+                Copyright &copy; 2010-{date('Y')} <a href="{$domain}">{$siteName}</a>
+                {$slogan}
+            </p>
+          </div>
+      </div>
+    </div>
+    <!--/footer-->
+	{/if}
+  </div>
+  <!--/page-->
+
+
+  <script type="text/javascript">
+	/**
+	 * 设置边栏导航
+	 */
+    function setMenuHeight() {
+		var minHeight = $(window).height() - 110;
+		if(minHeight < $('.side').parent().height()) {
+			minHeight = $('.side').parent().height();
+		}
+		if($('.side').height() < minHeight) {
+			$('.side').height(minHeight);
+		}
+	}
+	
+	$(window).scroll(function(){
+		if($(window).scrollTop() > 100) {							
+			$('.to-top').show();
+			$('.quick-nav').css('top', ($(window).scrollTop() + 4) + 'px');
+		} else {
+			$('.to-top').hide();
+		}
+	});
+	
+    $(function() {
+		setMenuHeight();		
+		$(window).resize(function() {
+			setTimeout(function(){
+				setMenuHeight();
+			}, 100);
+		});
+		
+		$('.btn,#search-bar').hover(
+		    function(){
+				$(this).addClass('hover')
+			},
+		    function(){
+				$(this).removeClass('hover')
+			}
+		);
+		
+		$('.help-tip').hover(
+			function() {
+				$(this).addClass('hover');
+				var helpBody = $(this).parent().parent().find('.help-body');
+				if(Wind.mousePos.x + 300 > $(window).width()) {
+					helpBody.css('left', 'auto');
+					helpBody.css('right', '20px');
+				}
+			},
+			function() {
+				$(this).removeClass('hover');
+			}
+		)
+		
+		// 选择边栏选中的链接
+		var links = $('aside dd a');
+		for(var i = 0; i < links.length; i++) {
+			if(links[i].href.indexOf('{strtolower(url("$mod.$ctl.$act"))}') > -1) {
+				$('aside dd a').parent().removeClass('current');
+				$('aside dl').removeClass('current-dl');
+				
+				$('aside dd a').eq(i).parent().addClass('current');
+				$('aside dd a').eq(i).parent().parent().addClass('current-dl');
+				//break;
+			}
+		}
+	});
+  </script>
+  
+{$embedFooter}
+
+<!--{#$bm = benchmark('pc_tpl_footer', 1);#}-->
+<!--[ Processed in {$bm[elapsed]}(s),{#print Factory::db()->execTimes#} querys,{$bm[mem]}(M mem)]-->
+</body>
+</html>

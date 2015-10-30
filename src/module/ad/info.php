@@ -7,5 +7,5 @@ return array (
 	'siteurl'    => 'http://www.windwork.org',
 	'copyright'  => 'Copyright (c) 2008-2014 Windwork Team.',
 	'desc'       => '广告功能及管理模块',
-	'level'      => 'option',
+	'package'    => 'option',
 );

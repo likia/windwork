@@ -21,7 +21,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class ContentController extends \module\system\controller\admin\BaseController {
+class ContentController extends \module\system\controller\base\AdminController {
 	
 	/**
 	 *

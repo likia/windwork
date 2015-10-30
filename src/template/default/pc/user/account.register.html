@@ -3,11 +3,11 @@
 <div class="section ucenter">
   <div class="section-hd"><span class="l"></span><span class="r"></span></div>
   <div class="section-bd">
-      <h2 class="page-title">注册成为{$siteName}会员</h2>
+      <h2 class="page-title">注册成为会员</h2>
       <div class="main">
         {tpl prompt}
         <form action="{url user.account.register}" method="post" target="_self" id="regform" class="form">
-          <input type="hidden" class="text" name="accounttype" id="accounttype" value="member" autocomplete="off" />
+          <input type="hidden" class="text" name="accounttype" id="accounttype" value="ext" autocomplete="off" />
           <p>
             <label class="form-row-l" for="email">邮　箱：</label>
             <input type="text" class="text" name="email" id="email" value="{$_REQUEST[email]}" autocomplete="off" /> <b class="red">*</b>
@@ -38,7 +38,7 @@
         </form>
       </div>
       <div class="side">
-        &gt; 已经有{$siteName}的账号？<a href="{url user.account.login}">登录</a><br />
+        &gt; 已经有账号？<a href="{url user.account.login}">登录</a><br />
         &gt; 忘记密码了？<a href="{url user.account.forgetpassword}">取回密码</a>
       </div>
   </div>

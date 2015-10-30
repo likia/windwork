@@ -17,7 +17,7 @@
         <!--{loop $navs $mnode}-->
         <tr id="list-{$mnode['id']}" class="bb">
           <td align="center">
-            {if $mnode['id'] <= 3}
+            {if !$mnode['upid']}
             <input type="text" name="sort[{$mnode['id']}]" value="{$mnode['displayorder']}" size="3" style="text-align:center;color:#CCC;" disabled="disabled">
             {else}
             <input type="text" name="sort[{$mnode['id']}]" value="{$mnode['displayorder']}" size="3" style="text-align:center;" >

@@ -7,5 +7,5 @@ return array (
 	'siteurl'    => 'http://www.windwork.org',
 	'copyright'  => 'Copyright (c) 2008-2014 Windwork Team.',
 	'desc'       => '用户模块相关功能',
-	'level'      => 'core',
+	'package'    => 'core',
 );

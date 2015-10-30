@@ -90,7 +90,7 @@ class AdModel extends \core\mvc\Model {
 			$placeRObj = new AdPlaceRModel();
 			
 			foreach ($this->placeid as $adPlaceId) {
-				$placeRObj->setPkv(array('id' => $this->id, 'placeid' => $adPlaceId));
+				$placeRObj->setPkv(array('id' => $this->getPkv(), 'placeid' => $adPlaceId));
 				$placeRObj->create();
 			}			
 		}

@@ -19,7 +19,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class CatController extends \module\system\controller\admin\BaseController {
+class CatController extends \module\system\controller\base\AdminController {
 	/**
 	 * 文章分类模型
 	 * @var \module\article\model\ArticleCatModel

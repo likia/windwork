@@ -21,7 +21,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class PositionDataController extends \module\system\controller\admin\BaseController {
+class PositionDataController extends \module\system\controller\base\AdminController {
 
 	/**
 	 *

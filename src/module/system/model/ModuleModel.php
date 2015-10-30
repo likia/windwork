@@ -80,7 +80,7 @@ class ModuleModel extends \core\mvc\Model {
 			return false;
 		}
 	
-		empty($modInfo['level']) && $modInfo['level'] = 'other';
+		empty($modInfo['package']) && $modInfo['package'] = 'other';
 		
 		$modInfo['installtime'] = time();
 		$modInfo['installuid']  = $_SESSION['uid'];		
@@ -333,7 +333,7 @@ class ModuleModel extends \core\mvc\Model {
 				'siteurl'    => '',
 				'copyright'  => '',
 				'desc'       => "<font color=red>错误：(./src/module/{$this->id}/info.php) 模块配置信息不存在</font>",
-			    'level'      => 'other',
+			    'package'    => 'other',
 			    'err'        => '（'.$infoFile.'）模块配置文件不存在',
 			    'installed'  => 0,
 			    'activated'  => 0,
@@ -449,7 +449,7 @@ class ModuleModel extends \core\mvc\Model {
 		}
 	
 		// TODO不允许停用核心模块
-		if ($appInfo['level'] == 'core') {
+		if ($appInfo['package'] == 'core') {
 			$this->setErr('核心模块（'.$this->id.'）不能被停用。');
 			return false;
 		}
@@ -487,16 +487,16 @@ class ModuleModel extends \core\mvc\Model {
 			$modInfo = $thisObj->setPkv($entry)->getInfo();
 		
 			//print_r($modInfo);
-			empty($modInfo['level']) && $modInfo['level'] = 'other';
+			empty($modInfo['package']) && $modInfo['package'] = 'other';
 			// 取得未安装模块信息
 			if (empty($installedMods[$entry])) {
 				$modInfo['id'] = $entry;
 				$modInfo['activated'] = false;
 				$modInfo['installed'] = false;
-				$mods[$modInfo['level']][$entry] = $modInfo;
+				$mods[$modInfo['package']][$entry] = $modInfo;
 			} else {
 				// 取得已安装的模块的信息
-				$mods[$modInfo['level']][$entry] = $installedMods[$entry];
+				$mods[$modInfo['package']][$entry] = $installedMods[$entry];
 			}
 			 
 		}

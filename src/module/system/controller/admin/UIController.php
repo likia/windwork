@@ -24,7 +24,7 @@ use module\system\model\OptionModel;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class UIController extends \module\system\controller\admin\BaseController {
+class UIController extends \module\system\controller\base\AdminController {
 	public function __construct() {
 		parent::__construct();
 		$this->initView();

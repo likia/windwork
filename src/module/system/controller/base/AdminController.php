@@ -7,7 +7,7 @@
  * @copyright   Copyright (c) 2008-2015 Windwork Team. (http://www.windwork.org)
  * @license     http://opensource.org/licenses/MIT	MIT License
  */
-namespace module\system\controller\admin;
+namespace module\system\controller\base;
 
 
 use core\Common;
@@ -15,15 +15,15 @@ use core\Lang;
 use core\Config;
 
 /**
- * 管理员后台控制器基类
+ * 面向管理员的后台控制器基类
  * 
- * @package     core.mvc
+ * @package     module.system.controller.base
  * @copyright   Copyright (c) 2008-2015 Windwork Team. (http://www.windwork.org)
  * @license     http://opensource.org/licenses/MIT	MIT License
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-abstract class BaseController extends \core\mvc\Controller {
+abstract class AdminController extends \core\mvc\Controller {
 	/**
 	 * 构造函数继承父类，初始化视图，加载后台语言包
 	 */

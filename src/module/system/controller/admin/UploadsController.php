@@ -22,7 +22,7 @@ use core\Config;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class UploadsController extends \module\system\controller\admin\BaseController {
+class UploadsController extends \module\system\controller\base\AdminController {
 	/**
 	 *
 	 * @var \module\system\model\UploadModel

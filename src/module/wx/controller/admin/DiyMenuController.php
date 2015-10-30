@@ -20,7 +20,7 @@ use core\mvc\Message;
  * @copyright   © 2010-2015 恒辉科技版权所有
  * @author      恒辉科技 <cmpan@qq.com>
  */
-class DiyMenuController extends \module\system\controller\admin\BaseController {
+class DiyMenuController extends \module\system\controller\base\AdminController {
 	/**
 	 * 
 	 * @var \module\wx\model\DiyMenuModel

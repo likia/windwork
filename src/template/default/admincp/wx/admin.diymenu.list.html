@@ -29,7 +29,7 @@
       <tr id="cid-{$item[id]}">
         <td align="center"><input size="3" name="sort[{$item[id]}]" value="{$item[displayorder]}" class="displayorder" /></td>
         <td>
-          <span>|{for $i = 1; $i < $item[level]; $i++}&nbsp;&nbsp;|-{/for}</span>
+          <span>|{for $i = 1; $i < $item['package']; $i++}&nbsp;&nbsp;|-{/for}</span>
           <a href="{$item[url]}" onclick="{if $item[url]}Wind.util.mobilePreview(this.href);{/if}return false;">{$item[name]}</a>
         </td>
         <td align="center">{$item[keyword]}</td>

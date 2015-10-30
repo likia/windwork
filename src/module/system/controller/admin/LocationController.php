@@ -23,7 +23,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class LocationController extends \module\system\controller\admin\BaseController {
+class LocationController extends \module\system\controller\base\AdminController {
 	/**
 	 * 
 	 * @var \module\system\model\LocationModel

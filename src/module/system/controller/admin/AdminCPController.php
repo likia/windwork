@@ -22,7 +22,7 @@ use module\system\model\MenuModel;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class AdminCPController extends \module\system\controller\admin\BaseController {
+class AdminCPController extends \module\system\controller\base\AdminController {
 	
 	/**
 	 * 管理后台登录

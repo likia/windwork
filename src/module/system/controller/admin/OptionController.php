@@ -23,7 +23,7 @@ use module\system\model\ModuleModel;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class OptionController extends \module\system\controller\admin\BaseController {
+class OptionController extends \module\system\controller\base\AdminController {
 	/**
 	 * 
 	 * @var \module\system\model\OptionModel

@@ -60,7 +60,7 @@ class AclModel extends Model {
 			return false;
 		}
 		
-		if(!$this->id && $this->uid) {
+		if(!$this->getPkv() && $this->uid) {
 			$this->setErr('角色id或用户id都能同时空');
 			return false;
 		}
@@ -227,9 +227,9 @@ class AclModel extends Model {
 		if (empty($modAcls[$ctl][$act])) {
 			if ($throw) {
 				if ($_SESSION['uid']) {
-					throw new \core\Exception("你没有权限访问该页面！", \core\Exception::ERROR_HTTP_401);
+					throw new \core\Exception("你没有权限访问该页面！", \core\Exception::ERROR_HTTP_403);
 				} else {
-					throw new \core\Exception("请您先登录！", \core\Exception::ERROR_HTTP_403);
+					throw new \core\Exception("请您先登录！", \core\Exception::ERROR_HTTP_401);
 				}				
 			}
 			

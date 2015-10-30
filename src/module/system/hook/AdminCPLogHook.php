@@ -28,7 +28,7 @@ class AdminCPLogHook implements \core\IHook {
 	public function execute($params = array()) {
 		$ctlObj = App::getInstance()->getCtlObj();
 		
-		if(!$ctlObj instanceof \module\system\controller\admin\BaseController) {
+		if(!$ctlObj instanceof \module\system\controller\base\AdminController) {
 			return;
 		}
 

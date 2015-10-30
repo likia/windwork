@@ -20,7 +20,7 @@ use core\mvc\Message;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class RoleController extends \module\system\controller\admin\BaseController {
+class RoleController extends \module\system\controller\base\AdminController {
 	/**
 	 * 角色模型
 	 * @var \module\user\model\RoleModel

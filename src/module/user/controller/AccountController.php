@@ -144,7 +144,8 @@ class AccountController extends \core\mvc\Controller {
 		// 来自微信的登录，使用微信登录
 		if ($this->request->isFromWeixin()) {
 			$forward = paramEncode($forward);
-			$this->response->sendRedirect("user.oauth.weixin.login/forward:{$forward}");
+			$buid = (int)$this->request->getRequest('buid');
+			$this->response->sendRedirect("user.oauth.weixin.login/buid:{$buid}/forward:{$forward}");
 			return;
 		}
 		

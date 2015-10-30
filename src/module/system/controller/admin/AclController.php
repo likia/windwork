@@ -25,7 +25,7 @@ use module\user\model\RoleModel;
  * @author      cmm <cmm@windwork.org>
  * @since       1.0
  */
-class AclController extends \module\system\controller\admin\BaseController {
+class AclController extends \module\system\controller\base\AdminController {
 	/**
 	 * 
 	 * @var \module\user\model\AclModel

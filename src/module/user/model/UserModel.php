@@ -197,7 +197,7 @@ class UserModel extends \core\mvc\Model {
 			$this->role = explode(',', $this->role);
 			
 			foreach ($this->role as $roid) {
-				$belongObj->setPkv(array('roid' => $roid, 'uid' => $this->id));
+				$belongObj->setPkv(array('roid' => $roid, 'uid' => $this->uid));
 				$belongObj->create();
 			}				
 		}
@@ -225,7 +225,7 @@ class UserModel extends \core\mvc\Model {
 	 */
 	public function update() {
 		$oldUser = new self();
-		if(!$oldUser->setPkv($this->id)->load()) {
+		if(!$oldUser->setPkv($this->uid)->load()) {
 			$this->setErr('该用户不存在');
 			return false;
 		}
@@ -331,10 +331,10 @@ class UserModel extends \core\mvc\Model {
 		
 		if($this->avatarid) {
 			$storObj = Factory::storage();			
-			$storObj->remove("avatar/big/{$this->id}.jpg");
-			$storObj->remove("avatar/medium/{$this->id}.jpg");
-			$storObj->remove("avatar/small/{$this->id}.jpg");
-			$storObj->remove("avatar/tiny/{$this->id}.jpg");			
+			$storObj->remove("avatar/big/{$this->uid}.jpg");
+			$storObj->remove("avatar/medium/{$this->uid}.jpg");
+			$storObj->remove("avatar/small/{$this->uid}.jpg");
+			$storObj->remove("avatar/tiny/{$this->uid}.jpg");			
 		}
 
 		// 存贮钱转换角色存贮数据结构
@@ -343,10 +343,10 @@ class UserModel extends \core\mvc\Model {
 			$this->role = array_unique($this->role);
 			
 			$belongObj = new BelongModel();
-			$belongObj->deleteByUid($this->id);// 删除用户所属角色的关联
+			$belongObj->deleteByUid($this->uid);// 删除用户所属角色的关联
 			
 			foreach ($this->role as $roid) {
-				$belongObj->setPkv(array('roid' => $roid, 'uid' => $this->id));
+				$belongObj->setPkv(array('roid' => $roid, 'uid' => $this->uid));
 				$belongObj->create();
 			}
 			
@@ -366,7 +366,7 @@ class UserModel extends \core\mvc\Model {
 	public function isUserNameRepeat($uname) {
 		$whArr = array();
 		$whArr[] = array('uname', $uname);
-		$this->id && $whArr[] = array('uid', $this->id, '<>');
+		$this->uid && $whArr[] = array('uid', $this->uid, '<>');
 		
 		return (bool)$this->count(array('where' => $whArr));
 	}
@@ -379,7 +379,7 @@ class UserModel extends \core\mvc\Model {
 	public function isEmailRepeat($email) {
 		$whArr = array();
 		$whArr[] = array('email', $email);
-		$this->id && $whArr[] =array('uid', $this->id, '<>');
+		$this->uid && $whArr[] =array('uid', $this->uid, '<>');
 		
 		return (bool)$this->count(array('where' => $whArr));
 	}
@@ -392,7 +392,7 @@ class UserModel extends \core\mvc\Model {
 	public function isMobileRepeat($mobile) {
 		$whArr = array();
 		$whArr[] = array('mobile', $mobile);
-		$this->id && $whArr[] =array('uid', $this->id, '<>');
+		$this->uid && $whArr[] =array('uid', $this->uid, '<>');
 		
 		return (bool)$this->count(array('where' => $whArr));
 	}
@@ -467,26 +467,26 @@ class UserModel extends \core\mvc\Model {
 	/**
 	 * 设置登录用户会话信息
 	 */
-	public static function setLoginSession(\module\user\model\UserModel $user) {
+	public function setLoginSession() {
 		// $_SESSION 保留其它信息
-		$_SESSION['uid']       = $user->uid;
-		$_SESSION['openid']    = $user->openid;
-		$_SESSION['uname']     = $user->uname;
-		$_SESSION['nickname']  = $user->nickname;
-		$_SESSION['realname']  = $user->realname;
-		$_SESSION['email']     = $user->email;
-		$_SESSION['mobile']    = $user->mobile;
-		$_SESSION['issuper']   = Config::get('super_uid') == $user->uid;
-		$_SESSION['isadmin']   = $user->type == 'admin';
-		$_SESSION['isext']     = $user->isext;
-		$_SESSION['isextvalid']= $user->isextvalid;
-		$_SESSION['role']      = $user->role;
-		$_SESSION['locale']    = $user->locale;
-		$_SESSION['salt']      = $user->salt;
-		$_SESSION['password']  = $user->password;
-		$_SESSION['avatarid']  = $user->avatarid;
-		$_SESSION['status']    = $user->status;
-		$_SESSION['type']      = $user->type;
+		$_SESSION['uid']       = $this->uid;
+		$_SESSION['openid']    = $this->openid;
+		$_SESSION['uname']     = $this->uname;
+		$_SESSION['nickname']  = $this->nickname;
+		$_SESSION['realname']  = $this->realname;
+		$_SESSION['email']     = $this->email;
+		$_SESSION['mobile']    = $this->mobile;
+		$_SESSION['issuper']   = Config::get('super_uid') == $this->uid;
+		$_SESSION['isadmin']   = $this->type == 'admin';
+		$_SESSION['isext']     = $this->isext;
+		$_SESSION['isextvalid']= $this->isextvalid;
+		$_SESSION['role']      = $this->role;
+		$_SESSION['locale']    = $this->locale;
+		$_SESSION['salt']      = $this->salt;
+		$_SESSION['password']  = $this->password;
+		$_SESSION['avatarid']  = $this->avatarid;
+		$_SESSION['status']    = $this->status;
+		$_SESSION['type']      = $this->type;
 		
 		$_SESSION['logintime'] = time();
 		$_SESSION['ip']        = \core\App::getInstance()->getRequest()->getClientIp();
@@ -615,40 +615,40 @@ class UserModel extends \core\mvc\Model {
 	/**
 	 * 根据openid 加载会员信息，如果会员不存在可以自动注册会员
 	 * @param string $openId
-	 * @param bool $autoRegister 是否自定注册会员
 	 * @return Ambigous <boolean, \module\user\model\UserModel>
 	 */
-	public function loadByWXOpenId($openId, $autoRegister = false) {
+	public function loadByOpenId($openId) {
 		$load = $this->loadBy(array('openid', $openId));
-		
-		if(!$load && $autoRegister) {
-			$accessToken = \core\util\wx\Api::getAccessTokenByAppIdSecret(Config::get('wx_app_id'), Config::get('wx_app_secret'));
-			$userInfo = \core\util\wx\Api::getBasicUserInfoByAccessTokenOpenId($accessToken, $openId);
-			
-			// 自动注册微信用户
-			if($this->wxRegister($userInfo)) {
-				$load = $this->load();
-			}			
-		}
-				
 		return $load;
 	}
 	
 	/**
-	 * 微信自动
-	 * @param array $entry
+	 * 微信自动注册（需微信认证）
+	 * @param string $openId
+	 * @param string $appId
+	 * @param string $appSecret
 	 */
-	public function wxRegister($entry) {
+	public function wxRegister($openId, $appId, $appSecret) {
+		$accessToken = \core\util\wx\Api::getAccessTokenByAppIdSecret($appId, $appSecret);
+		$userInfo = \core\util\wx\Api::getBasicUserInfoByAccessTokenOpenId($accessToken, $openId);
+		return $this->wxCreateByInfo($userInfo);
+	}
+	
+	/**
+	 * 微信自动创建用户
+	 * @param array $userInfo
+	 * @return boolean
+	 */
+	public function wxCreateByInfo($userInfo) {
 		$userEntry = array(
 			'type'     => 'member',
 			'role'     => Config::get('user_reg_roid'),
 			'regdateline' => time(),
 			'logtime'  => time(),
-			'regip'    => \core\App::getInstance()->getRequest()->getClientIp(),
-			'openid'   => $entry['openid'],
-			'nickname' => $entry['nickname'],
-			'avatar'   => $entry['headimgurl'],
-			'sex'      => $entry['sex'] == 2 ? 0 : ($entry['sex'] == 0) ? 2 : 1, // 性别
+			'openid'   => $userInfo['openid'],
+			'nickname' => $userInfo['nickname'],
+			'avatar'   => $userInfo['headimgurl'],
+			'sex'      => $userInfo['sex'] == 2 ? 0 : ($userInfo['sex'] == 0) ? 2 : 1, // 性别
 		);
 		
 		$this->fromArray($userEntry);
@@ -657,7 +657,6 @@ class UserModel extends \core\mvc\Model {
 		
 		if($do) {
 			$this->load();
-			static::setLoginSession($this);
 			
 			$belongObj = new BelongModel();
 			$belongObj->setPkv(array('roid' => $userEntry['role'], 'uid' => $this->getPkv()));

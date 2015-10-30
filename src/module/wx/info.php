@@ -7,5 +7,5 @@ return array (
 	'siteurl'    => 'http://www.henghuiit.com',
 	'desc'       => '微信接口交互对接',
 	'copyright'  => '© 2010-2015 恒辉科技版权所有',
-	'level'      => 'option',
+	'package'    => 'option',
 );

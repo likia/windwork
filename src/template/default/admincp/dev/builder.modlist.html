@@ -4,10 +4,10 @@
 <!--{/if}-->
 <!--{tpl dev/builder.navtab}-->
 
-<!--{loop $mods $level $rs}-->
+<!--{loop $mods $package $rs}-->
   <table class="tb mt mb modlist" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr class="th">
-      <th width="180" align="left">{if $level=='core'}核心{elseif $level=='option'}可选{else}其他{/if}模块</th>
+      <th width="180" align="left">{if $package=='core'}核心{elseif $package=='option'}可选{else}其他{/if}模块</th>
       <th align="left">简介</th>
       <th width="220" align="center">操作</th>
     </tr>

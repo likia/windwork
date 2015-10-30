@@ -1,0 +1,138 @@
+{tpl biz.header}
+
+<div class="section">
+  <div class="section-hd"><span class="l"></span><span class="r"></span></div>
+  <div class="section-bd">
+      <div class="main">
+        
+        <div class="act-lead">
+          <a name="act-title"></a>
+          <div class="act-lead-title">绑定微信设置</div>
+          <div class="act-lead-line"></div>
+        </div>
+        
+        {tpl prompt}
+
+        <form action="" method="post" enctype="multipart/form-data" class="form" id="form">
+          <input type="hidden" name="hash" value="{$hash}" />
+          
+          <div class="form-row">
+            <label class="form-row-l">URL：</label>
+            <div class="form-row-r text light">
+              <strong>{#print url("pubservice.api.index/{$_SESSION['uid']}", 1)#}</strong>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <label class="form-row-l">Token：</label>
+            <div class="form-row-r text light">
+              <strong>{$settingObj->token}</strong>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <label class="form-row-l" for="wxid">微信公众号ID：</label>
+            <div class="form-row-r">
+              <input type="text" class="text" name="wxid" id="wxid" value="{$settingObj->wxid}" autocomplete="off" />
+              <b class="red">&nbsp;</b>
+              <span class="note">如：wanhongsoft</span>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <label class="form-row-l" for="name">微信公众号名称：</label>
+            <div class="form-row-r">
+              <input type="text" class="text" name="name" id="name" value="{$settingObj->name}" autocomplete="off" />
+              <b class="red">*</b>
+              <span class="note">如：中科万宏</span>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <label class="form-row-l" for="wxsrcid">微信公众号原始ID：</label>
+            <div class="form-row-r"><input type="text" class="text" name="wxsrcid" id="wxsrcid" value="{$settingObj->wxsrcid}" autocomplete="off" />
+              <b class="red">*</b>
+              <span class="note">如：gh_08e3f3dde852</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-row-l" for="wxappid">微信AppId：</label>
+            <div class="form-row-r">
+              <input type="text" class="text" name="wxappid" id="wxappid" value="{$settingObj->wxappid}" autocomplete="off" /> 
+              <b class="red">&nbsp;</b>
+              <span class="note">
+            </span></div>
+          </div>
+          <div class="form-row">
+            <label class="form-row-l" for="wxsecret">微信公众号AppSecret：</label>
+            <div class="form-row-r">
+              <input type="text" class="text" name="wxsecret" id="wxsecret" value="{$settingObj->wxsecret}" autocomplete="off" />
+              <b class="red">&nbsp;</b>
+              <span class="note"></span>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <label class="form-row-l" for="avatar">微信公众号头像：</label>
+            <div class="form-row-r">
+                <img src="{if $settingObj->avatar}{$settingObj->avatar}{else}static/images/avatar.png{/if}" width="100" height="100" />
+            </div>
+          </div>
+          
+          
+           <div class="form-row">
+            <label class="form-row-l" for="qrcode">微信公众号二维码：</label>
+            <div class="form-row-r">
+                <img src="{if $settingObj->qrcode}{$settingObj->qrcode}{else}{$nopic}{/if}" width="100" height="100" />
+            </div>
+          </div>
+                    
+          <div class="form-row">
+            <label class="form-row-l" for="">&nbsp;</label>
+            <div class="form-row-r">&nbsp;</div>
+          </div>
+          <div class="form-row">
+            <label class="form-row-l" for="">&nbsp;</label>
+            <div class="form-row-r"><input type="submit" value="保存" class="btn big" /></div>
+          </div>
+        </form>
+
+<script type="text/javascript" src="{$basePath}static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{$basePath}static/js/locale/jquery.validate.messages.zh_CN.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(function(){	
+	var validator = $("#form").validate({
+		rules: {
+			name: "required",
+			wxsrcid: "required"
+		},
+		messages: {
+			name: "请输入微信公众号名称",
+			wxsrcid: "请输入微信公众号原始ID"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo( element.next() );				
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		},
+		submitHandler: function(form) {
+			$.post('{url $mod.$ctl.$act/hash:$hash}', $('#form').serialize(), function(r){
+				Wind.message.showResponse(r)
+			}, 'json');
+			return false;
+		}
+	});
+});
+
+//]]>
+</script>
+        
+       
+      </div>
+      {tpl biz.side}
+  </div>
+  <div class="section-ft"><span class="l"></span><span class="r"></span></div>
+</div>
+{tpl biz.footer}
