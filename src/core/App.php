@@ -148,6 +148,8 @@ final class App {
 			// 自定义异常处理
 			set_exception_handler(array('\\core\\Common', 'exceptionHandler'));
 			
+			$configs || $configs = include SRC_PATH . 'config/config.php';
+			
 			// 配置信息
 			Config::setConfigs($configs);
 			
@@ -232,7 +234,7 @@ final class App {
 		
 		// SESSION初始化
 		\core\Factory::session()->start();
-		
+
 		// 选择客用户语言
 		$locale = 'zh_CN';
  		if (!empty($_GET['locale'])) {
@@ -305,11 +307,8 @@ final class App {
 			$_GET = $_REQUEST = $_POST = array();
 		}
 		
-		// 初始化控制器实例前触发的钩子
-		Hook::call('start_new_controller');
-
 		// 初始化控制器实例
-		$this->initController($routeVars);
+		$this->route($routeVars);
 
 		// 控制器继承约束
 		if(!$this->ctlObj instanceof \core\mvc\Controller) {
@@ -347,12 +346,12 @@ final class App {
 	}
 	
 	/**
-	 * 初始化控制器实例
-	 * 模块名、控制器命名空间都为小写
+	 * 获取请求参数并初始化控制器实例
+	 * 
 	 * @param string|\core\mvc\Router $pathVars
 	 * @throws \core\Exception
 	 */
-	private function initController($pathVars) {		
+	private function route($pathVars) {		
 		// 请求变量设置
 		if($pathVars instanceof \core\mvc\Router) {
 			$router = $pathVars;
@@ -371,9 +370,14 @@ final class App {
 		
 		$_GET = array_merge($_GET, $router->params);
 
-		$mod = strtolower($_GET['mod']);
-		$ctl = strtolower($_GET['ctl']);
-		$act = strtolower($_GET['act']);
+		$mod = &$_GET['mod'];
+		$ctl = &$_GET['ctl'];
+		$act = &$_GET['act'];
+
+		// 命名空间均为小写，转小写后再修正请求的控制器类$ctl和方法$act的大小写
+		$mod = strtolower($mod);
+		$ctl = strtolower($ctl);
+		$act = strtolower($act);
 		
 		$sub = '';// 控制器子文件夹
 			
@@ -382,6 +386,7 @@ final class App {
 			$sub = substr($ctl, 0, strrpos($ctl, '.') + 1); // 后面带.
 		}
 		
+		// 从缓存获取模块控制器及方法列表
 		$ctlKey = rtrim("controllers/{$mod}.{$sub}", '.');
 		if(!$modCtls = \core\Factory::cache()->read($ctlKey)) {
 			if(!is_dir(SRC_PATH . "module/{$mod}")) {
@@ -441,15 +446,18 @@ final class App {
 		
 		$ctlMapper = $modCtls[$ctl];
 
-		// 修正 $ctl
+		// 修正 $ctl 大小写
 		$ctl = $ctlMapper['ctl'];
 			
-		// 修正 $act
+		// 修正 $act 大小写
 		if(isset($ctlMapper['actList'][$act])) {
 			$act = $ctlMapper['actList'][$act];
 		}
 			
 		$_REQUEST = array_merge($_REQUEST, $_GET);
+
+		// 初始化控制器实例前触发的钩子
+		Hook::call('start_new_controller');
 		
 		// 创建控制器实例
 		if(!$this->ctlObj || !($this->ctlObj instanceof $ctlMapper['class'])) {

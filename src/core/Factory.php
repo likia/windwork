@@ -89,7 +89,7 @@ class Factory {
 	 * 
 	 * @param string $class = '' 缓存操作类
 	 * @param array $cfg  = array()
-	 * @return \core\adapter\session\ISession
+	 * @return \core\adapter\session\ASession
 	 */
 	public static function session($class = '', $cfg = array()) {
 		return static::getInstance('session', $class, $cfg);

@@ -82,5 +82,8 @@ return array (
 	'send_status'             => 1,                  // 发送 HTTP Header状态码开关, 发送状态码对搜索引擎友好，但有些服务器一旦发送状态码则会使用自定义的页面
 
 	'install_lock'            => 'data/install.lock',
-	'super_uid'                => 1,
+	'super_uid'               => 1,
+	'session_cookie_path'     => '/',
+	'session_cookie_domain'   => '',
+	'session_cookie_lifetime' => '180',
 );

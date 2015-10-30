@@ -156,6 +156,7 @@ class MySQL extends ADB implements IDB, \core\adapter\IFactoryAble {
 		
 		if(false === $query) {
 			$this->log[] = $this->getLastErr();
+			// 抛出异常以便事务回滚并监控到异常信息
 			throw new Exception($this->getLastErr());
 		}
 		

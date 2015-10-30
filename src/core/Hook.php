@@ -123,7 +123,9 @@ class Hook {
 	 * @param string $hookId = '' 指定钩子点
 	 * @return bool
 	 */
-	public static function call($hookId = '') {		
+	public static function call($hookId = '') {	
+		//logging('debug', "hook.call.{$hookId}");
+		
 		if(!static::$enabled || !isset(static::$hooks[$hookId])) {
 			return false;
 		}

@@ -430,7 +430,9 @@ class Request {
 	 * @return string
 	 */
 	public function getBasePath() {
-		return str_replace($this->getScript(), '', $this->getScriptUrl());
+		$basePath = str_replace($this->getScript(), '', $this->getScriptUrl());
+		$basePath = '/' . ltrim($basePath, '/');
+		return $basePath;
 	}
 
 	/**

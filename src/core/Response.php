@@ -601,11 +601,11 @@ class Response {
 			return;
 		}
 		
-		if ($location != '/' && !preg_match("/^[0-9a-z]+:\\/\\//i", $location)) {
-			$request = new Request();
-			$location = $request->getBasePath() . $location;
+		if ($location[0] != '/' && !preg_match("/^[0-9a-z]+:\\/\\//i", $location)) {
+			$location = Config::get('base_path') . Config::get('base_url') . $location;
 		}
 		
+		$this->clearHeaders();
 		$this->addHeader('Location', $location, true);
 		$this->setStatus($status);
 		$this->isRedirect = true;

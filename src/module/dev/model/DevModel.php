@@ -37,7 +37,7 @@ class DevModel extends Object {
 			'email'     => array('email' => '请输入正确的邮箱格式'),
 			'siteurl'   => array('url' => '请输入正确的模块官网网址'),
 			'desc'      => array('notEmpty' => '请输入模块介绍'),
-			'level'     => array('notEmpty' => '请选择模块类型'),
+			'package'   => array('notEmpty' => '请选择模块类型'),
 		);
 		
 		$validErrs = array();
@@ -82,8 +82,8 @@ class DevModel extends Object {
 		// 获取模块配置信息模板
 		$info = file_get_contents(dirname(__DIR__).'/tpl/info.tpl');
 		$info = str_replace(
-			array('{name}', '{version}', '{author}', '{email}', '{siteurl}', '{copyright}', '{desc}', '{level}'), 
-			array($mod['name'], $mod['version'], $mod['author'], $mod['email'], $mod['siteurl'], $mod['copyright'], $mod['desc'], $mod['level']), 
+			array('{name}', '{version}', '{author}', '{email}', '{siteurl}', '{copyright}', '{desc}', '{package}'), 
+			array($mod['name'], $mod['version'], $mod['author'], $mod['email'], $mod['siteurl'], $mod['copyright'], $mod['desc'], $mod['package']), 
 		$info);
 		file_put_contents($modPath.'info.php', $info);
 		
@@ -154,7 +154,7 @@ class DevModel extends Object {
 		
 		$tpl = file_get_contents(dirname(__DIR__) . '/tpl/' . $ctlTplName);
 		$tpl = str_replace(
-			array('{siteurl}', '{copyright}', '{mod}', '{name}', '{desc}', '{author}', '{email}', '{class}', '{parent}', '{namespace}', '{level}'), 
+			array('{siteurl}', '{copyright}', '{mod}', '{name}', '{desc}', '{author}', '{email}', '{class}', '{parent}', '{namespace}', '{package}'), 
 			array(
 			    $modInfo['siteurl'],
 			    $modInfo['copyright'],

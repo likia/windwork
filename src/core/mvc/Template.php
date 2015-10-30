@@ -197,6 +197,7 @@ class Template {
         $this->compileId       = trim($this->compileId, '/');
         $this->compiledDir     = trim($this->compiledDir, '/');
 
+        
         // 确定是否启用手机模板（设为启用手机视图并且文件存在。）
         if ($this->isMobileView && is_file($this->tplDir . '/mobile/' . $file) && substr($this->tplDir, -7) != 'mobile/') {
         	$this->tplDir .= '/mobile';

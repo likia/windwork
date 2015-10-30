@@ -9,6 +9,7 @@
  */
 namespace core\util\wx;
 
+use core\Factory;
 /**
  * 微信API接口调用类
  *
@@ -25,20 +26,26 @@ class Api  {
 	 * @return boolean|string
 	 */
 	public static function getAccessTokenByAppIdSecret($appId, $secret) {
-		$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$secret}";
+		$cacheKey = "wx/access_token/{$appId}^{$secret}";
+		if(false == ($token = Factory::cache()->read($cacheKey))) {
+			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$secret}";
+			
+			$client = new \core\util\Client();
+			$rsp = $client->get($url);
+			if (!$rsp) {
+				throw new \core\Exception('网络不通到微信服务器！');
+			}
+			 
+			$rsp = (array)json_decode($rsp);
+			if (isset($rsp['errcode'])) {
+				throw new \core\Exception(\core\util\wx\ResponseCode::getMessage($rsp['errcode']));
+			}
 		
-		$client = new \core\util\Client();
-		$rsp = $client->get($url);
-		if (!$rsp) {
-			throw new \core\Exception('网络不通到微信服务器！');
-		}
-		 
-		$rsp = (array)json_decode($rsp);
-		if (isset($rsp['errcode'])) {
-			throw new \core\Exception(\core\util\wx\ResponseCode::getMessage($rsp['errcode']));
-		}
-	
-		return $rsp['access_token'];
+			$token = $rsp['access_token'];
+			Factory::cache()->write($cacheKey, $token, 3600);
+		};
+		
+		return $token;
 	}
 	
 	/**
@@ -93,13 +100,15 @@ class Api  {
 	 */
 	public static function getBasicUserInfoByAccessTokenOpenId($accessToken, $openId) {
 		$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$accessToken}&openid={$openId}&lang=zh_CN";
-		$json = file_get_contents($url);
+		$client = new \core\util\Client();
+		$json = $client->get($url);
 		if(!$json) {
 			throw new \core\Exception('无法连接到微信服务器！');
 		}
 		$userInfo = (array)json_decode($json);
 		if ($userInfo['errcode']) {
-			throw new \core\Exception(\core\util\wx\ResponseCode::getMessage($userInfo['errcode']));
+			$errmsg = \core\util\wx\ResponseCode::getMessage($userInfo['errcode']);
+			throw new \core\Exception($errmsg);
 		}
 		
 		return $userInfo;
@@ -110,9 +119,9 @@ class Api  {
 	 * @param string $accessToken
 	 * @param int $sceneId 场景值ID，1-100000之间
 	 * @param number $expireSeconds 过期时间，如果为0则是永久的ticket，大于0则为ticket的过期时间，默认为1800
-	 * @param string $scenceStr 场景值ID(String类型)，如果不为NULL则使用该值不使用$sceneId
+	 * @param string $scenceStr 场景值ID(String类型)，仅永久二维码有效，如果不为null则使用该值不使用$sceneId
 	 */
-	public static function getTicketInfoByAccessTokenSceneId($accessToken, $sceneId, $expireSeconds = 1800, $scenceStr = NULL){
+	public static function getTicketInfoByAccessTokenSceneId($accessToken, $sceneId, $expireSeconds = 1800, $scenceStr = null){
 		$sceneId = intval($sceneId);
 		$expireSeconds = intval($expireSeconds);
 		$url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$accessToken}";
@@ -133,7 +142,7 @@ class Api  {
 						)
 					);
 				}
-			}else{
+			} else {
 				if ($sceneId > 100000 || $sceneId < 0){
 					throw new \core\Exception('场景值ID只能在0-100000之间');
 				}else{
@@ -177,7 +186,7 @@ class Api  {
 	 */
 	public static function getQRCodeUrlByTicket($ticket){
 		if (empty($ticket)) {
-			return NULL;
+			return null;
 		}
 		return "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" . urlencode($ticket);
 	}
@@ -187,12 +196,12 @@ class Api  {
 	 * @param string $accessToken
 	 * @param int $sceneId 场景值ID，1-100000之间
 	 * @param number $expireSeconds 过期时间，如果为0则是永久的ticket，大于0则为ticket的过期时间，默认为1800
-	 * @param string $scenceStr 场景值ID(String类型)，如果不为NULL则使用该值不使用$sceneId
+	 * @param string $scenceStr 场景值ID(String类型)，如果不为null则使用该值不使用$sceneId
 	 */
-	public static function getQRCodeUrlByAccessTokenSceneId($accessToken, $sceneId, $expireSeconds = 1800, $scenceStr = NULL){
+	public static function getQRCodeUrlByAccessTokenSceneId($accessToken, $sceneId, $expireSeconds = 1800, $scenceStr = null){
 		$ticketInfo = static::getTicketInfoByAccessTokenSceneId($accessToken, $sceneId, $expireSeconds, $scenceStr);
 		if(empty($ticketInfo)){
-			return NULL;
+			return null;
 		}
 		return static::getQRCodeUrlByTicket($ticketInfo['ticket']);
 	}

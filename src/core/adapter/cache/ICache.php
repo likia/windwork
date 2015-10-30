@@ -25,7 +25,7 @@ interface ICache {
 	 *
 	 * @param string $cacheKey
 	 * @param mixed $value
-	 * @param int $expire = 0 如果要设置不删除缓存，请设置一个大点的整数
+	 * @param int $expire = 0  单位秒，为0则使用配置文件中的缓存时间设置（3600秒），如果要设置不删除缓存，请设置一个大点的整数
 	 * @return \core\adapter\cache\CacheInterface
 	 */
 	public function write($cacheKey, $value, $expire = 0);

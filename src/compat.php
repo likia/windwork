@@ -410,6 +410,9 @@ function paramEncode($str) {
  * @param string $message
  */
 function logging($level, $message) {
+	if (!is_scalar($message)) {
+		$message = var_export($message, 1);
+	}
 	\core\Factory::logger()->log($level, $message);
 }
 

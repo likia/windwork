@@ -110,7 +110,7 @@ abstract class Controller {
 		  ->assign('logo',        Config::get('ui_logo'))
 		  ->assign('nopic',       Config::get('ui_nopic'))
 		  ->assign('referer',     $this->request->getRefererUrl())
-		  ->assign('appUrl',      $this->request->getHostInfo() . ltrim($this->request->getBasePath(), '/'))
+		  ->assign('ctxUrl',      $this->request->getHostInfo() . ltrim($this->request->getBasePath(), '/')) // 上下文URL（系统安装文件夹URL）
 		  ->assign('domain',      Config::get('host_info'))
 		  ->assign('storageSite', Config::get('storage_site_url'))
 		  ->assign('basePath',    $basePath)
@@ -246,9 +246,10 @@ abstract class Controller {
 			Message::setErr('<a href="' . $loginUrl . '">马上去登录</a>');
 			$this->showMessage();
 		} else {
-			$forward || $forward = $this->request->getRequestUrl();
+			$forward || $forward = $this->request->getRequestUri();
 		    $loginUrl = url("user.account.login/forward:" . paramEncode($forward));
 			$this->app->dispatch($loginUrl);
+			$this->response->setSendedHeader();
 		}
 	}
 	

@@ -22,6 +22,7 @@ return array(
 		
 	// 初始化控制器实例前触发的钩子
 	'start_new_controller' => array(
+		'\module\user\hook\AuthHook', //权限控制
 	),
 		
 	// 初始化控制器实例后触发的钩子
@@ -31,7 +32,6 @@ return array(
 		
 	// 执行action前触发的钩子
 	'start_action' => array(		
-		'\module\user\hook\AuthHook', //权限控制
 		//'\module\system\hook\BannedIPHook', // IP 禁止
 		//'\module\system\hook\PauseServiceHook', // 系统暂停服务信息，在后台设置
 	),
