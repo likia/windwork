@@ -673,4 +673,28 @@ abstract class Model extends \core\Object {
 		$this->lockedFields = array_merge($this->lockedFields, $fields);
 		return $this;
 	}
+	
+	/**
+	 * 获取记录列表
+	 * @param array $cdt
+	 * @param int $rows = 10 每页记录数
+	 * @return array (
+	 *   'total' => $total,
+	 *   'pager' => $paging->getPager(),
+	 *   'list'  => $list,
+	 * )
+	 */
+	public function getListWithPager($cdt, $rows = 10) {
+		$total  = $this->count($cdt);
+		$paging = new \core\util\Pagination();
+		$paging->setVar($total, $rows);
+		$list = $this->select($cdt, $paging->offset, $paging->rows);
+		
+		return array(
+			'total' => $total,
+			'pager' => \core\util\UserAgent::checkMobile() ? $paging->getMobilePager() : $paging->getPager(),
+			'paging' => $paging,
+			'list'  => $list,
+		);
+	}
 }

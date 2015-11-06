@@ -10,8 +10,8 @@ function copyToClipboard(txt, obj) {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		} catch (e) {
-			var inputEle = "<textarea id='txt-area' style='width:320px;height:60px'>"+txt+"</textarea>";
-			Wind.message.show('你的浏览器不支持自动复制功能，请按Ctrl+C或鼠标右键复制链接:'+inputEle, "提示", 350, 150);
+			var inputEle = "<textarea id='txt-area' style='width:320px;height:60px;margin:10px;'>"+txt+"</textarea>";
+			Wind.message.show('<span class="red">你的浏览器不支持自动复制功能，请按Ctrl+C或鼠标右键复制链接:</span>'+inputEle, "提示信息", 360, 120);
 			window.jQuery && window.jQuery("#txt-area").select();
 		}
 		var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
@@ -37,8 +37,8 @@ function copyToClipboard(txt, obj) {
 			Wind.message.show("复制成功！");
 		}
 	}else if(navigator.userAgent.indexOf("Chrome") != -1){
-		var inputEle = "<textarea id='txt-area' style='width:320px;height:60px'>"+txt+"</textarea>";
-		Wind.message.show('你的浏览器不支持自动复制功能，请按Ctrl+C或鼠标右键复制链接:'+inputEle, "提示", 350, 150);
+		var inputEle = "<textarea id='txt-area' style='width:320px;height:60px;margin:10px;'>"+txt+"</textarea>";
+		Wind.message.show('<span class="red">你的浏览器不支持自动复制功能，请按Ctrl+C或鼠标右键复制链接:</span>'+inputEle, "提示信息", 360, 120);
 		window.jQuery && window.jQuery("#txt-area").select();
 	}
 	return false;

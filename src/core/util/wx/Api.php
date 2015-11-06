@@ -172,7 +172,7 @@ class Api  {
 		}
 		
 		$rsp = (array)json_decode($rsp);
-		if ($rsp['errcode']) {
+		if (!empty($rsp['errcode'])) {
 			throw new \core\Exception(\core\util\wx\ResponseCode::getMessage($rsp['errcode']));
 		}
 		
@@ -204,6 +204,55 @@ class Api  {
 			return null;
 		}
 		return static::getQRCodeUrlByTicket($ticketInfo['ticket']);
+	}
+	
+	/**
+	 * 上传多媒体素材到微信服务器
+	 * 
+	 * 上传的临时多媒体文件有格式和大小限制，如下：
+	 *   图片（image）: 1M，支持JPG格式
+	 *   语音（voice）：2M，播放长度不超过60s，支持AMR\MP3格式
+	 *   视频（video）：10MB，支持MP4格式
+	 *   缩略图（thumb）：64KB，支持JPG格式
+	 *   
+	 * @param string $accessToken
+	 * @param string $path 相对于 storage 文件夹的路径
+	 * @param string $type = 'image'
+	 * @return object|false
+	 */
+	public static function uploadMedia($accessToken, $path, $type = 'image') {
+		$path = realpath(Factory::storage()->getRealPath($path));
+		$fields = array(
+			'media' => '@'.$path, 
+			'form-data' => array(
+			    'filename' => $path,
+			),
+		);
+		
+		$url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token={$accessToken}&type={$type}";
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		
+		$ret = curl_exec($curl);
+		curl_close($curl);
+		
+		if (!$ret) {
+			throw new \core\Exception('微信服务器没有返回数据！');
+		}
+		
+		$ret = json_decode($ret);
+		if (isset($ret->errcode)) {
+			$errMsg = \core\util\wx\ResponseCode::getMessage($ret->errcode);
+			throw new \core\Exception($errMsg);
+		}
+		
+		return $ret;
 	}
 }
 

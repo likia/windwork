@@ -13,10 +13,16 @@ namespace core;
 ini_set('default_charset', 'UTF-8');
 
 /**
- * 程序源码文件夹
+ * 程序源码文件夹完整路径
  * @var string
  */
 define('SRC_PATH',    str_replace('\\', '/', dirname(__DIR__)) . '/');
+
+/**
+ * 站点根目录完整路径
+ * @var string
+ */
+defined('ROOT_PATH') || define('ROOT_PATH', dirname(SRC_PATH) . '/');
 
 // 源码目录设为当前工作目录
 chdir(SRC_PATH);
@@ -299,7 +305,7 @@ final class App {
 		
 		// 发送响应内容一次后结束程序
 		if ($this->response->isSendedHeader()) {
-			logging('error', "'{$uri}' 发生多次响应");
+			logging('warn', "'{$uri}' 发生多次响应");
 			return;
 		}
 		
@@ -343,6 +349,8 @@ final class App {
 
 		// 程序执行完后触发的钩子
 		Hook::call('end_app');
+		
+		exit; // 程序结束
 	}
 	
 	/**

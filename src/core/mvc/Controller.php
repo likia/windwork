@@ -92,6 +92,10 @@ abstract class Controller {
 		$tpl   = empty($_SESSION['tpl']) ? Config::get('ui_tpl') : $_SESSION['tpl'];
 
 		$this->view = new \core\mvc\Template();
+		
+		if (UserAgent::checkMobile()) {
+			$this->view->isMobileView = true;
+		}
 				
 		$this->view
 		  // 设置模板配置参数
@@ -213,6 +217,7 @@ abstract class Controller {
 			->assign('title', '该页面不存在！')
 			->render('404.html');
 		}
+		exit;
 	}
 	
 	/**
@@ -231,6 +236,7 @@ abstract class Controller {
 			->assign('title', '禁止访问！')
 			->render('403.html');
 		}
+		exit;
 	}
 	
 	/**
@@ -251,6 +257,7 @@ abstract class Controller {
 			$this->app->dispatch($loginUrl);
 			$this->response->setSendedHeader();
 		}
+		exit;
 	}
 	
 	/**
@@ -272,6 +279,7 @@ abstract class Controller {
 			->assign('title', '提示信息')
 			->render(($mod ? $mod . '/' : '') . 'message.html');
 		}
+		exit;
 	}
 	
 	/**
@@ -281,11 +289,6 @@ abstract class Controller {
 	public function errorAction($code = 200) {
 		if (!$this->request->isAjaxRequest()) {
 			$this->response->setStatus($code);
-		}
-		
-		if (UserAgent::checkMobile()) {
-			$this->initView();
-			$this->view->isMobileView = true;
 		}
 		
 		switch ($code) {

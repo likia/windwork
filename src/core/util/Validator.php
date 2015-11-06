@@ -34,7 +34,7 @@ class Validator extends \core\Object {
 				$isNot  = $method[0] == '!';
 				$method = str_replace(array('!', ' '), '', $method);
 				
-				$callback = "static::is".ucfirst($method);
+				$callback = "static::".(substr($method, 0, 2) == 'is' ? $method : 'is'.ucfirst($method));
 				if((!$isNot && !call_user_func($callback, $data[$key])) || ($isNot && call_user_func($callback, $data[$key]))) {
 					$validErrs[] = $msg;
 				}
@@ -56,7 +56,7 @@ class Validator extends \core\Object {
 	}
 
 	/**
-	 * 参数格式是否是时间的格式
+	 * 参数格式是否是时间的格式 Y-m-d H:i:s
 	 *
 	 * @param string $time
 	 * @return bool

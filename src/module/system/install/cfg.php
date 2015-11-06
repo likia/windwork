@@ -34,7 +34,6 @@ return array (
             'captcha'   => '验证码',
         	'message'   => '提示信息',
         	'error'     => '错误信息',
-        	'stats'     => '统计功能',
         ),
     	
 		// 系统升级
@@ -223,7 +222,6 @@ return array (
             'captcha'    => '*',
             'message'    => '*',
             'error'      => '*',
-            'stats'      => '*',
 		),
     	
 		// 地区

@@ -387,19 +387,33 @@ function isActionEqual($str, $expect) {
 /**
  * 对请求URL进行解码
  * @param string $str
- * @return string
+ * @return string||array
  */
-function paramDecode($str) {
-	return urldecode(urldecode($str));
+function paramDecode($arg) {
+	if (is_array($arg)) {
+		foreach ($arg as $key => $val) {
+			$arg[$key] = paramDecode($val);
+		}
+	} else {
+	    $arg = urldecode(urldecode($arg));
+	}
+	return $arg;
 }
 
 /**
  * 对请求URL进行编码
- * @param string $str
+ * @param string $arg
  * @return string
  */
-function paramEncode($str) {
-	return urlencode(urlencode(paramDecode($str)));
+function paramEncode($arg) {
+	if (is_array($arg)) {
+		foreach ($arg as $key => $val) {
+			$arg[$key] = paramEncode($val);
+		}
+	} else {
+	    $arg = urlencode(urlencode(paramDecode($arg)));
+	}
+	return $arg;
 }
 
 /**

@@ -8,6 +8,9 @@
  */
 namespace module\system\controller\base;
 
+use core\Factory;
+use core\Config;
+use core\mvc\Message;
 /**
  * 面向普通用户的手机/微信端前台控制器基类
  * 
@@ -24,6 +27,11 @@ abstract class SmartController extends \core\mvc\Controller {
 	 */
 	protected $biz;
 	
+	/**
+	 * 会员信息
+	 * @var \module\user\model\AccountModel
+	 */
+	protected $member;
 	
 	/**
 	 * 
@@ -37,7 +45,7 @@ abstract class SmartController extends \core\mvc\Controller {
 		$this->initView();
 		$this->view->isMobileView = 1;
 	
-		$buid= (int)$this->request->getRequest('buid');		
+		$buid = (int)$this->request->getRequest('buid');		
 		if(!$buid) {
 			// 如果pubid丢失，从来源页面获取pubid
 			$referer = $this->request->getRefererUrl();
@@ -61,7 +69,17 @@ abstract class SmartController extends \core\mvc\Controller {
 			$this->wx = null;
 		}
 
+		if (!empty($_SESSION['uid'])) {
+			$member = new \module\user\model\AccountModel();
+        	if(false !== $member->setPkv($_SESSION['uid'])->load()) {
+			    $this->member = $member;
+        	}
+        }
+
+        $this->view->assign('member', $this->member);
 		$this->view->assign('buid', $buid);
+		$this->view->assign('biz', $this->biz);
+		$this->view->assign('wx', $this->wx);
 	}
 }
 

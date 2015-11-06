@@ -169,6 +169,7 @@ use core\Config;
 	 					$r = array(
 	 						"error" => 0,
 	 						"url" => \core\Factory::storage()->getFullUrl($this->m->getPath()),
+	 						"thumb" => \core\Factory::storage()->getThumbUrl($this->m->getPath()),
 	 					);
 	 					Common::showJson($r);
 	 					return true;

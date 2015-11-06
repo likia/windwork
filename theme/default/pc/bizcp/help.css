@@ -1,0 +1,8 @@
+.help-tip { position:relative; display:inline; }
+.help-tip .help-icon { display:inline-block; width:16px; *zoom:1;*display:inline; width:16px; height:16px; line-height:18px; font-size:12px; border-radius:50%; background:#bbb; text-align:center; color:#fff; margin-left:10px; }
+.help-tip { height:24px; padding-right:10px; }
+.help-tip  a:hover .help-icon { background:#4b0; }
+.help-tip .help-body { position:absolute; display:none; left:0; top:15px; width:280px; background:#fff; border:3px solid #333; padding:5px 10px; border-radius:5px; line-height:18px; z-index:999; }
+.help-tip .help-body dl { margin:5px; color:#666; }
+.help-tip .help-body dl dd { margin:4px 0; }
+.hover .help-body { display:block; }

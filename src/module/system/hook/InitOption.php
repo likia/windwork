@@ -10,6 +10,7 @@
 namespace module\system\hook;
 
 use core\Factory;
+use core\Config;
 
 /**
  * 从数据库加载配置并缓存
@@ -59,10 +60,18 @@ class InitOption implements \core\IHook {
 			
 		    //Factory::cache()->write('system/options', $options, 24*60*60);
 		}
+
 		
 		// 后台数据库存在的配置项合并到文件配置的配置项
 		\core\Config::setConfigs(array_merge($options, \core\Config::getConfigs()));
 		\core\mvc\Router::$rules = $options['url_rewrite_rule_arr'];
+
+		// URL
+		if (Config::get('site_domain') && preg_match("/(http[s]?\\:\\/\\/.*?)(\\/.*)/is", Config::get('site_domain'), $match)) {
+			Config::set('host_info', $match[1]);
+			Config::set('base_path', $match[2]);
+			\core\mvc\Router::$options = array_merge(\core\mvc\Router::$options, array_intersect_key(Config::getConfigs(), \core\mvc\Router::$options));
+		}
 	}
 
 }

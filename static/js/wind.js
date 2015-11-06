@@ -500,19 +500,25 @@ var Wind = Wind || {};
 		var apendTo = apendTo || 'body';
 		var x = x || (mouse.x - 16);
 		var y = y || (mouse.y - 20);
+		
+		var id = parseInt(100000000*Math.random());
 	
-	    $('#ajax-loading').remove();
-	    $(apendTo).append('<div id="ajax-loading"></div>');
-	    $('#ajax-loading').show();
-	    $('#ajax-loading').css('left', x + 'px');
-	    $('#ajax-loading').css('top', y + 'px');
+	    $('.ajax-loading').remove();
+	    $(apendTo).append('<div id="ajax-loading-'+id+'" class="ajax-loading"></div>');
+	    $('.ajax-loading').show();
+	    $('.ajax-loading').css('left', x + 'px');
+	    $('.ajax-loading').css('top', y + 'px');
+		
+		setTimeout(function() {
+			$('#ajax-loading-'+id).remove();
+		}, 10000)
 	}
 	
 	/**
 	 * 隐藏加载状态
 	 */
 	Wind.ui.hideLoading = function () {
-	    $('#ajax-loading').remove();
+	    $('body .ajax-loading').remove();
 	}
 	
 	Wind.message = {}

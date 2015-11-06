@@ -205,13 +205,13 @@ class Pagination {
 		if($uri) {
 			$this->router->parseUrl($uri);
 		} else {
-			$this->router->params = App::getInstance()->getRequest()->getGet();
+			$this->router->params = paramDecode(App::getInstance()->getRequest()->getRequest());
 		}
 				
 		$this->totals    = $total;
 		$this->pageVar   = $pageVar;
 		$this->rowsVar   = $rowsVar;
-		$this->page      = (int)App::getInstance()->getRequest()->getGet($pageVar);
+		$this->page      = (int)App::getInstance()->getRequest()->getRequest($pageVar);
 		$this->rows      = empty($this->router->params[$rowsVar]) ? $rows : $this->router->params[$rowsVar];
 		
 		// 最多记录数限制

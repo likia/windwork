@@ -749,6 +749,7 @@ class Request {
 		$uriHash = sprintf('%x', abs(crc32(\core\App::getInstance()->getRequest()->getRequestUri())));
 		
 		if(isset($_SESSION[$rePostSessionKey][$uriHash]) && $_SESSION[$rePostSessionKey][$uriHash] == $hash) {
+			\core\mvc\Message::setErr('不能重复提交表单');
 			return false;
 		}
 		

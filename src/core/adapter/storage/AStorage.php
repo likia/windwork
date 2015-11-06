@@ -183,7 +183,7 @@ abstract class AStorage implements \core\adapter\IFactoryAble {
 	 * @param int $height
 	 * @return string
 	 */
-	public function getThumbUrl($path, $width, $height){
+	public function getThumbUrl($path, $width = 100, $height = 100){
 		if (!$path) {
 			$url = $this->cfg['ui_nopic'];
 			if(!preg_match("/^(\\w+)\\:\\/\\//", $url)) {				
